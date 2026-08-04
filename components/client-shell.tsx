@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Command, Menu, Moon, Sun, X } from "lucide-react";
 import type { Locale } from "@/content/data";
 import { track } from "@/lib/analytics";
@@ -13,6 +14,7 @@ const setCookie = (name: string, value: string) => { document.cookie = `${name}=
 const label = (locale: Locale, pt: string, en: string) => locale === "pt" ? pt : en;
 
 export function ClientShell({ children, locale, theme, recruiter: initialRecruiter }: Props) {
+  const pathname = usePathname();
   const [recruiter, setRecruiter] = useState(initialRecruiter);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -35,6 +37,7 @@ export function ClientShell({ children, locale, theme, recruiter: initialRecruit
   const closeMobile = () => { setMobileOpen(false); requestAnimationFrame(() => mobileTrigger.current?.focus()); };
   const closeCommand = () => { setCommandOpen(false); requestAnimationFrame(() => commandTrigger.current?.focus()); };
 
+  if (pathname?.startsWith("/admin")) return <>{children}</>;
   return <div data-recruiter={recruiter ? "true" : "false"}>
     <Header locale={locale} theme={theme} recruiter={recruiter} mobileOpen={mobileOpen} mobileTrigger={mobileTrigger} commandTrigger={commandTrigger} onLocale={changeLocale} onTheme={changeTheme} onRecruiter={changeRecruiter} onMobile={() => setMobileOpen(true)} onCommand={() => setCommandOpen(true)}/>
     <div id="site-content">
