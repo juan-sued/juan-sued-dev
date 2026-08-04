@@ -41,4 +41,7 @@ describe("portfolio controls", () => {
   it("renders premium Hero CTAs", async () => {
     const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
   });
+  it("uses professional summary without a second time promise", async () => {
+    const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
+  });
 });
