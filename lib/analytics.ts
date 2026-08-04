@@ -1,0 +1,2 @@
+export type AnalyticsEvent = "resume_download_ats" | "resume_download_visual" | "linkedin_click" | "github_click" | "email_click" | "bikerway_click" | "event_horizon_click" | "recruiter_mode_enabled" | "case_study_opened" | "language_changed";
+export function track(event: AnalyticsEvent, properties?: Record<string, string>) { if (process.env.NEXT_PUBLIC_ANALYTICS_DEBUG === "true") console.info("[analytics]", event, properties); }

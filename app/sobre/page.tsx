@@ -1,0 +1,1 @@
+import { About, Footer } from "@/components/server-content"; import { getPreferences } from "@/lib/preferences"; import { pageMetadata } from "@/lib/seo"; export const metadata = pageMetadata("/sobre", "Sobre"); export default async function Page() { const { locale } = await getPreferences(); return <main id="content"><About locale={locale}/><Footer locale={locale}/></main>; }
