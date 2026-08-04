@@ -1,0 +1,3 @@
+import { SetupForm } from "./setup-form";
+export const metadata = { robots: { index: false, follow: false } };
+export default async function SetupPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) { const { token } = await searchParams; if (!token) return <main className="grid min-h-screen place-items-center p-6"><p>Link de cadastro inválido ou expirado.</p></main>; return <main className="grid min-h-screen place-items-center p-6"><section className="w-full max-w-md"><p className="mb-4 text-sm font-bold text-[var(--brand)]">JUAN SUED - ADMIN</p><SetupForm token={token}/></section></main>; }

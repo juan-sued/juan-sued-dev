@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "supabase:migration:new": "supabase migration new",
+    "supabase:migration:list": "supabase migration list --linked",
+    "supabase:db:push": "supabase db push"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
@@ -19,6 +22,7 @@
     "next": "16.3.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "latest"
   },
