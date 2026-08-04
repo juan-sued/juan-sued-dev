@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Juan Sued, Desenvolvedor Full Stack Web e Mobile">
+  <rect width="1200" height="630" fill="#101817"/>
+  <path d="M0 510H1200M0 390H1200M0 270H1200M0 150H1200M180 0V630M360 0V630M540 0V630M720 0V630M900 0V630M1080 0V630" stroke="#2a3a36" stroke-width="1"/>
+  <rect x="84" y="86" width="10" height="458" rx="5" fill="#63c5b4"/>
+  <text x="132" y="198" fill="#eff6f2" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="700">Juan Sued</text>
+  <text x="132" y="278" fill="#63c5b4" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">Desenvolvedor Full Stack Web &amp; Mobile</text>
+  <text x="132" y="374" fill="#a6bbb4" font-family="Arial, Helvetica, sans-serif" font-size="30">React Native · React · TypeScript · Node.js · NestJS</text>
+  <text x="132" y="472" fill="#eff6f2" font-family="Arial, Helvetica, sans-serif" font-size="24">Web / Mobile / Geolocalização / Sistemas em tempo real</text>
+</svg>
