@@ -1,17 +1,327 @@
 export type Locale = "pt" | "en";
 export type Copy = Record<Locale, string>;
 export const text = (value: Copy, locale: Locale) => value[locale];
-export const profile = { name: "Juan Sued", role: { pt: "Desenvolvedor Full Stack Web & Mobile", en: "Full Stack Web & Mobile Developer" }, intro: { pt: "Construo aplicações Web e Mobile com React, React Native, TypeScript e NestJS, atuando entre produto, frontend, backend, dados, geolocalização e sistemas em tempo real.", en: "I build web and mobile applications with React, React Native, TypeScript and NestJS, working across product, frontend, backend, data, geolocation and real-time systems." }, location: { pt: "Rio de Janeiro, Brasil", en: "Rio de Janeiro, Brazil" }, links: { bikerway: "https://bikerway.com.br/", eventHorizon: "https://event-horizon-by-juan-sued.vercel.app/", linkedin: "https://www.linkedin.com/in/juan-sued/", github: "https://github.com/juan-sued", email: "mailto:juansued19@gmail.com" } };
+export const profile = {
+  name: "Juan Sued",
+  role: {
+    pt: "Desenvolvedor Full Stack Web & Mobile",
+    en: "Full Stack Web & Mobile Developer",
+  },
+  intro: {
+    pt: "Construo aplicações Web e Mobile com React, React Native, TypeScript e NestJS, atuando entre produto, frontend, backend, dados, geolocalização e sistemas em tempo real.",
+    en: "I build web and mobile applications with React, React Native, TypeScript and NestJS, working across product, frontend, backend, data, geolocation and real-time systems.",
+  },
+  location: { pt: "Rio de Janeiro, Brasil", en: "Rio de Janeiro, Brazil" },
+  links: {
+    bikerway: "https://bikerway.com.br/",
+    eventHorizon: "https://event-horizon-by-juan-sued.vercel.app/",
+    linkedin: "https://www.linkedin.com/in/juan-sued/",
+    github: "https://github.com/juan-sued",
+    email: "mailto:juansued19@gmail.com",
+  },
+};
 export const experiences = [
-  { company: "MARKTS", role: { pt: "Desenvolvedor Full Stack Web & Mobile", en: "Full Stack Web & Mobile Developer" }, period: { pt: "Junho de 2025 - Atual", en: "June 2025 - Present" }, points: { pt: ["Aplicações Web, Android e iOS entre múltiplos frontends e microserviços.", "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ e Prisma.", "Mapas e análise geográfica com H3, deck.gl e Google Maps.", "Fluxos com regras de negócio, máquinas de estado e operação móvel sob conectividade instável."], en: ["Web, Android and iOS applications across multiple frontends and microservices.", "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ and Prisma.", "Maps and geographic analysis with H3, deck.gl and Google Maps.", "Business-rule flows, state machines and mobile operation under unreliable connectivity."] } },
-  { company: "SALB - Indústria Cerealista", role: { pt: "Desenvolvedor Full Stack", en: "Full Stack Developer" }, period: { pt: "Dezembro de 2024 - Maio de 2025", en: "December 2024 - May 2025" }, points: { pt: ["Site institucional e catálogo de produtos.", "QR Codes em produtos, estoque, etiquetas e integrações de cadastro.", "Integração com roteirização de entregas usando Next.js, TypeScript, Prisma e PostgreSQL."], en: ["Institutional website and product catalog.", "Product QR codes, inventory, labels and product-record integrations.", "Delivery-routing integration using Next.js, TypeScript, Prisma and PostgreSQL."] } },
-  { company: "Lumis", role: { pt: "Desenvolvedor Web/Java", en: "Web/Java Developer" }, period: { pt: "Junho de 2022 - Dezembro de 2023", en: "June 2022 - December 2023" }, points: { pt: ["Desenvolvimento e sustentação de portais corporativos.", "Java, LumisXP, Hibernate, JavaScript, HTML, CSS e XSL.", "Componentes, formulários, integrações e regras de negócio para equipes multidisciplinares."], en: ["Development and maintenance of corporate portals.", "Java, LumisXP, Hibernate, JavaScript, HTML, CSS and XSL.", "Components, forms, integrations and business rules with multidisciplinary teams."] } },
-  { company: "Event Horizon", role: { pt: "Desenvolvedor Full Stack Freelancer e Fundador", en: "Freelance Full Stack Developer and Founder" }, period: { pt: "Desde 2018, em paralelo", en: "Since 2018, alongside other work" }, points: { pt: ["Projetos independentes: sites, landing pages e sistemas personalizados.", "Levantamento de requisitos, frontend, backend, integrações, deploy e suporte pós-entrega."], en: ["Independent projects: websites, landing pages and custom systems.", "Requirements discovery, frontend, backend, integrations, deployment and post-delivery support."] } }
+  {
+    company: "MARKTS",
+    role: {
+      pt: "Desenvolvedor Full Stack Web & Mobile",
+      en: "Full Stack Web & Mobile Developer",
+    },
+    period: { pt: "Junho de 2025 - Atual", en: "June 2025 - Present" },
+    points: {
+      pt: [
+        "Aplicações Web, Android e iOS entre múltiplos frontends e microserviços.",
+        "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ e Prisma.",
+        "Mapas e análise geográfica com H3, deck.gl e Google Maps.",
+        "Fluxos com regras de negócio, máquinas de estado e operação móvel sob conectividade instável.",
+      ],
+      en: [
+        "Web, Android and iOS applications across multiple frontends and microservices.",
+        "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ and Prisma.",
+        "Maps and geographic analysis with H3, deck.gl and Google Maps.",
+        "Business-rule flows, state machines and mobile operation under unreliable connectivity.",
+      ],
+    },
+  },
+  {
+    company: "SALB - Indústria Cerealista",
+    role: { pt: "Desenvolvedor Full Stack", en: "Full Stack Developer" },
+    period: {
+      pt: "Dezembro de 2024 - Maio de 2025",
+      en: "December 2024 - May 2025",
+    },
+    points: {
+      pt: [
+        "Site institucional e catálogo de produtos.",
+        "QR Codes em produtos, estoque, etiquetas e integrações de cadastro.",
+        "Integração com roteirização de entregas usando Next.js, TypeScript, Prisma e PostgreSQL.",
+      ],
+      en: [
+        "Institutional website and product catalog.",
+        "Product QR codes, inventory, labels and product-record integrations.",
+        "Delivery-routing integration using Next.js, TypeScript, Prisma and PostgreSQL.",
+      ],
+    },
+  },
+  {
+    company: "Lumis",
+    role: { pt: "Desenvolvedor Web/Java", en: "Web/Java Developer" },
+    period: {
+      pt: "Junho de 2022 - Dezembro de 2023",
+      en: "June 2022 - December 2023",
+    },
+    points: {
+      pt: [
+        "Desenvolvimento e sustentação de portais corporativos.",
+        "Java, LumisXP, Hibernate, JavaScript, HTML, CSS e XSL.",
+        "Componentes, formulários, integrações e regras de negócio para equipes multidisciplinares.",
+      ],
+      en: [
+        "Development and maintenance of corporate portals.",
+        "Java, LumisXP, Hibernate, JavaScript, HTML, CSS and XSL.",
+        "Components, forms, integrations and business rules with multidisciplinary teams.",
+      ],
+    },
+  },
+  {
+    company: "Event Horizon",
+    role: {
+      pt: "Desenvolvedor Full Stack Freelancer e Fundador",
+      en: "Freelance Full Stack Developer and Founder",
+    },
+    period: {
+      pt: "Desde 2018, em paralelo",
+      en: "Since 2018, alongside other work",
+    },
+    points: {
+      pt: [
+        "Projetos independentes: sites, landing pages e sistemas personalizados.",
+        "Levantamento de requisitos, frontend, backend, integrações, deploy e suporte pós-entrega.",
+      ],
+      en: [
+        "Independent projects: websites, landing pages and custom systems.",
+        "Requirements discovery, frontend, backend, integrations, deployment and post-delivery support.",
+      ],
+    },
+  },
 ];
 export const cases = [
-  { slug: "h3", title: { pt: "Transformando pedidos e ocorrências em análises geográficas", en: "Turning orders and occurrences into geographic analysis" }, tag: "H3 / Maps", summary: { pt: "Agrupamento regional com detalhes sob demanda.", en: "Regional aggregation with on-demand detail." }, sections: { pt: [["Contexto", "Dados operacionais precisam virar leitura espacial sem expor informações sensíveis."], ["Decisão", "H3 para agrupamentos em diferentes resoluções; dados agregados no carregamento inicial e detalhes consultados sob demanda."], ["Implementação", "React, deck.gl e Google Maps no cliente; NestJS, Prisma e gRPC no domínio."], ["Trade-off", "Visão regional rápida não substitui análise de entidade individual."], ["Aprendizado", "Separar panorama e detalhe preserva performance e clareza."]], en: [["Context", "Operational data must become spatial insight without exposing sensitive information."], ["Decision", "H3 for multi-resolution grouping; aggregated data first and details on demand."], ["Implementation", "React, deck.gl and Google Maps on client; NestJS, Prisma and gRPC in domain."], ["Trade-off", "Fast regional view does not replace per-entity analysis."], ["Learning", "Separating overview from detail preserves performance and clarity."]] } },
-  { slug: "estado", title: { pt: "Consistência em fluxo distribuído", en: "Consistency in a distributed flow" }, tag: "State machine", summary: { pt: "Cliente, operação e backoffice sincronizados por estados explícitos.", en: "Customer, operations and back office aligned by explicit states." }, sections: { pt: [["Contexto", "Uma exceção durante execução exige decisão, confirmação física, auditoria e atualização em tempo real."], ["Decisão", "Máquina de estados explícita, prevenção de solicitações duplicadas e tratamento de eventos antigos."], ["Implementação", "Eventos atualizam participantes; transições válidas protegem consistência."], ["Trade-off", "Mais modelagem inicial em troca de fluxos críticos previsíveis."], ["Aprendizado", "Estado explícito transforma exceções em caminhos auditáveis."]], en: [["Context", "An exception during execution requires a decision, physical confirmation, audit trail and real-time update."], ["Decision", "Explicit state machine, duplicate request prevention and stale-event handling."], ["Implementation", "Events update participants; valid transitions protect consistency."], ["Trade-off", "More upfront modeling in exchange for predictable critical flows."], ["Learning", "Explicit state turns exceptions into auditable paths."]] } },
-  { slug: "offline", title: { pt: "Captura de códigos no campo com conectividade instável", en: "Field code capture with unreliable connectivity" }, tag: "Offline-first", summary: { pt: "Fila local, validação de EAN e sincronização posterior.", en: "Local queue, EAN validation and later synchronization." }, sections: { pt: [["Contexto", "Operação móvel não pode parar quando sinal falha."], ["Decisão", "Validar EAN-8/EAN-13 localmente, evitar duplicidade e persistir fila no dispositivo."], ["Implementação", "React Native, câmera, retry, Redis, BullMQ e Socket.IO."], ["Trade-off", "Sincronização posterior exige feedback claro sobre estado local."], ["Aprendizado", "Offline-first é desenho de produto e arquitetura."]], en: [["Context", "Mobile work cannot stop when signal fails."], ["Decision", "Validate EAN-8/EAN-13 locally, prevent duplicates and persist a device queue."], ["Implementation", "React Native, camera, retry, Redis, BullMQ and Socket.IO."], ["Trade-off", "Later synchronization requires clear feedback about local state."], ["Learning", "Offline-first is product and architecture design."]] } },
-  { slug: "localizacao", title: { pt: "Localização não é apenas pedir latitude e longitude", en: "Location is more than requesting latitude and longitude" }, tag: "Mobile location", summary: { pt: "Permissões, fallback e recuperação fazem parte do fluxo.", en: "Permissions, fallback and recovery belong in flow." }, sections: { pt: [["Contexto", "GPS, permissão, rede e timeout podem falhar em campo."], ["Decisão", "Modelar permissões foreground/background, retry, fallback e recuperação orientada ao usuário."], ["Implementação", "Atualização de posição, mapas e rotas com estados comunicáveis."], ["Trade-off", "Mais cenários e testes para evitar bloqueio silencioso."], ["Aprendizado", "Experiência de recuperação é parte da arquitetura."]], en: [["Context", "GPS, permissions, network and timeout can fail in the field."], ["Decision", "Model foreground/background permissions, retry, fallback and user-guided recovery."], ["Implementation", "Position updates, maps and routes with communicable states."], ["Trade-off", "More scenarios and tests prevent silent blocking."], ["Learning", "Recovery experience is architecture."]] } }
+  {
+    slug: "H3",
+    title: {
+      pt: "Transformando pedidos e ocorrências em análises geográficas",
+      en: "Turning orders and occurrences into geographic analysis",
+    },
+    tag: "H3 / Maps",
+    summary: {
+      pt: "Agrupamento regional com detalhes sob demanda.",
+      en: "Regional aggregation with on-demand detail.",
+    },
+    sections: {
+      pt: [
+        [
+          "Contexto",
+          "Dados operacionais precisam virar leitura espacial sem expor informações sensíveis.",
+        ],
+        [
+          "Decisão",
+          "H3 para agrupamentos em diferentes resoluções; dados agregados no carregamento inicial e detalhes consultados sob demanda.",
+        ],
+        [
+          "Implementação",
+          "React, deck.gl e Google Maps no cliente; NestJS, Prisma e gRPC no domínio.",
+        ],
+        [
+          "Trade-off",
+          "Visão regional rápida não substitui análise de entidade individual.",
+        ],
+        [
+          "Aprendizado",
+          "Separar panorama e detalhe preserva performance e clareza.",
+        ],
+      ],
+      en: [
+        [
+          "Context",
+          "Operational data must become spatial insight without exposing sensitive information.",
+        ],
+        [
+          "Decision",
+          "H3 for multi-resolution grouping; aggregated data first and details on demand.",
+        ],
+        [
+          "Implementation",
+          "React, deck.gl and Google Maps on client; NestJS, Prisma and gRPC in domain.",
+        ],
+        [
+          "Trade-off",
+          "Fast regional view does not replace per-entity analysis.",
+        ],
+        [
+          "Learning",
+          "Separating overview from detail preserves performance and clarity.",
+        ],
+      ],
+    },
+  },
+  {
+    slug: "estado",
+    title: {
+      pt: "Consistência em fluxo distribuído",
+      en: "Consistency in a distributed flow",
+    },
+    tag: "State machine",
+    summary: {
+      pt: "Cliente, operação e backoffice sincronizados por estados explícitos.",
+      en: "Customer, operations and back office aligned by explicit states.",
+    },
+    sections: {
+      pt: [
+        [
+          "Contexto",
+          "Uma exceção durante execução exige decisão, confirmação física, auditoria e atualização em tempo real.",
+        ],
+        [
+          "Decisão",
+          "Máquina de estados explícita, prevenção de solicitações duplicadas e tratamento de eventos antigos.",
+        ],
+        [
+          "Implementação",
+          "Eventos atualizam participantes; transições válidas protegem consistência.",
+        ],
+        [
+          "Trade-off",
+          "Mais modelagem inicial em troca de fluxos críticos previsíveis.",
+        ],
+        [
+          "Aprendizado",
+          "Estado explícito transforma exceções em caminhos auditáveis.",
+        ],
+      ],
+      en: [
+        [
+          "Context",
+          "An exception during execution requires a decision, physical confirmation, audit trail and real-time update.",
+        ],
+        [
+          "Decision",
+          "Explicit state machine, duplicate request prevention and stale-event handling.",
+        ],
+        [
+          "Implementation",
+          "Events update participants; valid transitions protect consistency.",
+        ],
+        [
+          "Trade-off",
+          "More upfront modeling in exchange for predictable critical flows.",
+        ],
+        ["Learning", "Explicit state turns exceptions into auditable paths."],
+      ],
+    },
+  },
+  {
+    slug: "offline",
+    title: {
+      pt: "Captura de códigos no campo com conectividade instável",
+      en: "Field code capture with unreliable connectivity",
+    },
+    tag: "Offline-first",
+    summary: {
+      pt: "Fila local, validação de EAN e sincronização posterior.",
+      en: "Local queue, EAN validation and later synchronization.",
+    },
+    sections: {
+      pt: [
+        ["Contexto", "Operação móvel não pode parar quando sinal falha."],
+        [
+          "Decisão",
+          "Validar EAN-8/EAN-13 localmente, evitar duplicidade e persistir fila no dispositivo.",
+        ],
+        [
+          "Implementação",
+          "React Native, câmera, retry, Redis, BullMQ e Socket.IO.",
+        ],
+        [
+          "Trade-off",
+          "Sincronização posterior exige feedback claro sobre estado local.",
+        ],
+        ["Aprendizado", "Offline-first é desenho de produto e arquitetura."],
+      ],
+      en: [
+        ["Context", "Mobile work cannot stop when signal fails."],
+        [
+          "Decision",
+          "Validate EAN-8/EAN-13 locally, prevent duplicates and persist a device queue.",
+        ],
+        [
+          "Implementation",
+          "React Native, camera, retry, Redis, BullMQ and Socket.IO.",
+        ],
+        [
+          "Trade-off",
+          "Later synchronization requires clear feedback about local state.",
+        ],
+        ["Learning", "Offline-first is product and architecture design."],
+      ],
+    },
+  },
+  {
+    slug: "localizacao",
+    title: {
+      pt: "Localização não é apenas pedir latitude e longitude",
+      en: "Location is more than requesting latitude and longitude",
+    },
+    tag: "Mobile location",
+    summary: {
+      pt: "Permissões, fallback e recuperação fazem parte do fluxo.",
+      en: "Permissions, fallback and recovery belong in flow.",
+    },
+    sections: {
+      pt: [
+        ["Contexto", "GPS, permissão, rede e timeout podem falhar em campo."],
+        [
+          "Decisão",
+          "Modelar permissões foreground/background, retry, fallback e recuperação orientada ao usuário.",
+        ],
+        [
+          "Implementação",
+          "Atualização de posição, mapas e rotas com estados comunicáveis.",
+        ],
+        [
+          "Trade-off",
+          "Mais cenários e testes para evitar bloqueio silencioso.",
+        ],
+        ["Aprendizado", "Experiência de recuperação é parte da arquitetura."],
+      ],
+      en: [
+        [
+          "Context",
+          "GPS, permissions, network and timeout can fail in the field.",
+        ],
+        [
+          "Decision",
+          "Model foreground/background permissions, retry, fallback and user-guided recovery.",
+        ],
+        [
+          "Implementation",
+          "Position updates, maps and routes with communicable states.",
+        ],
+        ["Trade-off", "More scenarios and tests prevent silent blocking."],
+        ["Learning", "Recovery experience is architecture."],
+      ],
+    },
+  },
 ];
-export const skills = [["Frontend & Mobile", "React, React Native, Next.js, TypeScript, Tailwind CSS"], ["Backend", "Node.js, NestJS, REST, gRPC, Socket.IO, BullMQ"], ["Dados", "PostgreSQL, SQL Server, Prisma, Supabase, Redis"], ["Geolocalização", "PostGIS, H3, deck.gl, Google Maps, Google Places"], ["Qualidade & Entrega", "Git, Docker, GitHub Actions, Jest, Cypress, Vercel, Sentry"]];
+export const skills = [
+  [
+    "Frontend & Mobile",
+    "React, React Native, Next.js, TypeScript, Tailwind CSS",
+  ],
+  ["Backend", "Node.js, NestJS, REST, gRPC, Socket.IO, BullMQ"],
+  ["Dados", "PostgreSQL, SQL Server, Prisma, Supabase, Redis"],
+  ["Geolocalização", "PostGIS, H3, deck.gl, Google Maps, Google Places"],
+  [
+    "Qualidade & Entrega",
+    "Git, Docker, GitHub Actions, Jest, Cypress, Vercel, Sentry",
+  ],
+];
