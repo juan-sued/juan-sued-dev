@@ -51,7 +51,7 @@ describe("CMS1 content repositories", () => {
     await expect(getSkills()).resolves.toEqual([{ category: { pt: "Backend", en: "Backend" }, items: "Node.js" }]);
     expect(db.from).toHaveBeenCalledWith("published_skills");
     expect(db.select).toHaveBeenCalledWith("*");
-    expect(db.order).toHaveBeenCalledWith("sort_order");
+    expect(db.order).toHaveBeenCalledWith("display_order");
   });
 
   it("maps experience and education database rows", async () => {
