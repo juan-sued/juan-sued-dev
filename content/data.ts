@@ -107,16 +107,18 @@ export const experiences = [
 ];
 export const cases = [
   {
-    slug: "H3",
+    slug: "h3",
     title: {
-      pt: "Transformando pedidos e ocorrências em análises geográficas",
-      en: "Turning orders and occurrences into geographic analysis",
+      pt: "Mapas operacionais com H3",
+      en: "Operational maps with H3",
     },
-    tag: "H3 / Maps",
+    tag: "H3 / Mapas",
     summary: {
       pt: "Agrupamento regional com detalhes sob demanda.",
       en: "Regional aggregation with on-demand detail.",
     },
+    decision: { pt: "Agregados por resolução, detalhes sob demanda.", en: "Multi-resolution aggregates with on-demand detail." },
+    stack: "H3 · deck.gl · Google Maps · NestJS · Prisma · gRPC",
     sections: {
       pt: [
         [
@@ -166,15 +168,14 @@ export const cases = [
   },
   {
     slug: "estado",
-    title: {
-      pt: "Consistência em fluxo distribuído",
-      en: "Consistency in a distributed flow",
-    },
-    tag: "State machine",
+    title: { pt: "Fluxos distribuídos e máquina de estados", en: "Distributed flows and state machines" },
+    tag: "Máquina de estados",
     summary: {
       pt: "Cliente, operação e backoffice sincronizados por estados explícitos.",
       en: "Customer, operations and back office aligned by explicit states.",
     },
+    decision: { pt: "Estados explícitos previnem duplicidade e inconsistência.", en: "Explicit states prevent duplicates and inconsistency." },
+    stack: "React Native · NestJS · Socket.IO · Prisma · notificações · APIs REST",
     sections: {
       pt: [
         [
@@ -221,15 +222,14 @@ export const cases = [
   },
   {
     slug: "offline",
-    title: {
-      pt: "Captura de códigos no campo com conectividade instável",
-      en: "Field code capture with unreliable connectivity",
-    },
+    title: { pt: "Offline-first e captura de EAN", en: "Offline-first and EAN capture" },
     tag: "Offline-first",
     summary: {
       pt: "Fila local, validação de EAN e sincronização posterior.",
       en: "Local queue, EAN validation and later synchronization.",
     },
+    decision: { pt: "Validação local e fila persistida antes da sincronização.", en: "Local validation and persistent queue before synchronization." },
+    stack: "React Native · BullMQ · Redis · Socket.IO · câmera · armazenamento local",
     sections: {
       pt: [
         ["Contexto", "Operação móvel não pode parar quando sinal falha."],
@@ -267,15 +267,14 @@ export const cases = [
   },
   {
     slug: "localizacao",
-    title: {
-      pt: "Localização não é apenas pedir latitude e longitude",
-      en: "Location is more than requesting latitude and longitude",
-    },
-    tag: "Mobile location",
+    title: { pt: "Localização mobile resiliente", en: "Resilient mobile location" },
+    tag: "Localização mobile",
     summary: {
       pt: "Permissões, fallback e recuperação fazem parte do fluxo.",
       en: "Permissions, fallback and recovery belong in flow.",
     },
+    decision: { pt: "Permissões, fallback e recuperação fazem parte do fluxo.", en: "Permissions, fallback and recovery belong in the flow." },
+    stack: "React Native · Google Maps · APIs de geolocalização · permissões Android e iOS · Socket.IO · tratamento de falhas",
     sections: {
       pt: [
         ["Contexto", "GPS, permissão, rede e timeout podem falhar em campo."],

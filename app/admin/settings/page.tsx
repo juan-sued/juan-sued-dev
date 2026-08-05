@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { requireAdmin } from "@/lib/auth/admin";
+import { AdminShell } from "@/components/admin-shell";
+export default async function SettingsPage() { const admin=await requireAdmin(); const configured=(value:string|undefined)=>value?"Configurado":"Não configurado"; return <AdminShell email={admin.email}><p className="text-sm text-[var(--muted)]">Administração / Configurações</p><h1 className="mt-2 text-3xl font-bold">Configurações</h1><dl className="mt-6 grid max-w-xl gap-3 rounded-lg border border-[var(--line)] p-5"><div>Supabase: {configured(process.env.NEXT_PUBLIC_SUPABASE_URL)}</div><div>Turnstile: {configured(process.env.TURNSTILE_SECRET_KEY && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)}</div><div>Intake de contatos: {configured(process.env.SUPABASE_SERVICE_ROLE_KEY)}</div><div>Administrador: {admin.email}</div><div><Link href="/" className="font-semibold">Abrir portfólio</Link></div></dl></AdminShell>; }
