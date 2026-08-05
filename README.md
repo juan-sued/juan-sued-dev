@@ -24,7 +24,7 @@ npm run build
 
 `/admin` usa Supabase Auth e `admin_users` para acesso. CRM permite administrar contatos, notas, oportunidades e logs de auditoria. Usuário autenticado sem membership é bloqueado.
 
-Contato público envia `POST /api/contact`. Handler valida payload, rejeita honeypot, verifica Cloudflare Turnstile antes de gravar e usa cliente server-side com service role para inserir submissão. Em produção, Turnstile ausente, token ausente, erro de rede ou resposta inválida bloqueia envio (fail closed).
+Contato público carrega script oficial Turnstile com renderização explícita e mantém token só em memória até enviar `POST /api/contact`. Handler valida payload, rejeita honeypot, verifica Turnstile antes de gravar e usa cliente server-side com service role para inserir submissão. Em produção, chave ou token ausente, erro de rede ou resposta inválida bloqueia envio (fail closed). Sem site key fora de produção, formulário envia sem token para desenvolvimento local.
 
 Rate limit fica em memória do processo: máximo de 5 tentativas por IP com hash, por janela de 60 segundos. Limite não é compartilhado entre instâncias Vercel e reinicia após cold start; use rate limiter compartilhado se proteção distribuída for necessária.
 
