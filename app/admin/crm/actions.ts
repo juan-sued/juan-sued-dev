@@ -55,7 +55,7 @@ export async function updateContact(formData: FormData): Promise<ActionResult<{ 
   return success({ id });
 }
 
-export async function saveOpportunity(formData: FormData): Promise<ActionResult<{ id: string }>> {
+export async function saveOpportunity(formData: FormData): Promise<ActionResult<{ id: string; path: string }>> {
   const admin = await requireAdmin();
   const parsed = opportunity.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return invalid(parsed.error);
@@ -71,7 +71,7 @@ export async function saveOpportunity(formData: FormData): Promise<ActionResult<
 
   await audit(supabase, { actorId: admin.id, entityType: "opportunity", entityId: result.data.id, action: id ? "updated" : "created", changes: { status: data.status } });
   revalidateOpportunity(result.data.id);
-  return success({ id: result.data.id });
+  return success({ id: result.data.id, path: `/admin/crm/opportunities/${result.data.id}` }, "Oportunidade salva.");
 }
 
 export async function convertContact(formData: FormData): Promise<ActionResult<{ id: string; path: string }>> {

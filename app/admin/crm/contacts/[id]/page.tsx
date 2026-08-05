@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/admin";
 import { createClient } from "@/lib/supabase/server";
 import { AdminShell } from "@/components/admin-shell";
-import { convertContact, updateContact } from "../../actions";
+import { ContactNoteForm, ContactUpdateForm, ConvertContactButton } from "@/components/admin/contact-interactions";
 
 export default async function ContactPage({
   params,
@@ -63,84 +63,18 @@ export default async function ContactPage({
             )) || (
               <p className="mt-3 text-sm text-[var(--muted)]">Nenhuma nota.</p>
             )}
-            <form action={async formData => { await updateContact(formData); }} className="mt-4 grid gap-2">
-              <input type="hidden" name="id" value={id} />
-              <textarea
-                name="note"
-                required
-                minLength={1}
-                maxLength={5000}
-                className="min-h-24 rounded-lg border border-[var(--line)] bg-transparent p-3"
-                placeholder="Adicionar nota interna"
-              />
-              <button className="w-fit rounded-lg bg-[var(--brand)] px-3 py-2 font-semibold text-white">
-                Salvar nota
-              </button>
-            </form>
+            <ContactNoteForm id={id} />
           </article>
         </section>
         <aside className="space-y-4 rounded-lg border border-[var(--line)] p-5">
-          <form action={async formData => { await updateContact(formData); }} className="grid gap-3">
-            <input type="hidden" name="id" value={id} />
-            <label>
-              Status
-              <select
-                name="status"
-                defaultValue={contact.status}
-                className="mt-1 block w-full rounded-lg border border-[var(--line)] bg-transparent p-2"
-              >
-                {[
-                  "new",
-                  "reviewing",
-                  "contacted",
-                  "opportunity",
-                  "interview",
-                  "proposal",
-                  "hired",
-                  "closed",
-                  "spam",
-                ].map((x) => (
-                  <option key={x}>{x}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Prioridade
-              <select
-                name="priority"
-                defaultValue={contact.priority}
-                className="mt-1 block w-full rounded-lg border border-[var(--line)] bg-transparent p-2"
-              >
-                {["low", "normal", "high", "urgent"].map((x) => (
-                  <option key={x}>{x}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Próxima ação
-              <input
-                type="datetime-local"
-                name="nextActionAt"
-                defaultValue={contact.next_action_at?.slice(0, 16)}
-                className="mt-1 block w-full rounded-lg border border-[var(--line)] bg-transparent p-2"
-              />
-            </label>
-            <button className="rounded-lg bg-[var(--brand)] px-3 py-2 font-semibold text-white">
-              Salvar
-            </button>
-          </form>
+          <ContactUpdateForm id={id} status={contact.status} priority={contact.priority} nextActionAt={contact.next_action_at} />
           <a
             href={`mailto:${contact.email}?subject=${encodeURIComponent(contact.subject || "Contato")}`}
             className="block text-sm font-semibold"
           >
             Responder por e-mail
           </a>
-          <form action={async formData => { await convertContact(formData); }}>
-            <input type="hidden" name="id" value={id} />
-            <button className="text-sm font-semibold">
-              Converter em oportunidade
-            </button>
-          </form>
+          <ConvertContactButton id={id} />
         </aside>
       </div>
     </AdminShell>
