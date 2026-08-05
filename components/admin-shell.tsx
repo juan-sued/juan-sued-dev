@@ -11,6 +11,7 @@ export const adminNavItems = [
   { label: "Visão geral", href: "/admin" },
   { label: "Contatos", href: "/admin/crm/contacts" },
   { label: "Oportunidades", href: "/admin/crm/opportunities" },
+  { label: "Conteúdo", href: "/admin/content" },
   { label: "Configurações", href: "/admin/settings" },
 ] as const;
 
@@ -26,6 +27,7 @@ function pageCrumbs(pathname: string) {
   if (pathname === "/admin") return ["Administração", "Visão geral"];
   if (pathname.startsWith("/admin/crm/contacts")) return ["Administração", "Contatos", ...(pathname === "/admin/crm/contacts" ? [] : ["Detalhes"])];
   if (pathname.startsWith("/admin/crm/opportunities")) return ["Administração", "Oportunidades", ...(pathname === "/admin/crm/opportunities" ? [] : [pathname.endsWith("/new") ? "Nova" : "Detalhes"])];
+  if (pathname.startsWith("/admin/content")) return ["Administração", "Conteúdo"];
   if (pathname === "/admin/settings") return ["Administração", "Configurações"];
   return ["Administração"];
 }
