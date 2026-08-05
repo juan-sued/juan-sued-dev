@@ -10,7 +10,8 @@ import { createClient } from "@/lib/supabase/server";
 const contactStatuses = ["new", "reviewing", "contacted", "opportunity", "interview", "proposal", "hired", "closed", "spam"] as const;
 const opportunityStatuses = ["prospect", "applied", "recruiter_contact", "screening", "technical_interview", "final_interview", "offer", "hired", "rejected", "withdrawn"] as const;
 const idSchema = z.object({ id: z.string().uuid() });
-const contactUpdate = z.object({ id: z.string().uuid(), status: z.enum(contactStatuses).optional(), priority: z.enum(["low", "normal", "high", "urgent"]).optional(), nextActionAt: z.string().max(40).optional(), note: z.string().trim().min(1).max(5000).optional() });
+const contactUpdate = z.object({ id: z.string().uuid(), status: z.enum(contactStatuses).optional(), priority: z.enum(["low", "normal", "high", "urgent"]).optional(), nextActionAt: z.string().max(40).optional() });
+const contactNote = z.object({ id: z.string().uuid(), note: z.string().trim().min(1).max(5000) });
 const blank = z.preprocess(value => value === "" ? undefined : value, z.string().optional());
 const optionalNumber = z.preprocess(value => value === "" ? undefined : value, z.coerce.number().nonnegative().optional());
 const optionalDate = z.preprocess(value => value === "" ? undefined : value, z.string().refine(value => !Number.isNaN(Date.parse(value))).optional());
@@ -37,20 +38,28 @@ export async function updateContact(formData: FormData): Promise<ActionResult<{ 
   const admin = await requireAdmin();
   const parsed = contactUpdate.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return invalid(parsed.error);
-  const { id, note, nextActionAt, ...changes } = parsed.data;
-  if (!note && !Object.keys(changes).length && nextActionAt === undefined) return failure("Nenhuma alteração informada.");
+  const { id, nextActionAt, ...changes } = parsed.data;
+  if (!Object.keys(changes).length && nextActionAt === undefined) return failure("Nenhuma alteração informada.");
   const supabase = await createClient();
 
-  if (note) {
-    const { error } = await supabase.from("contact_notes").insert({ contact_id: id, author_id: admin.id, content: note });
-    if (error) return failure("Não foi possível adicionar nota.");
-  }
-  if (Object.keys(changes).length || nextActionAt !== undefined) {
-    const { data, error } = await supabase.from("contact_submissions").update({ ...changes, next_action_at: nextActionAt || null, updated_at: new Date().toISOString() }).eq("id", id).select("id").maybeSingle();
-    if (error || !data) return failure("Não foi possível atualizar contato.");
-  }
+  const { data, error } = await supabase.from("contact_submissions").update({ ...changes, next_action_at: nextActionAt || null, updated_at: new Date().toISOString() }).eq("id", id).select("id").maybeSingle();
+  if (error || !data) return failure("Não foi possível atualizar contato.");
 
-  await audit(supabase, { actorId: admin.id, entityType: "contact", entityId: id, action: note ? "note_added" : "updated", changes });
+  await audit(supabase, { actorId: admin.id, entityType: "contact", entityId: id, action: "updated", changes });
+  revalidateContact(id);
+  return success({ id });
+}
+
+export async function addContactNote(formData: FormData): Promise<ActionResult<{ id: string }>> {
+  const admin = await requireAdmin();
+  const parsed = contactNote.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return invalid(parsed.error);
+  const { id, note } = parsed.data;
+  const supabase = await createClient();
+  const { error } = await supabase.from("contact_notes").insert({ contact_id: id, author_id: admin.id, content: note });
+  if (error) return failure("Não foi possível adicionar nota.");
+
+  await audit(supabase, { actorId: admin.id, entityType: "contact", entityId: id, action: "note_added" });
   revalidateContact(id);
   return success({ id });
 }

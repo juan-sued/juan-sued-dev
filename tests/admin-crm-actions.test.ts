@@ -8,6 +8,7 @@ vi.mock("@/lib/audit", () => ({ audit: mocks.audit }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 
 import {
+  addContactNote,
   archiveContact,
   closeOpportunity,
   convertContact,
@@ -72,15 +73,26 @@ describe("admin CRM actions", () => {
     expect(mocks.createClient).not.toHaveBeenCalled();
   });
 
-  it("saves contact note and mutation, then audits and revalidates", async () => {
+  it("updates contact fields, then audits and revalidates", async () => {
     const db = database();
     mocks.createClient.mockResolvedValue(db.client);
 
-    await expect(updateContact(form({ id, status: "contacted", nextActionAt: "2026-08-10", note: " Follow up " }))).resolves.toEqual({ ok: true, data: { id } });
+    await expect(updateContact(form({ id, status: "contacted", nextActionAt: "2026-08-10" }))).resolves.toEqual({ ok: true, data: { id } });
 
-    expect(db.queries).toHaveLength(2);
-    expect(db.queries[0]).toMatchObject({ table: "contact_notes", operation: "insert", values: { contact_id: id, author_id: "admin-id", content: "Follow up" } });
-    expect(db.queries[1].values).toEqual(expect.objectContaining({ status: "contacted", next_action_at: "2026-08-10" }));
+    expect(db.queries).toHaveLength(1);
+    expect(db.queries[0]).toMatchObject({ table: "contact_submissions", operation: "update" });
+    expect(db.queries[0].values).toEqual(expect.objectContaining({ status: "contacted", next_action_at: "2026-08-10" }));
+    expect(mocks.audit).toHaveBeenCalledWith(db.client, expect.objectContaining({ entityType: "contact", entityId: id, action: "updated", changes: { status: "contacted" } }));
+    expectContactRevalidated();
+  });
+
+  it("adds contact note without contact update, then audits and revalidates", async () => {
+    const db = database();
+    mocks.createClient.mockResolvedValue(db.client);
+
+    await expect(addContactNote(form({ id, note: " Follow up " }))).resolves.toEqual({ ok: true, data: { id } });
+
+    expect(db.queries).toEqual([expect.objectContaining({ table: "contact_notes", operation: "insert", values: { contact_id: id, author_id: "admin-id", content: "Follow up" } })]);
     expect(mocks.audit).toHaveBeenCalledWith(db.client, expect.objectContaining({ entityType: "contact", entityId: id, action: "note_added" }));
     expectContactRevalidated();
   });

@@ -14,6 +14,10 @@ export const adminNavItems = [
   { label: "Configurações", href: "/admin/settings" },
 ] as const;
 
+type CommandItem = { label: string; href: string; external?: boolean } | { label: string; action: "theme" | "logout" };
+
+const commandItems: CommandItem[] = [...adminNavItems, { label: "Nova oportunidade", href: "/admin/crm/opportunities/new" }, { label: "Abrir portfólio", href: "/", external: true }, { label: "Alternar tema", action: "theme" }, { label: "Sair", action: "logout" }];
+
 export function isAdminNavActive(pathname: string, href: string) {
   return href === "/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -81,7 +85,7 @@ export function AdminShell({ email, children }: { email: string; children: React
       <main id="admin-content" className="p-4 md:p-8">{children}</main>
     </div>
     {sheetOpen && <Dialog id="admin-navigation" title="Navegação" close={closeSheet}><Brand/><div className="mt-6">{nav}</div><form action={logout} className="mt-6"><Button variant="outline" className="w-full">Sair</Button></form></Dialog>}
-    {commandOpen && <CommandMenu close={closeCommand} navigate={navigate}/>}
+    {commandOpen && <CommandMenu close={closeCommand} navigate={navigate} changeTheme={changeTheme}/>}
   </div>;
 }
 
@@ -111,15 +115,23 @@ function Dialog({ id, title, close, children }: { id: string; title: string; clo
   return <div className="fixed inset-0 z-50 bg-black/40 p-4" onMouseDown={close}><section ref={root} id={id} role="dialog" aria-modal="true" aria-labelledby={`${id}-title`} className="h-full w-full max-w-sm overflow-auto bg-[var(--surface)] p-5 shadow-2xl" onMouseDown={event => event.stopPropagation()}><div className="flex items-center justify-between"><h2 id={`${id}-title`} className="font-bold">{title}</h2><Button ref={closeButton} variant="outline" aria-label="Fechar" onClick={close}><X size={18}/></Button></div>{children}</section></div>;
 }
 
-function CommandMenu({ close, navigate }: { close: () => void; navigate: (href: string) => void }) {
+function CommandMenu({ close, navigate, changeTheme }: { close: () => void; navigate: (href: string) => void; changeTheme: () => void }) {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
-  const items = adminNavItems.filter(item => item.label.toLowerCase().includes(query.toLowerCase()));
+  const items = commandItems.filter(item => item.label.toLowerCase().includes(query.toLowerCase()));
+  const run = (item: CommandItem) => {
+    if ("href" in item) {
+      if (item.external) { window.open(item.href, "_blank", "noopener,noreferrer"); close(); }
+      else navigate(item.href);
+      return;
+    }
+    if (item.action === "theme") { changeTheme(); close(); }
+  };
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (!items.length) return;
     if (event.key === "ArrowDown") { event.preventDefault(); setSelected(index => (index + 1) % items.length); }
     if (event.key === "ArrowUp") { event.preventDefault(); setSelected(index => (index - 1 + items.length) % items.length); }
-    if (event.key === "Enter") { event.preventDefault(); navigate(items[selected].href); }
+    if (event.key === "Enter") { event.preventDefault(); run(items[selected]); }
   };
-  return <Dialog id="admin-command-menu" title="Comandos" close={close}><div className="mt-5"><label htmlFor="admin-command-search" className="sr-only">Buscar comandos</label><input autoFocus id="admin-command-search" value={query} onChange={event => { setQuery(event.target.value); setSelected(0); }} onKeyDown={onKeyDown} placeholder="Buscar páginas..." className="w-full rounded-lg border border-[var(--line)] bg-transparent p-3"/><div role="listbox" aria-label="Comandos" className="mt-3 grid gap-1">{items.map((item, index) => <button key={item.href} role="option" aria-selected={selected === index} onMouseEnter={() => setSelected(index)} onClick={() => navigate(item.href)} className={`rounded-lg p-3 text-left font-semibold hover:bg-[var(--brand-soft)] ${selected === index ? "bg-[var(--brand-soft)]" : ""}`}>{item.label}<span className="ml-2 text-sm font-normal text-[var(--muted)]">{item.href}</span></button>)}{!items.length && <p className="p-3 text-sm text-[var(--muted)]">Nenhum comando encontrado.</p>}</div></div></Dialog>;
+  return <Dialog id="admin-command-menu" title="Comandos" close={close}><div className="mt-5"><label htmlFor="admin-command-search" className="sr-only">Buscar comandos</label><input autoFocus id="admin-command-search" value={query} onChange={event => { setQuery(event.target.value); setSelected(0); }} onKeyDown={onKeyDown} placeholder="Buscar páginas..." className="w-full rounded-lg border border-[var(--line)] bg-transparent p-3"/><div role="listbox" aria-label="Comandos" className="mt-3 grid gap-1">{items.map((item, index) => "action" in item && item.action === "logout" ? <form key={item.label} action={logout} onSubmit={close}><button role="option" aria-selected={selected === index} onMouseEnter={() => setSelected(index)} className={`w-full rounded-lg p-3 text-left font-semibold hover:bg-[var(--brand-soft)] ${selected === index ? "bg-[var(--brand-soft)]" : ""}`}>{item.label}</button></form> : <button key={item.label} role="option" aria-selected={selected === index} onMouseEnter={() => setSelected(index)} onClick={() => run(item)} className={`rounded-lg p-3 text-left font-semibold hover:bg-[var(--brand-soft)] ${selected === index ? "bg-[var(--brand-soft)]" : ""}`}>{item.label}{"href" in item && <span className="ml-2 text-sm font-normal text-[var(--muted)]">{item.href}</span>}</button>)}{!items.length && <p className="p-3 text-sm text-[var(--muted)]">Nenhum comando encontrado.</p>}</div></div></Dialog>;
 }

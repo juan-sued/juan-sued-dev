@@ -49,4 +49,30 @@ describe("admin shell", () => {
     await new Promise(resolve => requestAnimationFrame(resolve));
     expect(trigger).toHaveFocus();
   });
+
+  it("runs command actions", () => {
+    render(<AdminShell email="admin@example.com"><p>Conteúdo</p></AdminShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Abrir comandos" }));
+
+    fireEvent.click(screen.getByRole("option", { name: /Nova oportunidade/ }));
+    expect(push).toHaveBeenCalledWith("/admin/crm/opportunities/new");
+
+    fireEvent.click(screen.getByRole("button", { name: "Abrir comandos" }));
+    const theme = document.documentElement.dataset.theme;
+    fireEvent.click(screen.getByRole("option", { name: "Alternar tema" }));
+    expect(document.documentElement.dataset.theme).toBe(theme === "dark" ? "light" : "dark");
+
+    fireEvent.click(screen.getByRole("button", { name: "Abrir comandos" }));
+    fireEvent.submit(screen.getByRole("option", { name: "Sair" }).closest("form")!);
+    expect(screen.queryByRole("dialog", { name: "Comandos" })).not.toBeInTheDocument();
+  });
+
+  it("opens portfolio command with noopener and noreferrer", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    render(<AdminShell email="admin@example.com"><p>Conteúdo</p></AdminShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Abrir comandos" }));
+    fireEvent.click(screen.getByRole("option", { name: /Abrir portfólio/ }));
+    expect(open).toHaveBeenCalledWith("/", "_blank", "noopener,noreferrer");
+    open.mockRestore();
+  });
 });

@@ -3,7 +3,7 @@
 import { startTransition, useActionState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { convertContact, updateContact } from "@/app/admin/crm/actions";
+import { addContactNote, convertContact, updateContact } from "@/app/admin/crm/actions";
 import { ActionFeedback } from "@/components/admin/action-feedback";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { type ActionResult } from "@/lib/actions/action-result";
@@ -14,7 +14,7 @@ type ConvertResult = ActionResult<{ id: string; path: string }> | null;
 export function ContactNoteForm({ id }: { id: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  const [result, formAction] = useActionState<UpdateResult, FormData>(async (_previous, formData) => updateContact(formData), null);
+  const [result, formAction] = useActionState<UpdateResult, FormData>(async (_previous, formData) => addContactNote(formData), null);
 
   useEffect(() => {
     if (!result) return;
