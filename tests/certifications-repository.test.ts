@@ -1,9 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({ createClient: vi.fn() }));
+const mocks = vi.hoisted(() => ({ createClient: vi.fn(), publicClient: vi.fn() }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: mocks.createClient }));
+vi.mock("@supabase/supabase-js", () => ({ createClient: mocks.publicClient }));
 
-import { getAdminCertificationById, getFeaturedCertifications, getPublishedCertifications, listAdminCertifications, listCertificationStorageFiles } from "../lib/repositories/certifications";
+process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test.supabase.co";
+process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "test-publishable-key";
+
+import { certificationCategoryLabel, certificationViews, getAdminCertificationById, getFeaturedCertifications, getPublishedCertifications, listAdminCertifications, listCertificationStorageFiles, type PublicCertificationDTO } from "../lib/repositories/certifications";
 
 const id = "00000000-0000-4000-8000-000000000001";
 
@@ -82,20 +86,42 @@ describe("certifications repository", () => {
     await expect(listCertificationStorageFiles()).resolves.toEqual(["alura/2026/a.pdf", "alura/2026/b.pdf"]);
   });
 
-  it("maps published RPC rows to public DTOs with pdf_url", async () => {
-    mocks.createClient.mockResolvedValue({
+  it("maps published RPC rows to public DTOs with pdf_url via v2 RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: [row], error: null });
+    mocks.publicClient.mockReturnValue({
       from: vi.fn(),
-      rpc: vi.fn().mockResolvedValue({ data: [row], error: null }),
+      rpc,
       storage: { from: vi.fn(() => ({ getPublicUrl: (path: string) => ({ data: { publicUrl: `https://cdn.example/${path}` } }) })) },
     });
     const result = await getPublishedCertifications();
-    expect(result[0]).toMatchObject({ id, featured: true, pdf_url: `https://cdn.example/${row.storage_path}` });
+    expect(rpc).toHaveBeenCalledWith("get_published_certifications_v2");
+    expect(result[0]).toMatchObject({ id, featured: true, recruiter_visible: true, pdf_url: `https://cdn.example/${row.storage_path}` });
     expect(result[0]).not.toHaveProperty("storage_path");
     expect(result[0]).not.toHaveProperty("updated_by");
   });
 
+  it("preserves RPC order and returns the full published list", async () => {
+    const node = { ...row, id: "00000000-0000-4000-8000-000000000002", title_pt: "Carreira Node.js: boas-vindas e primeiros passos", featured: false, display_order: 1 };
+    mocks.publicClient.mockReturnValue({
+      from: vi.fn(),
+      rpc: vi.fn().mockResolvedValue({ data: [row, node], error: null }),
+      storage: { from: vi.fn(() => ({ getPublicUrl: (path: string) => ({ data: { publicUrl: `https://cdn.example/${path}` } }) })) },
+    });
+    const result = await getPublishedCertifications();
+    expect(result.map(item => item.title_pt)).toEqual(["SQL: explorando consultas e manipulação de dados", "Carreira Node.js: boas-vindas e primeiros passos"]);
+  });
+
+  it("returns an empty list when the RPC returns no rows", async () => {
+    mocks.publicClient.mockReturnValue({
+      from: vi.fn(),
+      rpc: vi.fn().mockResolvedValue({ data: [], error: null }),
+      storage: { from: vi.fn(() => ({ getPublicUrl: (path: string) => ({ data: { publicUrl: `https://cdn.example/${path}` } }) })) },
+    });
+    await expect(getPublishedCertifications()).resolves.toEqual([]);
+  });
+
   it("filters featured certifications from published ones", async () => {
-    mocks.createClient.mockResolvedValue({
+    mocks.publicClient.mockReturnValue({
       from: vi.fn(),
       rpc: vi.fn().mockResolvedValue({ data: [{ ...row, featured: true }, { ...row, id: "00000000-0000-4000-8000-000000000002", featured: false }], error: null }),
       storage: { from: vi.fn(() => ({ getPublicUrl: (path: string) => ({ data: { publicUrl: `https://cdn.example/${path}` } }) })) },
@@ -103,5 +129,60 @@ describe("certifications repository", () => {
     const result = await getFeaturedCertifications();
     expect(result).toHaveLength(1);
     expect(result[0].featured).toBe(true);
+  });
+});
+
+describe("certification views", () => {
+  const dto: PublicCertificationDTO = {
+    id: "00000000-0000-4000-8000-000000000001",
+    title_pt: "SQL: explorando consultas e manipulação de dados",
+    title_en: "SQL: Exploring Queries and Data Manipulation",
+    issuer: "Alura",
+    category: "database",
+    completed_at: "2026-03-15",
+    workload_hours: 14,
+    skills: [],
+    featured: true,
+    recruiter_visible: true,
+    display_order: 0,
+    credential_url: null,
+    pdf_url: "https://cdn.example/alura/2026/alura-sql.pdf",
+  };
+
+  it("localizes the title, category and exposes the pdf url without internal fields", () => {
+    const [pt] = certificationViews([dto], { locale: "pt", recruiter: false });
+    expect(pt).toMatchObject({ title: "SQL: explorando consultas e manipulação de dados", category: "Banco de Dados", pdfUrl: "https://cdn.example/alura/2026/alura-sql.pdf" });
+    expect(pt).not.toHaveProperty("storage_path");
+    expect(pt).not.toHaveProperty("recruiter_visible");
+    expect(pt).not.toHaveProperty("publication_status");
+
+    const [en] = certificationViews([dto], { locale: "en", recruiter: false });
+    expect(en.title).toBe("SQL: Exploring Queries and Data Manipulation");
+    expect(en.category).toBe("Database");
+  });
+
+  it("keeps all published certifications in normal mode regardless of recruiter_visible", () => {
+    const hidden = { ...dto, id: "00000000-0000-4000-8000-000000000002", featured: false, recruiter_visible: false };
+    const views = certificationViews([dto, hidden], { locale: "pt", recruiter: false });
+    expect(views).toHaveLength(2);
+  });
+
+  it("filters recruiter_visible=false in recruiter mode", () => {
+    const hidden = { ...dto, id: "00000000-0000-4000-8000-000000000002", featured: false, recruiter_visible: false };
+    const views = certificationViews([dto, hidden], { locale: "pt", recruiter: true });
+    expect(views).toHaveLength(1);
+    expect(views[0].id).toBe(dto.id);
+  });
+
+  it("falls back to the Portuguese title when the English one is missing", () => {
+    const [view] = certificationViews([{ ...dto, title_en: "" }], { locale: "en", recruiter: false });
+    expect(view.title).toBe(dto.title_pt);
+  });
+
+  it("localizes known categories and falls back safely for future ones", () => {
+    expect(certificationCategoryLabel("backend", "pt")).toBe("Back-end");
+    expect(certificationCategoryLabel("backend", "en")).toBe("Back-end");
+    expect(certificationCategoryLabel("database", "en")).toBe("Database");
+    expect(certificationCategoryLabel("future_cat", "pt")).toBe("future_cat");
   });
 });

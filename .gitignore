@@ -13,6 +13,9 @@ out/
 coverage/
 *.tsbuildinfo
 
+# Local certificate copies (official files live in Supabase Storage)
+public/certificados/
+
 # Logs and OS files
 *.log
 .DS_Store

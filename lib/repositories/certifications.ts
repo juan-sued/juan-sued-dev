@@ -1,6 +1,15 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient as createPublicClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import type { Locale } from "@/content/data";
 import { createClient } from "@/lib/supabase/server";
+
+function createAnonymousClient(): SupabaseClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) throw new Error("Supabase public credentials are not configured");
+  return createPublicClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+}
 
 export const certificationCategorySchema = z.enum(["frontend", "backend", "database", "mobile", "cloud", "devops", "architecture", "quality", "general"]);
 export type CertificationCategory = z.infer<typeof certificationCategorySchema>;
@@ -62,11 +71,62 @@ export const publicCertificationDTOSchema = z.object({
   workload_hours: z.number().nullable(),
   skills: z.array(z.string()),
   featured: z.boolean(),
+  recruiter_visible: z.boolean(),
   display_order: z.number().int(),
   credential_url: z.string().nullable(),
   pdf_url: z.string().url(),
 });
 export type PublicCertificationDTO = z.infer<typeof publicCertificationDTOSchema>;
+
+export const certificationViewSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  issuer: z.string(),
+  category: z.string(),
+  completedAt: z.string().date(),
+  workloadHours: z.number().nullable(),
+  featured: z.boolean(),
+  pdfUrl: z.string().url(),
+});
+export type CertificationView = z.infer<typeof certificationViewSchema>;
+
+const certificationCategoryLabels: Record<CertificationCategory, { pt: string; en: string }> = {
+  frontend: { pt: "Front-end", en: "Front-end" },
+  backend: { pt: "Back-end", en: "Back-end" },
+  database: { pt: "Banco de Dados", en: "Database" },
+  mobile: { pt: "Mobile", en: "Mobile" },
+  cloud: { pt: "Cloud", en: "Cloud" },
+  devops: { pt: "DevOps", en: "DevOps" },
+  architecture: { pt: "Arquitetura", en: "Architecture" },
+  quality: { pt: "Qualidade", en: "Quality" },
+  general: { pt: "Geral", en: "General" },
+};
+
+export function certificationCategoryLabel(category: string, locale: Locale): string {
+  const label = certificationCategoryLabels[category as CertificationCategory];
+  return label ? label[locale] : category;
+}
+
+export type CertificationVisibility = { locale: Locale; recruiter: boolean };
+
+export function featuredCertificationViews(views: CertificationView[]): CertificationView[] {
+  return views.filter(view => view.featured);
+}
+
+export function certificationViews(dtos: PublicCertificationDTO[], { locale, recruiter }: CertificationVisibility): CertificationView[] {
+  return dtos
+    .filter(dto => !recruiter || dto.recruiter_visible === true)
+    .map(dto => ({
+      id: dto.id,
+      title: locale === "en" && dto.title_en?.trim() ? dto.title_en : dto.title_pt,
+      issuer: dto.issuer,
+      category: certificationCategoryLabel(dto.category, locale),
+      completedAt: dto.completed_at,
+      workloadHours: dto.workload_hours,
+      featured: dto.featured,
+      pdfUrl: dto.pdf_url,
+    }));
+}
 
 export const certificationDraftInputSchema = z.object({
   id: blank.pipe(z.string().uuid().optional()),
@@ -164,6 +224,7 @@ const publicRowSchema = z.object({
   workload_hours: z.number().nullable(),
   skills: z.array(z.string()),
   featured: z.boolean(),
+  recruiter_visible: z.boolean(),
   display_order: z.number().int(),
   credential_url: z.string().nullable(),
   storage_bucket: z.string(),
@@ -171,8 +232,12 @@ const publicRowSchema = z.object({
 });
 
 export async function getPublishedCertifications(): Promise<PublicCertificationDTO[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_published_certifications");
+  // Fonte pública do portfólio: get_published_certifications_v2 (adiciona
+  // recruiter_visible). A v1 permanece apenas para compatibilidade. Usa um
+  // client anônimo sem cookies para ser compatível com unstable_cache (a
+  // leitura é feita somente pela RPC pública, nunca na tabela base).
+  const supabase = createAnonymousClient();
+  const { data, error } = await supabase.rpc("get_published_certifications_v2");
   if (error) throw new Error(`Unable to load published certifications: ${error.message}`);
   return publicRowSchema.array().parse(data ?? []).map(row => ({
     id: row.id,
@@ -184,6 +249,7 @@ export async function getPublishedCertifications(): Promise<PublicCertificationD
     workload_hours: row.workload_hours,
     skills: row.skills,
     featured: row.featured,
+    recruiter_visible: row.recruiter_visible,
     display_order: row.display_order,
     credential_url: row.credential_url,
     pdf_url: publicUrl(supabase, row.storage_bucket, row.storage_path),
