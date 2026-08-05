@@ -37,4 +37,16 @@ describe("admin shell", () => {
     fireEvent.keyDown(search, { key: "Enter" });
     expect(push).toHaveBeenCalledWith("/admin/crm/opportunities");
   });
+
+  it("filters commands, exposes no-match state, and restores trigger focus on close", async () => {
+    render(<AdminShell email="admin@example.com"><p>Conteúdo</p></AdminShell>);
+    const trigger = screen.getByRole("button", { name: "Abrir comandos" });
+    fireEvent.click(trigger);
+    const search = screen.getByRole("textbox", { name: "Buscar comandos" });
+    fireEvent.change(search, { target: { value: "missing" } });
+    expect(screen.getByText("Nenhum comando encontrado.")).toBeInTheDocument();
+    fireEvent.keyDown(document, { key: "Escape" });
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    expect(trigger).toHaveFocus();
+  });
 });
