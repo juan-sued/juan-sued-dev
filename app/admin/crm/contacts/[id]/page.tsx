@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth/admin";
 import { createClient } from "@/lib/supabase/server";
 import { AdminShell } from "@/components/admin-shell";
 import { ContactNoteForm, ContactUpdateForm, ConvertContactButton } from "@/components/admin/contact-interactions";
+import { ContactSensitiveActions } from "@/components/admin/crm-sensitive-actions";
 
 export default async function ContactPage({
   params,
@@ -74,8 +75,9 @@ export default async function ContactPage({
           >
             Responder por e-mail
           </a>
-          <ConvertContactButton id={id} />
-        </aside>
+           <ConvertContactButton id={id} />
+           <ContactSensitiveActions id={id} archivedAt={contact.archived_at} status={contact.status} />
+         </aside>
       </div>
     </AdminShell>
   );

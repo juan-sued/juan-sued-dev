@@ -111,7 +111,7 @@ async function setContactArchive(formData: FormData, archived: boolean): Promise
   if (error || !data) return failure(`Não foi possível ${archived ? "arquivar" : "restaurar"} contato.`);
   await audit(supabase, { actorId: admin.id, entityType: "contact", entityId: id, action: archived ? "archived" : "restored" });
   revalidateContact(id);
-  return success({ id });
+  return success({ id }, archived ? "Contato arquivado." : "Contato restaurado.");
 }
 
 export async function archiveContact(formData: FormData) { return setContactArchive(formData, true); }
@@ -127,7 +127,7 @@ export async function markContactAsSpam(formData: FormData): Promise<ActionResul
   if (error || !data) return failure("Não foi possível marcar contato como spam.");
   await audit(supabase, { actorId: admin.id, entityType: "contact", entityId: id, action: "marked_spam", changes: { status: "spam" } });
   revalidateContact(id);
-  return success({ id });
+  return success({ id }, "Contato marcado como spam.");
 }
 
 export async function updateOpportunityStatus(formData: FormData): Promise<ActionResult<{ id: string }>> {
@@ -152,7 +152,7 @@ async function setOpportunityClosed(formData: FormData, closed: boolean): Promis
   if (error || !data) return failure(`Não foi possível ${closed ? "fechar" : "reabrir"} oportunidade.`);
   await audit(supabase, { actorId: admin.id, entityType: "opportunity", entityId: id, action: closed ? "closed" : "reopened", changes: { closed } });
   revalidateOpportunity(id);
-  return success({ id });
+  return success({ id }, closed ? "Oportunidade fechada." : "Oportunidade reaberta.");
 }
 
 export async function closeOpportunity(formData: FormData) { return setOpportunityClosed(formData, true); }
@@ -168,5 +168,5 @@ export async function unlinkOpportunityContact(formData: FormData): Promise<Acti
   if (error || !data) return failure("Não foi possível desvincular contato.");
   await audit(supabase, { actorId: admin.id, entityType: "opportunity", entityId: id, action: "contact_unlinked", changes: { contact_id: null } });
   revalidateOpportunity(id);
-  return success({ id });
+  return success({ id }, "Contato desvinculado.");
 }
