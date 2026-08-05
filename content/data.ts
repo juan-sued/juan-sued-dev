@@ -324,3 +324,16 @@ export const skills = [
     "Git, Docker, GitHub Actions, Jest, Cypress, Vercel, Sentry",
   ],
 ];
+
+export const education = [
+  {
+    institution: "Universidade Estácio",
+    degree: { pt: "Bacharelado em Ciência da Computação", en: "BSc in Computer Science" },
+    detail: { pt: "Fevereiro de 2025 - Fevereiro de 2028, previsão.", en: "February 2025 - February 2028, expected." },
+  },
+  {
+    institution: "Driven Education",
+    degree: { pt: "Desenvolvimento de Software - Formação Intensiva", en: "Software Development - Intensive Program" },
+    detail: { pt: "1.200+ horas e 25+ projetos.", en: "1,200+ hours and 25+ projects." },
+  },
+];

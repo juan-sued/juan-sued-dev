@@ -5,6 +5,9 @@ vi.mock("next/link", () => ({ default: ({ href, children, ...props }: React.Anch
 vi.mock("next/image", () => ({ default: ({ alt }: { alt: string }) => <span aria-label={alt} /> }));
 import { ClientShell } from "../components/client-shell";
 import { ContactForm, Lab } from "../components/client-widgets";
+import { getEducation } from "../lib/repositories/education";
+import { getExperiences } from "../lib/repositories/experiences";
+import { getSkills } from "../lib/repositories/skills";
 
 const shell = (locale: "pt" | "en" = "pt") => render(<ClientShell locale={locale} theme="light" recruiter={false}><p>Conteúdo</p></ClientShell>);
 const openMenu = (locale: "pt" | "en" = "pt") => { shell(locale); const label = locale === "pt" ? "Menu de comandos" : "Command menu"; const trigger = screen.getByRole("button", { name: label }); fireEvent.click(trigger); return { trigger, label }; };
@@ -37,9 +40,9 @@ describe("portfolio controls", () => {
     render(<Lab locale="pt"/>); const retry = screen.getByRole("button", { name: /Tentando novamente/i }); fireEvent.click(retry); expect(retry).toHaveAttribute("aria-pressed", "true"); expect(screen.getByText(/Falha temporária/)).toBeInTheDocument();
   });
   it("renders premium Hero CTAs", async () => {
-    const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
+    const { Home } = await import("../components/server-content"); const [experiences, skills, education] = await Promise.all([getExperiences(), getSkills(), getEducation()]); render(<Home locale="pt" experiences={experiences} skills={skills} education={education}/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
   });
   it("uses professional summary without a second time promise", async () => {
-    const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
+    const { Home } = await import("../components/server-content"); const [experiences, skills, education] = await Promise.all([getExperiences(), getSkills(), getEducation()]); render(<Home locale="pt" experiences={experiences} skills={skills} education={education}/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
   });
 });
