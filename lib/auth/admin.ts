@@ -1,0 +1,4 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+export async function getAdmin() { const supabase = await createClient(); const { data } = await supabase.auth.getClaims(); const user = data?.claims; if (!user?.sub) return null; const { data: membership } = await supabase.from("admin_users").select("id").eq("id", user.sub).maybeSingle(); return membership ? { id: user.sub, email: typeof user.email === "string" ? user.email : "" } : null; }
+export async function requireAdmin() { const supabase = await createClient(); const { data } = await supabase.auth.getClaims(); const user = data?.claims; if (!user?.sub) redirect("/admin/login"); const { data: membership } = await supabase.from("admin_users").select("id").eq("id", user.sub).maybeSingle(); if (!membership) { await supabase.auth.signOut(); redirect("/admin/forbidden"); } return { id: user.sub, email: typeof user.email === "string" ? user.email : "" }; }

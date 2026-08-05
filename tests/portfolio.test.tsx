@@ -30,15 +30,16 @@ describe("portfolio controls", () => {
     expect(screen.getByRole("link", { name: "Conhecer projeto BikerWay" })).toHaveAttribute("rel", "noopener noreferrer"); expect(screen.getByRole("link", { name: "Conhecer projeto Event Horizon" })).toHaveAttribute("target", "_blank");
     const { label } = openMenu(); expect(screen.getByRole("link", { name: "Baixar currículo ATS" })).toHaveAttribute("download"); expect(screen.getByRole("link", { name: "Baixar currículo visual" })).toHaveAttribute("download"); expect(screen.getByRole("dialog", { name: label })).toBeInTheDocument();
   });
-  it("does not generate mailto for invalid data and encodes valid data", () => {
-    const assign = vi.fn(); Object.defineProperty(window, "location", { value: { assign }, writable: true }); render(<ContactForm locale="pt"/>);
-    const submit = () => fireEvent.submit(screen.getByRole("button", { name: "Abrir no aplicativo de e-mail" }).closest("form")!);
-    submit(); expect(assign).not.toHaveBeenCalled(); fireEvent.change(screen.getByLabelText("Nome"), { target: { value: "Ana" } }); fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "invalido" } }); fireEvent.change(screen.getByLabelText("Mensagem"), { target: { value: "mensagem válida" } }); submit(); expect(assign).not.toHaveBeenCalled(); fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "ana@example.com" } }); fireEvent.change(screen.getByLabelText("Mensagem"), { target: { value: "curta" } }); submit(); expect(assign).not.toHaveBeenCalled(); fireEvent.change(screen.getByLabelText("Mensagem"), { target: { value: "Mensagem válida para contato" } }); submit(); expect(assign).toHaveBeenCalledWith(expect.stringContaining("Ana%0AE-mail%3A%20ana%40example.com%0A%0AMensagem%20v%C3%A1lida")); expect(screen.getByRole("status")).toHaveTextContent("Abrindo aplicativo");
+  it("rejects invalid contact data before persistence", () => {
+    render(<ContactForm locale="pt"/>); const submit = () => fireEvent.submit(screen.getByRole("button", { name: "Enviar mensagem" }).closest("form")!); submit(); expect(screen.getByRole("status")).toHaveTextContent("Revise os campos obrigatórios");
   });
   it("updates offline queue state with pressed and textual feedback", () => {
     render(<Lab locale="pt"/>); const retry = screen.getByRole("button", { name: /Tentando novamente/i }); fireEvent.click(retry); expect(retry).toHaveAttribute("aria-pressed", "true"); expect(screen.getByText(/Falha temporária/)).toBeInTheDocument();
   });
   it("renders premium Hero CTAs", async () => {
     const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
+  });
+  it("uses professional summary without a second time promise", async () => {
+    const { Home } = await import("../components/server-content"); render(<Home locale="pt"/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
   });
 });
