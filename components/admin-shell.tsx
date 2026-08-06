@@ -27,6 +27,7 @@ function pageCrumbs(pathname: string) {
   if (pathname === "/admin") return ["Administração", "Visão geral"];
   if (pathname.startsWith("/admin/crm/contacts")) return ["Administração", "Contatos", ...(pathname === "/admin/crm/contacts" ? [] : ["Detalhes"])];
   if (pathname.startsWith("/admin/crm/opportunities")) return ["Administração", "Oportunidades", ...(pathname === "/admin/crm/opportunities" ? [] : [pathname.endsWith("/new") ? "Nova" : "Detalhes"])];
+  if (pathname.startsWith("/admin/content/certifications")) return ["Administração", "Conteúdo", ...(pathname === "/admin/content/certifications" ? [] : [pathname.endsWith("/new") ? "Nova certificação" : "Detalhes"])];
   if (pathname.startsWith("/admin/content")) return ["Administração", "Conteúdo"];
   if (pathname === "/admin/settings") return ["Administração", "Configurações"];
   return ["Administração"];
