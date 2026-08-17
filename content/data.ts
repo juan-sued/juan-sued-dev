@@ -30,16 +30,18 @@ export const experiences = [
     period: { pt: "Junho de 2025 - Agosto de 2026", en: "June 2025 - August 2026" },
     points: {
       pt: [
-        "Aplicações Web, Android e iOS entre múltiplos frontends e microserviços.",
-        "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ e Prisma.",
-        "Mapas e análise geográfica com H3, deck.gl e Google Maps.",
-        "Fluxos com regras de negócio, máquinas de estado e operação móvel sob conectividade instável.",
+        "Web, Android e iOS com React, React Native, TypeScript, NestJS, gRPC e Socket.IO, integrados a múltiplos microserviços.",
+        "Fluxo de aprovação de divergência de preço com notificação em tempo real, timeout automático e auditoria.",
+        "Indexação geoespacial (H3) para mapas operacionais e classificação de risco por área.",
+        "Captura offline-first com fila local, scanner de código de barras e leitura de preço por OCR.",
+        "Chat em tempo real entre app e operação via gRPC, com moderação para o time de suporte.",
       ],
       en: [
-        "Web, Android and iOS applications across multiple frontends and microservices.",
-        "React, React Native, TypeScript, NestJS, REST, gRPC, Socket.IO, Redis, BullMQ and Prisma.",
-        "Maps and geographic analysis with H3, deck.gl and Google Maps.",
-        "Business-rule flows, state machines and mobile operation under unreliable connectivity.",
+        "Web, Android and iOS with React, React Native, TypeScript, NestJS, gRPC and Socket.IO, integrated with multiple microservices.",
+        "Price-divergence approval flow with real-time notifications, automatic timeout and audit trail.",
+        "Geospatial indexing (H3) for operational heatmaps and area-based risk classification.",
+        "Offline-first capture with a local queue, barcode scanning and OCR price reading.",
+        "Real-time chat between app and operations via gRPC, with moderation for the support team.",
       ],
     },
   },
@@ -131,7 +133,7 @@ export const cases = [
         ],
         [
           "Implementação",
-          "React, deck.gl e Google Maps no cliente; NestJS, Prisma e gRPC no domínio.",
+          "React, deck.gl e Google Maps no cliente; NestJS, Prisma e gRPC no domínio, com endpoints dedicados para contagem por área e classificação de risco, substituindo um módulo de mapas anterior.",
         ],
         [
           "Trade-off",
@@ -139,7 +141,7 @@ export const cases = [
         ],
         [
           "Aprendizado",
-          "Separar panorama e detalhe preserva performance e clareza.",
+          "Separar panorama e detalhe preserva performance e clareza — mapas de risco por resolução ajudam times de operação a agir antes que um problema pontual vire padrão.",
         ],
       ],
       en: [
@@ -153,7 +155,7 @@ export const cases = [
         ],
         [
           "Implementation",
-          "React, deck.gl and Google Maps on client; NestJS, Prisma and gRPC in domain.",
+          "React, deck.gl and Google Maps on client; NestJS, Prisma and gRPC in domain, with dedicated endpoints for area counts and risk classification, replacing an earlier mapping module.",
         ],
         [
           "Trade-off",
@@ -161,7 +163,7 @@ export const cases = [
         ],
         [
           "Learning",
-          "Separating overview from detail preserves performance and clarity.",
+          "Separating overview from detail preserves performance and clarity — risk maps by resolution help operations teams act before an isolated issue becomes a pattern.",
         ],
       ],
     },
@@ -188,7 +190,7 @@ export const cases = [
         ],
         [
           "Implementação",
-          "Eventos atualizam participantes; transições válidas protegem consistência.",
+          "Eventos atualizam participantes; transições válidas protegem consistência. Um job de expiração fecha pendências sem decisão em até 10 minutos, notificando por push e WhatsApp.",
         ],
         [
           "Trade-off",
@@ -196,7 +198,7 @@ export const cases = [
         ],
         [
           "Aprendizado",
-          "Estado explícito transforma exceções em caminhos auditáveis.",
+          "Estado explícito transforma exceções em caminhos auditáveis. Uma condição de corrida real — dois eventos quase simultâneos sobrescrevendo o mesmo registro — mostrou que proteger a transição no backend não basta: a fila offline-first do cliente também precisa tratar erro terminal, ou trava em retry infinito.",
         ],
       ],
       en: [
@@ -210,13 +212,13 @@ export const cases = [
         ],
         [
           "Implementation",
-          "Events update participants; valid transitions protect consistency.",
+          "Events update participants; valid transitions protect consistency. An expiration job closes undecided pendencies within 10 minutes, notifying by push and WhatsApp.",
         ],
         [
           "Trade-off",
           "More upfront modeling in exchange for predictable critical flows.",
         ],
-        ["Learning", "Explicit state turns exceptions into auditable paths."],
+        ["Learning", "Explicit state turns exceptions into auditable paths. A real race condition — two near-simultaneous events overwriting the same record — showed that protecting the transition on the backend isn't enough: the client's offline-first queue also needs to handle terminal errors, or it gets stuck retrying forever."],
       ],
     },
   },
@@ -307,6 +309,60 @@ export const cases = [
         ],
         ["Trade-off", "More scenarios and tests prevent silent blocking."],
         ["Learning", "Recovery experience is architecture."],
+      ],
+    },
+  },
+  {
+    slug: "chat",
+    title: { pt: "Chat em tempo real entre app e operação", en: "Real-time chat between app and operations" },
+    tag: "Tempo real",
+    summary: {
+      pt: "Canal de mensagens ao vivo entre as duas pontas de um pedido, com visibilidade para o time de suporte.",
+      en: "Live messaging channel between the two sides of an order, visible to the support team.",
+    },
+    decision: { pt: "Canais e tokens gerenciados via gRPC, com webhook para eventos externos.", en: "Channels and tokens managed via gRPC, with webhook support for external events." },
+    stack: "gRPC · WebSocket · React Native · React · Webhooks",
+    sections: {
+      pt: [
+        ["Contexto", "As duas pontas de um pedido precisavam trocar mensagens durante a entrega, sem expor telefone pessoal nem depender de um app de terceiros."],
+        ["Decisão", "Canal de chat dedicado por pedido, criado só quando necessário e visível ao suporte para mediação; desativado fora da janela de entrega."],
+        ["Implementação", "gRPC para gerenciar canais e tokens no backend; interface replicada nos dois apps com identificação de remetente, mensagens rápidas e ajuste de teclado no iOS."],
+        ["Trade-off", "Mais um sistema em tempo real para manter e monitorar, em troca de menos ligações e retrabalho de suporte."],
+        ["Aprendizado", "Restringir quando o canal existe — só durante pedidos ativos — evita boa parte dos problemas de moderação antes que precisem de solução técnica."],
+      ],
+      en: [
+        ["Context", "The two sides of an order needed to exchange messages during delivery, without exposing personal phone numbers or relying on a third-party app."],
+        ["Decision", "A dedicated chat channel per order, created only when needed and visible to support for mediation; deactivated outside the delivery window."],
+        ["Implementation", "gRPC to manage channels and tokens on the backend; the interface was replicated across both apps with sender identification, quick replies and iOS keyboard handling."],
+        ["Trade-off", "One more real-time system to maintain and monitor, in exchange for fewer support calls and less rework."],
+        ["Learning", "Restricting when the channel exists — only during active orders — prevents most moderation problems before they need a technical fix."],
+      ],
+    },
+  },
+  {
+    slug: "ocr",
+    title: { pt: "Leitura de preços por câmera com OCR", en: "Camera-based price reading with OCR" },
+    tag: "OCR / Visão computacional",
+    summary: {
+      pt: "Leitura de preço e produto direto da câmera para agilizar o cadastro em campo.",
+      en: "Reading price and product straight from the camera to speed up field registration.",
+    },
+    decision: { pt: "OCR por frame no dispositivo, com compressão de imagem antes do envio.", en: "On-device per-frame OCR, with image compression before upload." },
+    stack: "React Native · OCR · WEBP · Câmera nativa",
+    sections: {
+      pt: [
+        ["Contexto", "Cadastrar produto e preço manualmente em campo é lento e sujeito a erro de digitação."],
+        ["Decisão", "Escanear o preço com a câmera e extrair texto por OCR, com fallback para digitação manual quando o reconhecimento falha."],
+        ["Implementação", "Hook dedicado processa frames da câmera e trata estados de carregamento e falha; compressão e conversão para WEBP reduzem o tamanho do upload sem perder legibilidade."],
+        ["Trade-off", "OCR não é 100% confiável em má iluminação — a entrada manual precisa continuar rápida e acessível, não só existir como plano B."],
+        ["Aprendizado", "Automação de captura só compensa quando o caminho de correção manual é tão rápido quanto o automático."],
+      ],
+      en: [
+        ["Context", "Manually registering product and price in the field is slow and error-prone."],
+        ["Decision", "Scan the price with the camera and extract text via OCR, falling back to manual entry when recognition fails."],
+        ["Implementation", "A dedicated hook processes camera frames and handles loading/failure states; image compression and a switch to WEBP cut upload size without losing legibility."],
+        ["Trade-off", "OCR isn't fully reliable in poor lighting — manual entry needs to stay fast and accessible, not just exist as a fallback."],
+        ["Learning", "Capture automation only pays off when the manual correction path is as fast as the automated one."],
       ],
     },
   },

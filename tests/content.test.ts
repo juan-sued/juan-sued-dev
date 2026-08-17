@@ -9,7 +9,7 @@ describe("public portfolio content", () => {
     expect(profile.links.github).toContain("github.com");
   });
   it("publishes all technical case studies", () => {
-    expect(cases.map(item => item.slug)).toEqual(["h3", "estado", "offline", "localizacao"]);
+    expect(cases.map(item => item.slug)).toEqual(["h3", "estado", "offline", "localizacao", "chat", "ocr"]);
   });
   it("has bilingual case content", () => {
     for (const item of cases) { expect(item.title.pt).not.toEqual(item.title.en); expect(item.sections.pt.length).toBeGreaterThan(0); expect(item.sections.en.length).toBeGreaterThan(0); }
