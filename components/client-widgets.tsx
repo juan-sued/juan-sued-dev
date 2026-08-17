@@ -92,7 +92,8 @@ export function ContactForm({ locale }: { locale: Locale }) {
 
   return <form onSubmit={async event => {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const name = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
     const message = String(form.get("message") ?? "").trim();
@@ -104,7 +105,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
     try {
       const response = await fetch("/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name, email, message, sourcePath: window.location.pathname, honeypot: "", turnstileToken: turnstileToken ?? undefined }) });
       if (!response.ok) { setFeedback(label.error); toast.error(label.error); resetChallenge(); return; }
-      event.currentTarget.reset();
+      formElement.reset();
       resetChallenge();
       track("email_click", { source: "form" });
       setFeedback(label.feedback);

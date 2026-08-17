@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main, hml, dev]
+  pull_request:
+    branches: [main, hml, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npx tsc --noEmit
+
+      - run: npm test
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://example.com
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder-key
+          SUPABASE_SERVICE_ROLE_KEY: ci-placeholder-key

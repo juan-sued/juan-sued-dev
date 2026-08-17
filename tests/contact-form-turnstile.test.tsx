@@ -40,6 +40,8 @@ describe("ContactForm Turnstile", () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
     expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toMatchObject({ turnstileToken: "token-value", honeypot: "" });
     expect(resetTurnstile).toHaveBeenCalledWith("widget-id");
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Message sent. Thank you for reaching out!"));
+    expect(screen.getByLabelText("Message")).toHaveValue("");
   });
 
   it("blocks expired or failed challenge and resets widget", () => {
