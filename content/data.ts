@@ -27,7 +27,7 @@ export const experiences = [
       pt: "Desenvolvedor Full Stack Web & Mobile",
       en: "Full Stack Web & Mobile Developer",
     },
-    period: { pt: "Junho de 2025 - Atual", en: "June 2025 - Present" },
+    period: { pt: "Junho de 2025 - Agosto de 2026", en: "June 2025 - August 2026" },
     points: {
       pt: [
         "Aplicações Web, Android e iOS entre múltiplos frontends e microserviços.",
