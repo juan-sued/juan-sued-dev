@@ -27,7 +27,7 @@ export function Home({ locale, experiences, skills, education, certifications }:
     <ArchitectureDiagram locale={locale}/>
     <TechnicalLab locale={locale}/>
     <Section eyebrow={copy(locale, "Formação e competências", "Education and skills")} title={copy(locale, "Formação e competências", "Education and skills")} className="recruiter-essential"><Education locale={locale} education={education} skills={skills}/></Section>
-    <CertificationsSection eyebrow={copy(locale, "Certificações", "Certifications")} title={copy(locale, "Certificações em destaque", "Featured Certifications")} certifications={featuredCertifications} locale={locale} className="recruiter-essential"/>
+    <CertificationsSection eyebrow={copy(locale, "Certificações", "Certifications")} title={copy(locale, "Certificações em destaque", "Featured Certifications")} certifications={featuredCertifications} locale={locale} className="recruiter-essential" viewAllHref="/certificacoes"/>
     <ResumeSection locale={locale} embedded/>
     <ContactSection locale={locale} embedded/>
   </>;
@@ -42,6 +42,19 @@ function QuickProfile({ locale }: { locale: Locale }) { const items = locale ===
 
 export function ExperienceTimeline({ locale, experiences, limit }: { locale: Locale; experiences: Experience[]; limit?: number }) { const items = limit ? experiences.slice(0, limit) : experiences; return <ol className="border-l border-[var(--line)]">{items.map(item => <li key={item.company} className="relative pb-10 pl-7 last:pb-0"><span aria-hidden="true" className="absolute -left-[5px] top-2 size-2.5 rounded-full bg-[var(--brand)]"/><p className="text-sm font-bold text-[var(--brand)]">{text(item.period, locale)}</p><h3 className="mt-1 text-xl font-semibold">{item.company}</h3><p className="text-[var(--muted)]">{text(item.role, locale)}</p><ul className="mt-4 grid gap-2 text-sm leading-6 text-[var(--muted)]">{item.points[locale].map(point => <li key={point}>- {point}</li>)}</ul></li>)}</ol>; }
 export function ExperiencePage({ locale, experiences }: { locale: Locale; experiences: Experience[] }) { return <section className="shell py-14 md:py-20"><p className="eyebrow">{copy(locale, "Carreira", "Career")}</p><h1 className="mb-10 text-4xl font-semibold">{copy(locale, "Experiência profissional", "Professional experience")}</h1><ExperienceTimeline locale={locale} experiences={experiences}/></section>; }
+
+export function CertificationsPage({ locale, certifications }: { locale: Locale; certifications: CertificationView[] }) {
+  const groups = new Map<string, CertificationView[]>();
+  for (const cert of certifications) groups.set(cert.issuer, [...(groups.get(cert.issuer) ?? []), cert]);
+  return <section className="shell py-14 md:py-20">
+    <p className="eyebrow">{copy(locale, "Formação", "Education")}</p>
+    <h1 className="mt-2 text-4xl font-semibold">{copy(locale, "Todas as certificações", "All certifications")}</h1>
+    {certifications.length === 0
+      ? <p className="mt-6 text-lg text-[var(--muted)]">{copy(locale, "Nenhuma certificação publicada ainda.", "No certifications published yet.")}</p>
+      : <p className="mt-4 max-w-2xl text-lg text-[var(--muted)]">{copy(locale, `${certifications.length} certificações de ${groups.size} instituições.`, `${certifications.length} certifications from ${groups.size} institutions.`)}</p>}
+    {[...groups.entries()].map(([issuer, items]) => <div key={issuer} className="mt-12 first:mt-10"><h2 className="mb-6 text-2xl font-semibold">{issuer}</h2><CertificationsGrid certifications={items} locale={locale}/></div>)}
+  </section>;
+}
 
 export function ProjectsGrid({ locale, embedded = false }: { locale: Locale; embedded?: boolean }) { const projects = [{ name: "BikerWay", eyebrow: copy(locale, "Projeto autoral", "Author project"), desc: copy(locale, "Plataforma social e utilitária para motociclistas com comboios, eventos, SOS, rotas e pontos de apoio.", "Social and utility platform for motorcyclists with rides, events, SOS, routes and support points."), stack: "React, TypeScript, Supabase, PostgreSQL, PostGIS", url: "https://bikerway.com.br/", caseUrl: "/projetos/bikerway" }, { name: "Event Horizon", eyebrow: copy(locale, "Trabalho independente", "Independent work"), desc: copy(locale, "Marca utilizada para projetos independentes e desenvolvimento de soluções digitais para pequenas empresas.", "Brand for independent projects and digital solutions for small businesses."), stack: "Frontend, backend, integrations, deployment", url: "https://event-horizon-by-juan-sued.vercel.app/" }]; return <div className={embedded ? "grid gap-5 md:grid-cols-2" : "shell grid gap-5 py-14 md:grid-cols-2 md:py-20"}>{projects.map(project => <article key={project.name} className="card flex flex-col p-6"><p className="eyebrow">{project.eyebrow}</p><h2 className="mt-2 text-2xl font-semibold">{project.name}</h2><p className="mt-3 flex-1 leading-7 text-[var(--muted)]">{project.desc}</p><p className="mt-5 text-sm font-semibold text-[var(--brand)]">{project.stack}</p><div className="mt-6 flex flex-wrap gap-3"><a href={project.url} target="_blank" rel="noopener noreferrer" className={external}>{locale === "pt" ? `Conhecer projeto ${project.name}` : `Visit ${project.name} project`}<ArrowUpRight aria-hidden="true" size={15}/></a>{project.caseUrl && <Link href={project.caseUrl} className="font-bold underline underline-offset-4">{copy(locale, "Explorar estudo de caso", "Explore case study")}</Link>}</div></article>)}</div>; }
 export const Projects = ProjectsGrid;

@@ -4,7 +4,7 @@ import type { CertificationView } from "@/lib/repositories/certifications";
 
 export function CertificationCard({ cert, locale }: { cert: CertificationView; locale: Locale }) {
   const dateLocale = locale === "pt" ? "pt-BR" : "en-US";
-  const completed = new Intl.DateTimeFormat(dateLocale, { month: "long", year: "numeric" }).format(new Date(`${cert.completedAt}T00:00:00Z`));
+  const completed = new Intl.DateTimeFormat(dateLocale, { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${cert.completedAt}T00:00:00Z`));
   const hours = cert.workloadHours == null
     ? null
     : locale === "pt"
