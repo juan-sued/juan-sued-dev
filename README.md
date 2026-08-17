@@ -42,6 +42,7 @@ Variáveis usadas:
 - `TURNSTILE_SECRET_KEY`: somente servidor; verificação Turnstile.
 - `ADMIN_USER_ID`: variável de legado presente no template; autorização atual usa tabela `admin_users` e não lê esta variável.
 - `NEXT_PUBLIC_ANALYTICS_DEBUG`: opcional; use `true` para logs locais de analytics.
+- `CMS_CONTENT_SOURCE`: `code` (default) lê experiências, competências e formação de `content/data.ts`; `database` lê das tabelas `experiences`/`skills`/`education` via `/admin/content`. Certificações sempre leem do banco, independente desta variável.
 
 ## Supabase Migrations
 
