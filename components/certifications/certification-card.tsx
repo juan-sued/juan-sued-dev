@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import type { CertificationView } from "@/lib/repositories/certifications";
 
 export function CertificationCard({ cert, locale }: { cert: CertificationView; locale: Locale }) {

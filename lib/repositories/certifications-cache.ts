@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import { certificationViews, getPublishedCertifications, type CertificationView } from "@/lib/repositories/certifications";
 
 export const PORTFOLIO_CERTIFICATIONS_TAG = "portfolio:certifications";

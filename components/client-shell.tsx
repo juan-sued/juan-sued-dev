@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Command, Menu, Moon, Sun, X } from "lucide-react";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import { track } from "@/lib/analytics";
 
 type Props = { children: React.ReactNode; locale: Locale; theme: "light" | "dark"; recruiter: boolean };

@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient as createPublicClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import { createClient } from "@/lib/supabase/server";
 
 function createAnonymousClient(): SupabaseClient {

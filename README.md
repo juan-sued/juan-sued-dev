@@ -14,7 +14,9 @@ npm run build
 
 ## Conteúdo
 
-- `content/data.ts`: perfil, experiências, cases e stack PT-BR/EN.
+Todo o conteúdo (perfil, experiências, competências, formação, cases e certificações) vem do banco Supabase — não há mais arquivo local com dados hardcoded. Repositórios em `lib/repositories/` leem views públicas (`published_*`); `/admin/content` e `/admin/content/certifications` editam via Supabase Auth + RLS admin-only.
+
+- `lib/repositories/profile.ts` / `cases.ts` / `experiences.ts` / `skills.ts` / `education.ts` / `certifications.ts`: leitura pública tipada com Zod.
 - `lib/analytics.ts`: camada sem tracker ativo; ponto de integração para PostHog consent-aware.
 - `public/images/juan-sued-profile.png`: foto local usada via `next/image`.
 - `public/curriculos/juan-sued-cv-ats.pdf`: currículo ATS.
@@ -42,7 +44,6 @@ Variáveis usadas:
 - `TURNSTILE_SECRET_KEY`: somente servidor; verificação Turnstile.
 - `ADMIN_USER_ID`: variável de legado presente no template; autorização atual usa tabela `admin_users` e não lê esta variável.
 - `NEXT_PUBLIC_ANALYTICS_DEBUG`: opcional; use `true` para logs locais de analytics.
-- `CMS_CONTENT_SOURCE`: `code` (default) lê experiências, competências e formação de `content/data.ts`; `database` lê das tabelas `experiences`/`skills`/`education` via `/admin/content`. Certificações sempre leem do banco, independente desta variável.
 
 ## Supabase Migrations
 

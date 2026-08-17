@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import type { CertificationView } from "@/lib/repositories/certifications";
 import { CertificationCard } from "./certification-card";
 

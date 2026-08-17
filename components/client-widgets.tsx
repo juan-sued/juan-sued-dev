@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Locale } from "@/content/data";
+import type { Locale } from "@/lib/locale";
 import { track } from "@/lib/analytics";
 import { toast } from "sonner";
 

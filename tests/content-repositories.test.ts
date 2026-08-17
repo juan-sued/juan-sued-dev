@@ -3,19 +3,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ createClient: vi.fn() }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: mocks.createClient }));
 
-import { getContentSource } from "../lib/repositories/content-source";
 import { getEducation } from "../lib/repositories/education";
 import { getExperiences } from "../lib/repositories/experiences";
 import { getSkills } from "../lib/repositories/skills";
 import { archiveInputSchema, educationPublishSchema, experiencePublishSchema, reorderInputSchema, restoreInputSchema, skillPublishSchema } from "../lib/repositories/content-types";
-import { education, experiences, skills } from "../content/data";
 
-const originalSource = process.env.CMS_CONTENT_SOURCE;
-afterEach(() => {
-  if (originalSource === undefined) delete process.env.CMS_CONTENT_SOURCE;
-  else process.env.CMS_CONTENT_SOURCE = originalSource;
-  vi.clearAllMocks();
-});
+afterEach(() => { vi.clearAllMocks(); });
 
 function database(data: unknown) {
   const order = vi.fn().mockResolvedValue({ data, error: null });
@@ -26,29 +19,8 @@ function database(data: unknown) {
 }
 
 describe("CMS1 content repositories", () => {
-  it("uses code source by default and for invalid values", () => {
-    expect(getContentSource()).toBe("code");
-    expect(getContentSource("invalid")).toBe("code");
-    expect(getContentSource("database")).toBe("database");
-  });
-
-  it("preserves current code content through repository source", async () => {
-    delete process.env.CMS_CONTENT_SOURCE;
-    await expect(getExperiences()).resolves.toEqual(experiences);
-    await expect(getSkills()).resolves.toEqual([
-      { category: { pt: "Frontend e Mobile", en: "Frontend and Mobile" }, items: skills[0][1] },
-      { category: { pt: "Backend", en: "Backend" }, items: skills[1][1] },
-      { category: { pt: "Dados", en: "Data" }, items: skills[2][1] },
-      { category: { pt: "Geolocalização", en: "Geolocation" }, items: skills[3][1] },
-      { category: { pt: "Qualidade & Entrega", en: "Quality and Delivery" }, items: skills[4][1] },
-    ]);
-    await expect(getEducation()).resolves.toEqual(education);
-    expect(mocks.createClient).not.toHaveBeenCalled();
-  });
-
-  it("queries ordered database rows when database source enabled", async () => {
-    process.env.CMS_CONTENT_SOURCE = "database";
-    const db =     database([{ category: "backend", items: "Node.js" }]);
+  it("queries ordered database rows for skills", async () => {
+    const db = database([{ category: "backend", items: "Node.js" }]);
     await expect(getSkills()).resolves.toEqual([{ category: { pt: "Backend", en: "Backend" }, items: "Node.js" }]);
     expect(db.from).toHaveBeenCalledWith("published_skills");
     expect(db.select).toHaveBeenCalledWith("id,category,items");
@@ -56,7 +28,6 @@ describe("CMS1 content repositories", () => {
   });
 
   it("maps structured database rows and uses legacy period only for display", async () => {
-    process.env.CMS_CONTENT_SOURCE = "database";
     database([{ company: "Acme", role_pt: "Dev", role_en: "Developer", period_pt: "Hoje", period_en: "Today", responsibilities_pt: ["Entrega"], responsibilities_en: ["Ships"], start_date: "2025-01-01", end_date: null, current: true }]);
     await expect(getExperiences()).resolves.toEqual([{ company: "Acme", role: { pt: "Dev", en: "Developer" }, period: { pt: "Hoje", en: "Today" }, points: { pt: ["Entrega"], en: ["Ships"] } }]);
     database([{ institution: "Uni", course_pt: "Computação", course_en: "Computer Science", description_pt: "2025", description_en: "2025" }]);
@@ -64,7 +35,6 @@ describe("CMS1 content repositories", () => {
   });
 
   it("builds visual period from structured dates when legacy period absent", async () => {
-    process.env.CMS_CONTENT_SOURCE = "database";
     database([{ company: "Acme", role_pt: "Dev", role_en: "Developer", responsibilities_pt: ["Entrega"], responsibilities_en: ["Ships"], start_date: "2025-01-01", end_date: null, current: true }]);
     await expect(getExperiences()).resolves.toMatchObject([{ period: { pt: "2025-01-01 - Atual", en: "2025-01-01 - Present" } }]);
   });
@@ -76,7 +46,6 @@ describe("CMS1 content repositories", () => {
   });
 
   it("rejects invalid database content", async () => {
-    process.env.CMS_CONTENT_SOURCE = "database";
     database([{ category: "backend", items: 1 }]);
     await expect(getSkills()).rejects.toThrow();
   });
