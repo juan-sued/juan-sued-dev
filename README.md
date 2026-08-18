@@ -19,8 +19,7 @@ Todo o conteúdo (perfil, experiências, competências, formação, cases e cert
 - `lib/repositories/profile.ts` / `cases.ts` / `experiences.ts` / `skills.ts` / `education.ts` / `certifications.ts`: leitura pública tipada com Zod.
 - `lib/analytics.ts`: camada sem tracker ativo; ponto de integração para PostHog consent-aware.
 - `public/images/juan-sued-profile.png`: foto local usada via `next/image`.
-- `public/curriculos/juan-sued-cv-ats.pdf`: currículo ATS.
-- `public/curriculos/juan-sued-cv-visual.pdf`: currículo visual.
+- Currículos (ATS e visual): PDFs no bucket `resumes` do Supabase Storage, gerenciados via `/admin/content/resumes`.
 
 ## Admin CRM
 

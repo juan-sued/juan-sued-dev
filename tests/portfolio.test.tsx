@@ -14,7 +14,8 @@ const profile = {
   links: { bikerway: "https://bikerway.com.br/", eventHorizon: "https://event-horizon-by-juan-sued.vercel.app/", linkedin: "https://www.linkedin.com/in/juan-sued/", github: "https://github.com/juan-sued", email: "mailto:juansued19@gmail.com" },
 };
 
-const shell = (locale: "pt" | "en" = "pt") => render(<ClientShell locale={locale} theme="light" recruiter={false}><p>Conteúdo</p></ClientShell>);
+const resumeUrls = { ats: "https://cdn.example/resumes/ats.pdf", visual: "https://cdn.example/resumes/visual.pdf" };
+const shell = (locale: "pt" | "en" = "pt") => render(<ClientShell locale={locale} theme="light" recruiter={false} resumeUrls={resumeUrls}><p>Conteúdo</p></ClientShell>);
 const openMenu = (locale: "pt" | "en" = "pt") => { shell(locale); const label = locale === "pt" ? "Menu de comandos" : "Command menu"; const trigger = screen.getByRole("button", { name: label }); fireEvent.click(trigger); return { trigger, label }; };
 
 describe("portfolio controls", () => {
@@ -45,9 +46,9 @@ describe("portfolio controls", () => {
     render(<Lab locale="pt"/>); const retry = screen.getByRole("button", { name: /Tentando novamente/i }); fireEvent.click(retry); expect(retry).toHaveAttribute("aria-pressed", "true"); expect(screen.getByText(/Falha temporária/)).toBeInTheDocument();
   });
   it("renders premium Hero CTAs", async () => {
-    const { Home } = await import("../components/server-content"); render(<Home locale="pt" profile={profile} experiences={[]} skills={[]} education={[]} certifications={[]} cases={[]}/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
+    const { Home } = await import("../components/server-content"); render(<Home locale="pt" profile={profile} experiences={[]} skills={[]} education={[]} certifications={[]} cases={[]} resumeUrls={resumeUrls}/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");
   });
   it("uses professional summary without a second time promise", async () => {
-    const { Home } = await import("../components/server-content"); render(<Home locale="pt" profile={profile} experiences={[]} skills={[]} education={[]} certifications={[]} cases={[]}/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
+    const { Home } = await import("../components/server-content"); render(<Home locale="pt" profile={profile} experiences={[]} skills={[]} education={[]} certifications={[]} cases={[]} resumeUrls={resumeUrls}/>); expect(screen.getByRole("heading", { name: "Resumo profissional" })).toBeInTheDocument(); expect(screen.queryByText("Resumo em 30 segundos")).not.toBeInTheDocument();
   });
 });
