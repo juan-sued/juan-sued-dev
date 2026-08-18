@@ -42,7 +42,7 @@ export function ClientShell({ children, locale, theme, recruiter: initialRecruit
   return <div data-recruiter={recruiter ? "true" : "false"}>
     <Header locale={locale} theme={theme} recruiter={recruiter} mobileOpen={mobileOpen} mobileTrigger={mobileTrigger} commandTrigger={commandTrigger} onLocale={changeLocale} onTheme={changeTheme} onRecruiter={changeRecruiter} onMobile={() => setMobileOpen(true)} onCommand={() => setCommandOpen(true)}/>
     <div id="site-content">
-      {recruiter && <div className="shell recruiter-summary mt-4 rounded-lg bg-[var(--brand-soft)] px-4 py-3 text-sm font-bold">{label(locale, "Modo Recrutador - Visão em 60 segundos", "Recruiter Mode - 60-second view")}</div>}
+      {recruiter && <div className="recruiter-summary bg-[var(--brand-soft)] px-4 py-3 text-center text-sm font-bold">{label(locale, "Modo Recrutador - Visão em 60 segundos", "Recruiter Mode - 60-second view")}</div>}
       {children}
     </div>
     {mobileOpen && <MobileNavigation locale={locale} close={closeMobile}/>} 
