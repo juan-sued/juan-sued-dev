@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("next/link", () => ({ default: ({ href, children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => <a href={href} {...props}>{children}</a> }));
 vi.mock("next/image", () => ({ default: ({ alt }: { alt: string }) => <span aria-label={alt} /> }));
 import { ClientShell } from "../components/client-shell";
-import { ContactForm, Lab } from "../components/client-widgets";
+import { ContactForm } from "../components/client-widgets";
 
 const profile = {
   name: "Juan Sued",
@@ -41,9 +41,6 @@ describe("portfolio controls", () => {
   });
   it("rejects invalid contact data before persistence", () => {
     render(<ContactForm locale="pt"/>); const submit = () => fireEvent.submit(screen.getByRole("button", { name: "Enviar mensagem" }).closest("form")!); submit(); expect(screen.getByRole("status")).toHaveTextContent("Revise os campos obrigatórios");
-  });
-  it("updates offline queue state with pressed and textual feedback", () => {
-    render(<Lab locale="pt"/>); const retry = screen.getByRole("button", { name: /Tentando novamente/i }); fireEvent.click(retry); expect(retry).toHaveAttribute("aria-pressed", "true"); expect(screen.getByText(/Falha temporária/)).toBeInTheDocument();
   });
   it("renders premium Hero CTAs", async () => {
     const { Home } = await import("../components/server-content"); render(<Home locale="pt" profile={profile} experiences={[]} skills={[]} education={[]} certifications={[]} cases={[]} resumeUrls={resumeUrls}/>); expect(screen.getByRole("link", { name: "Ver experiência" })).toHaveAttribute("href", "/experiencia"); expect(screen.getByRole("link", { name: "Baixar currículo" })).toHaveAttribute("href", "/curriculo"); expect(screen.getByRole("link", { name: "Entrar em contato" })).toHaveAttribute("href", "/contato");

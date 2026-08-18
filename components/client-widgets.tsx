@@ -24,19 +24,6 @@ declare global {
 
 const turnstileScript = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
-export function Lab({ locale }: { locale: Locale }) {
-  const [state, setState] = useState(0);
-  const states = locale === "pt"
-    ? [["Pendente", "Captura guardada localmente, aguardando conexão."], ["Enviando", "Fila sendo sincronizada com serviço remoto."], ["Tentando novamente", "Falha temporária; nova tentativa agendada."], ["Confirmado", "Processamento confirmado e fila atualizada."]]
-    : [["Pending", "Capture stored locally, waiting for connection."], ["Sending", "Queue synchronizing with remote service."], ["Retrying", "Temporary failure; another attempt is scheduled."], ["Confirmed", "Processing confirmed and queue updated."]];
-
-  return <div className="card p-6" aria-label={locale === "pt" ? "Simulação de fila offline" : "Offline queue simulation"}>
-    <p className="font-semibold">{locale === "pt" ? "Simulação de fila offline" : "Offline queue simulation"}</p>
-    <div className="mt-6 grid gap-3 sm:grid-cols-4">{states.map(([name], index) => <button key={name} onClick={() => setState(index)} aria-pressed={state === index} className={`rounded-lg border p-4 text-left ${state === index ? "border-[var(--brand)] bg-[var(--brand-soft)]" : "border-[var(--line)]"}`}><span aria-hidden="true" className="text-xs text-[var(--muted)]">0{index + 1}</span><strong className="mt-2 block">{name}</strong></button>)}</div>
-    <p aria-live="polite" className="mt-5 text-sm text-[var(--muted)]"><strong>{states[state][0]}: </strong>{states[state][1]}</p>
-  </div>;
-}
-
 export function ContactForm({ locale }: { locale: Locale }) {
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);

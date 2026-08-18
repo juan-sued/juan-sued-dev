@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowDownToLine, ArrowUpRight, Check, ChevronDown, ChevronRight, MapPin } from "lucide-react";
 import { text, type Locale } from "@/lib/locale";
 import { CertificationsGrid, CertificationsSection } from "@/components/certifications/certifications-section";
-import { ContactForm, Lab } from "@/components/client-widgets";
+import { ContactForm } from "@/components/client-widgets";
 import type { CaseStudy } from "@/lib/repositories/cases";
 import type { CertificationView } from "@/lib/repositories/certifications";
 import { featuredCertificationViews } from "@/lib/repositories/certifications";
@@ -28,7 +28,6 @@ export function Home({ locale, profile, experiences, skills, education, certific
     <CaseStudiesGrid locale={locale} cases={cases}/>
     <DecisionCards locale={locale}/>
     <ArchitectureDiagram locale={locale}/>
-    <TechnicalLab locale={locale}/>
     <Section eyebrow={copy(locale, "Formação e competências", "Education and skills")} title={copy(locale, "Formação e competências", "Education and skills")} className="recruiter-essential"><Education locale={locale} education={education} skills={skills}/></Section>
     <CertificationsSection eyebrow={copy(locale, "Certificações", "Certifications")} title={copy(locale, "Certificações em destaque", "Featured Certifications")} certifications={featuredCertifications} locale={locale} className="recruiter-essential" viewAllHref="/certificacoes"/>
     <ResumeSection locale={locale} resumeUrls={resumeUrls} embedded/>
@@ -67,8 +66,6 @@ function CaseStudiesGrid({ locale, cases }: { locale: Locale; cases: CaseStudy[]
 function DecisionCards({ locale }: { locale: Locale }) { const ideas = locale === "pt" ? ["Dados agregados primeiro, detalhes sob demanda.", "Offline quando a rede não é confiável.", "Máquina de estados para fluxos críticos.", "Fallback para integrações externas.", "Banco executando operações espaciais.", "Tecnologia escolhida de acordo com o problema.", "Observabilidade em integrações críticas.", "UX como parte da arquitetura."] : ["Aggregated data first, details on demand.", "Offline when the network is unreliable.", "State machines for critical flows.", "Fallback for external integrations.", "Database running spatial operations.", "Technology selected for the problem.", "Observability in critical integrations.", "UX as part of architecture."]; return <Section eyebrow={copy(locale, "Decisões", "Decisions")} title={copy(locale, "Como eu penso", "How I think")} className="technical-only"><div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">{ideas.map(idea => <article key={idea} className="card p-5 font-semibold">{idea}</article>)}</div></Section>; }
 
 function ArchitectureDiagram({ locale }: { locale: Locale }) { const nodes = locale === "pt" ? ["App Mobile + Admin Web", "Gateway de API", "Serviço de Produto + Localização", "Camada em tempo real + Filas", "Banco de dados + Serviços externos"] : ["Mobile App + Web Admin", "API Gateway", "Product Service + Location Service", "Realtime Layer + Queues", "Database + External Services"]; return <Section eyebrow={copy(locale, "Arquitetura", "Architecture")} title={copy(locale, "Arquitetura, em alto nível", "Architecture, high level")} className="technical-only"><div className="card grid gap-3 p-5 text-center text-sm font-bold md:grid-cols-5" aria-label={copy(locale, "Fluxo entre aplicativos, gateway, serviços, tempo real, banco e integrações externas.", "Flow between applications, gateway, services, real-time layer, database and external integrations.")}>{nodes.map((node, index) => <div key={node} className="contents"><div className="rounded-lg bg-[var(--brand-soft)] p-4">{node}</div>{index < nodes.length - 1 && <ChevronDown aria-hidden="true" className="mx-auto md:hidden"/>}</div>)}</div></Section>; }
-
-function TechnicalLab({ locale }: { locale: Locale }) { return <Section eyebrow={copy(locale, "Interativo", "Interactive")} title={copy(locale, "Laboratório técnico", "Technical lab")} className="technical-only"><Lab locale={locale}/></Section>; }
 
 function Education({ locale, education, skills }: { locale: Locale; education: EducationItem[]; skills: Skill[] }) { return <><div className="grid gap-4 md:grid-cols-2">{education.map(item => <article key={item.institution} className="card p-6"><p className="eyebrow">{item.institution}</p><h3 className="mt-2 text-xl font-semibold">{text(item.degree, locale)}</h3><p className="mt-3 text-[var(--muted)]">{text(item.detail, locale)}</p></article>)}</div><div className="mt-8 grid gap-4 md:grid-cols-2">{skills.map(item => <article key={text(item.category, locale)} className="card p-5"><h3 className="font-semibold">{text(item.category, locale)}</h3><p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.items}</p></article>)}</div></>; }
 
