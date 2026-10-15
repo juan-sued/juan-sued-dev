@@ -35,8 +35,8 @@ describe("portfolio controls", () => {
     fireEvent.keyDown(document, { key: "Escape" }); await new Promise(resolve => requestAnimationFrame(resolve)); expect(screen.queryByRole("dialog")).not.toBeInTheDocument(); expect(trigger).toHaveFocus(); expect(document.getElementById("site-header")).not.toHaveAttribute("inert");
   });
   it("has named secure project links and both downloads", async () => {
-    const { Projects } = await import("../components/server-content"); render(<Projects locale="pt"/>);
-    expect(screen.getByRole("link", { name: "Conhecer projeto BikerWay" })).toHaveAttribute("rel", "noopener noreferrer"); expect(screen.getByRole("link", { name: "Conhecer projeto Event Horizon" })).toHaveAttribute("target", "_blank");
+    const { ProjectPage } = await import("../components/projects"); const { getProjects } = await import("../lib/repositories/projects"); const projects = await getProjects(); render(<ProjectPage project={projects.find(item => item.slug === "bikerway")!} locale="pt"/>);
+    expect(screen.getByRole("link", { name: "Conhecer o BikerWay" })).toHaveAttribute("rel", "noopener noreferrer"); expect(screen.getByRole("link", { name: "Conhecer o BikerWay" })).toHaveAttribute("target", "_blank");
     const { label } = openMenu(); expect(screen.getByRole("link", { name: "Baixar currículo ATS" })).toHaveAttribute("download"); expect(screen.getByRole("link", { name: "Baixar currículo visual" })).toHaveAttribute("download"); expect(screen.getByRole("dialog", { name: label })).toBeInTheDocument();
   });
   it("rejects invalid contact data before persistence", () => {

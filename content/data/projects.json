@@ -1,0 +1,510 @@
+[
+  {
+    "slug": "bikerway",
+    "name": "BikerWay",
+    "status": "beta",
+    "period": "2026",
+    "tagline_pt": "O app do motociclista brasileiro: rotas, comboios, clubes, eventos e garagem.",
+    "tagline_en": "The Brazilian rider's app: routes, convoys, clubs, events and garage.",
+    "role_pt": "Full stack e mobile, em dupla",
+    "role_en": "Full stack and mobile, in a two-person team",
+    "summary_pt": "Plataforma social e utilitária para motociclistas, com mapa de rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem com consumo e manutenção. Começou como PWA e virou app nativo (Android primeiro) sobre um único backend Supabase compartilhado por app, site e painel admin.",
+    "summary_en": "Social and utility platform for motorcyclists, with a map of routes and trusted places, real-time convoys, clubs, events and a garage tracking fuel and maintenance. It started as a PWA and became a native app (Android first) on a single Supabase backend shared by the app, the website and the admin panel.",
+    "highlights_pt": [
+      "App nativo em React Native/Expo com mapas, rastreio em segundo plano, push e cache offline.",
+      "Backend Supabase: schema, RLS, funções SQL e Edge Functions versionados como contrato entre os três projetos.",
+      "Comboios com posição ao vivo (Realtime + Presence) e rotas com geometria PostGIS.",
+      "Garagem com abastecimento, leitura de nota por OCR e fila offline de sincronização.",
+      "Painel admin com cerca de 27 módulos e pipelines de conteúdo com IA.",
+      "CI com build automático e envio para a faixa de testes internos da Play Store."
+    ],
+    "highlights_en": [
+      "React Native/Expo native app with maps, background tracking, push and offline cache.",
+      "Supabase backend: schema, RLS, SQL functions and Edge Functions versioned as the contract between the three projects.",
+      "Convoys with live position (Realtime + Presence) and routes with PostGIS geometry.",
+      "Garage with fuel logs, receipt OCR and an offline sync queue.",
+      "Admin panel with about 27 modules and AI content pipelines.",
+      "CI that builds automatically and ships to the Play Store internal testing track."
+    ],
+    "decisions": [
+      {
+        "title_pt": "PostGIS em vez de cálculo no cliente",
+        "title_en": "PostGIS instead of client-side math",
+        "body_pt": "Busca por raio, proximidade e ordenação por distância rodam no banco com índices espaciais, evitando cálculos pesados no aparelho. H3 resolve agrupamento e densidade; para distância real a escolha foi PostGIS.",
+        "body_en": "Radius search, proximity and distance ordering run in the database with spatial indexes, avoiding heavy work on the device. H3 solves grouping and density; for real distance the choice was PostGIS."
+      },
+      {
+        "title_pt": "Schema como contrato entre projetos",
+        "title_en": "Schema as a contract between projects",
+        "body_pt": "Um único repositório é dono das migrations e gera os tipos TypeScript usados pelo app e pelo admin. Regras de mudança entre projetos evitam dessincronização em produção.",
+        "body_en": "A single repository owns the migrations and generates the TypeScript types used by the app and the admin. Cross-project change rules prevent drift in production."
+      },
+      {
+        "title_pt": "RLS como fronteira de segurança",
+        "title_en": "RLS as the security boundary",
+        "body_pt": "Centenas de políticas de Row Level Security, auditoria de segurança e testes SQL. Recursões de políticas em comboios foram resolvidas com funções auxiliares.",
+        "body_en": "Hundreds of Row Level Security policies, a security audit and SQL tests. Policy recursion in convoys was solved with helper functions."
+      },
+      {
+        "title_pt": "Offline e rastreio em segundo plano",
+        "title_en": "Offline and background tracking",
+        "body_pt": "Cache de consultas persistido, outbox para abastecimentos e uma task nativa de localização para comboios, com push confiável via Vault e segredo no gatilho.",
+        "body_en": "Persisted query cache, an outbox for fuel logs and a native location task for convoys, with reliable push through Vault and a trigger secret."
+      }
+    ],
+    "stack": [
+      "React Native",
+      "Expo",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL",
+      "PostGIS",
+      "Edge Functions",
+      "Next.js",
+      "Vite",
+      "EAS",
+      "Sentry",
+      "PostHog"
+    ],
+    "metrics": [
+      {
+        "label_pt": "migrations SQL",
+        "label_en": "SQL migrations",
+        "value": "289"
+      },
+      {
+        "label_pt": "Edge Functions",
+        "label_en": "Edge Functions",
+        "value": "22"
+      },
+      {
+        "label_pt": "arquivos de teste",
+        "label_en": "test files",
+        "value": "240+"
+      },
+      {
+        "label_pt": "projetos (app, site, admin)",
+        "label_en": "projects (app, site, admin)",
+        "value": "3"
+      }
+    ],
+    "credit_pt": "Projeto feito em dupla com o sócio Renan. Meu recorte: schema e Supabase, grande parte do site e do app mobile (cerca de 1.000 commits entre os dois repositórios), geolocalização, tempo real e CI/CD.",
+    "credit_en": "Built as a pair with my partner Renan. My part: schema and Supabase, most of the website and the mobile app (about 1,000 commits across the two repositories), geolocation, real time and CI/CD.",
+    "links": [
+      {
+        "label_pt": "Conhecer o BikerWay",
+        "label_en": "Visit BikerWay",
+        "url": "https://bikerway.com.br/"
+      }
+    ],
+    "cover": "/projects/bikerway/cover.webp",
+    "cover_alt_pt": "Arte de divulgação do BikerWay",
+    "cover_alt_en": "BikerWay promotional artwork",
+    "gallery": [
+      {
+        "src": "/projects/bikerway/shot-1.webp",
+        "width": 520,
+        "height": 1125,
+        "alt_pt": "Mapa de rotas e lugares",
+        "alt_en": "Routes and places map"
+      },
+      {
+        "src": "/projects/bikerway/shot-2.webp",
+        "width": 520,
+        "height": 1125,
+        "alt_pt": "Radar de comboios",
+        "alt_en": "Convoy radar"
+      },
+      {
+        "src": "/projects/bikerway/shot-3.webp",
+        "width": 520,
+        "height": 1125,
+        "alt_pt": "Lista de eventos",
+        "alt_en": "Events list"
+      },
+      {
+        "src": "/projects/bikerway/shot-4.webp",
+        "width": 520,
+        "height": 1125,
+        "alt_pt": "Visão geral do clube",
+        "alt_en": "Club overview"
+      }
+    ]
+  },
+  {
+    "slug": "conta-e-canta",
+    "name": "Conta e Canta",
+    "status": "production",
+    "period": "2026",
+    "tagline_pt": "Músicas personalizadas feitas com a história de quem você ama.",
+    "tagline_en": "Personalized songs written from the story of someone you love.",
+    "role_pt": "Produto, full stack e operação",
+    "role_en": "Product, full stack and operations",
+    "summary_pt": "E-commerce de música personalizada. O cliente responde a um quiz, vê a letra antes de pagar, paga por Pix ou cartão e recebe a música por e-mail em uma página para ouvir e compartilhar. Em produção, com vendas reais.",
+    "summary_en": "Personalized-song e-commerce. The customer answers a quiz, sees the lyrics before paying, pays by Pix or card and gets the song by e-mail on a page to listen to and share. In production, with real sales.",
+    "highlights_pt": [
+      "Quiz em 9 etapas que muda por ocasião e valida vínculos no cliente e no servidor.",
+      "Pipeline com IA: letra gerada por LLM e música por provedor externo, com webhook assinado.",
+      "Pagamento com Mercado Pago (Pix e cartão), conciliação e liquidação idempotente.",
+      "Cartão-presente digital, feed público com moderação e pedidos de jingle para empresas.",
+      "Painel admin com custo real de IA, saldo do provedor e alertas por e-mail ao dono.",
+      "14 landing pages por ocasião, dados estruturados e funis no PostHog."
+    ],
+    "highlights_en": [
+      "9-step quiz that changes by occasion and validates relationships on client and server.",
+      "AI pipeline: LLM-written lyrics and music from an external provider, with a signed webhook.",
+      "Mercado Pago payments (Pix and card), reconciliation and idempotent settlement.",
+      "Digital gift card, public feed with moderation and jingle orders for companies.",
+      "Admin panel with real AI cost, provider balance and e-mail alerts to the owner.",
+      "14 occasion landing pages, structured data and PostHog funnels."
+    ],
+    "decisions": [
+      {
+        "title_pt": "Máquina de estados do pedido",
+        "title_en": "Order state machine",
+        "body_pt": "Transições atômicas no banco impedem geração duplicada e gasto repetido de IA, mesmo com webhooks repetidos ou fora de ordem.",
+        "body_en": "Atomic transitions in the database prevent duplicate generation and repeated AI spend, even with repeated or out-of-order webhooks."
+      },
+      {
+        "title_pt": "Pagamento antes da música",
+        "title_en": "Pay before the music",
+        "body_pt": "O cliente vê só a letra; a música é gerada depois da confirmação do pagamento. O webhook apenas avisa e a liberação vem de uma consulta autenticada, nunca do payload.",
+        "body_en": "The customer sees only the lyrics; the music is generated after payment is confirmed. The webhook only notifies and release comes from an authenticated lookup, never from the payload."
+      },
+      {
+        "title_pt": "Proteção de custo",
+        "title_en": "Cost protection",
+        "body_pt": "Rate limit com falha fechada e IP em hash, teto diário de pedidos e Turnstile para limitar gasto de IA e abuso.",
+        "body_en": "Fail-closed rate limiting with hashed IPs, a daily order cap and Turnstile to limit AI spend and abuse."
+      },
+      {
+        "title_pt": "Testes que rodam o SQL de verdade",
+        "title_en": "Tests that run the real SQL",
+        "body_pt": "Mais de 270 casos de teste, incluindo migrations executadas em Postgres em memória (PGlite) e um provedor de música simulado para desenvolver sem gastar crédito.",
+        "body_en": "More than 270 test cases, including migrations executed on in-memory Postgres (PGlite) and a mock music provider to develop without spending credit."
+      }
+    ],
+    "stack": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL",
+      "Mercado Pago",
+      "OpenAI",
+      "Resend",
+      "Turnstile",
+      "PostHog",
+      "Vitest",
+      "Vercel"
+    ],
+    "metrics": [
+      {
+        "label_pt": "páginas",
+        "label_en": "pages",
+        "value": "24"
+      },
+      {
+        "label_pt": "endpoints",
+        "label_en": "endpoints",
+        "value": "28"
+      },
+      {
+        "label_pt": "casos de teste",
+        "label_en": "test cases",
+        "value": "270+"
+      },
+      {
+        "label_pt": "dias até o lançamento (81 commits)",
+        "label_en": "days to launch (81 commits)",
+        "value": "5"
+      }
+    ],
+    "links": [
+      {
+        "label_pt": "Conhecer a Conta e Canta",
+        "label_en": "Visit Conta e Canta",
+        "url": "https://contaecanta.com.br/"
+      }
+    ],
+    "cover": "/projects/conta-e-canta/cover.webp",
+    "cover_alt_pt": "Página inicial da Conta e Canta no celular",
+    "cover_alt_en": "Conta e Canta home page on mobile",
+    "gallery": [
+      {
+        "src": "/projects/conta-e-canta/cover.webp",
+        "width": 390,
+        "height": 800,
+        "alt_pt": "Página inicial",
+        "alt_en": "Home page"
+      },
+      {
+        "src": "/projects/conta-e-canta/shot-2.webp",
+        "width": 390,
+        "height": 800,
+        "alt_pt": "Primeira etapa do quiz",
+        "alt_en": "First quiz step"
+      }
+    ]
+  },
+  {
+    "slug": "8pixie",
+    "name": "8Pixie",
+    "status": "production",
+    "period": "2026",
+    "tagline_pt": "Loja de pixel art feita à mão, com checkout online e controle de estoque.",
+    "tagline_en": "Handmade pixel art shop with online checkout and stock control.",
+    "role_pt": "Produto e full stack",
+    "role_en": "Product and full stack",
+    "summary_pt": "E-commerce de chaveiros, brincos, pins e ímãs de hama beads. Catálogo, carrinho, frete dos Correios, checkout Pix/cartão/boleto e um painel que controla o estoque de contas coloridas.",
+    "summary_en": "E-commerce for hama bead keychains, earrings, pins and magnets. Catalog, cart, Correios shipping, Pix/card/boleto checkout and a panel that tracks the stock of colored beads.",
+    "highlights_pt": [
+      "Catálogo com busca, categorias, kits por quantidade, cupons e avaliações de compradores verificados.",
+      "Frete real via Melhor Envio e checkout online com Mercado Pago e webhook.",
+      "Painel instalável (PWA) com pedidos, promoções, métricas sem dados pessoais e importação de produto por link.",
+      "Estoque de matéria-prima: o pedido entra em produção e debita as cores sozinho; cancelar estorna.",
+      "Encomenda personalizada guiada e aviso de volta ao estoque.",
+      "Banners de compartilhamento gerados por produto."
+    ],
+    "highlights_en": [
+      "Catalog with search, categories, quantity kits, coupons and verified-buyer reviews.",
+      "Real shipping through Melhor Envio and online checkout with Mercado Pago and a webhook.",
+      "Installable (PWA) panel with orders, promotions, privacy-friendly metrics and import by link.",
+      "Raw-material stock: an order moving to production debits the colors automatically; cancelling refunds.",
+      "Guided custom orders and back-in-stock alerts.",
+      "Per-product share banners generated on the fly."
+    ],
+    "decisions": [
+      {
+        "title_pt": "Pedido à prova de adulteração",
+        "title_en": "Tamper-proof orders",
+        "body_pt": "Um trigger no banco recalcula preço, kit, cupom e frete a partir do catálogo, então o navegador não consegue manipular valores.",
+        "body_en": "A database trigger recomputes price, kit, coupon and shipping from the catalog, so the browser cannot tamper with amounts."
+      },
+      {
+        "title_pt": "Importação segura de imagem",
+        "title_en": "Safe image import",
+        "body_pt": "Proteção contra SSRF: só https e IPs públicos, validação de IPv4/IPv6, bloqueio de metadados de nuvem e revalidação de redirecionamentos, com testes.",
+        "body_en": "SSRF protection: https and public IPs only, IPv4/IPv6 validation, cloud metadata blocked and redirects revalidated, with tests."
+      },
+      {
+        "title_pt": "Estoque e cupons só por funções do banco",
+        "title_en": "Stock and coupons only through database functions",
+        "body_pt": "Mudanças de estoque e uso de cupom passam por funções transacionais; RLS ligada em todas as tabelas.",
+        "body_en": "Stock changes and coupon use go through transactional functions; RLS is on for every table."
+      }
+    ],
+    "stack": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind",
+      "Supabase",
+      "PostgreSQL",
+      "Mercado Pago",
+      "Melhor Envio",
+      "Vitest",
+      "GitHub Actions"
+    ],
+    "metrics": [
+      {
+        "label_pt": "tabelas",
+        "label_en": "tables",
+        "value": "13"
+      },
+      {
+        "label_pt": "arquivos de teste + CI",
+        "label_en": "test files + CI",
+        "value": "10"
+      },
+      {
+        "label_pt": "dias de desenvolvimento (26 commits)",
+        "label_en": "development days (26 commits)",
+        "value": "3"
+      }
+    ],
+    "links": [
+      {
+        "label_pt": "Visitar a loja",
+        "label_en": "Visit the shop",
+        "url": "https://8pixie.com.br/"
+      }
+    ],
+    "cover": "/projects/8pixie/cover.webp",
+    "cover_alt_pt": "Página inicial da 8Pixie no celular",
+    "cover_alt_en": "8Pixie home page on mobile",
+    "gallery": [
+      {
+        "src": "/projects/8pixie/cover.webp",
+        "width": 780,
+        "height": 1600,
+        "alt_pt": "Página inicial",
+        "alt_en": "Home page"
+      },
+      {
+        "src": "/projects/8pixie/shot-2.webp",
+        "width": 520,
+        "height": 1067,
+        "alt_pt": "Catálogo da loja",
+        "alt_en": "Shop catalog"
+      }
+    ]
+  },
+  {
+    "slug": "promogrupo",
+    "name": "PromoGrupo",
+    "status": "production",
+    "period": "2026",
+    "tagline_pt": "Máquina de afiliados que garimpa ofertas e as publica sozinha em canais e redes.",
+    "tagline_en": "An affiliate engine that finds deals and publishes them by itself to channels and social networks.",
+    "role_pt": "Produto, full stack e automação",
+    "role_en": "Product, full stack and automation",
+    "summary_pt": "Vitrine pública de ofertas do dia e painel interno que escolhe, publica e acompanha promoções de vários marketplaces em canais do Telegram e redes sociais, com fila de publicação e monitoramento de saúde.",
+    "summary_en": "A public deals showcase and an internal panel that selects, publishes and tracks promotions from several marketplaces to Telegram channels and social networks, with a publishing queue and health monitoring.",
+    "highlights_pt": [
+      "Integrações com Mercado Livre, Amazon, Shopee, Awin e Lomadee, mais Telegram, Instagram e Facebook (TikTok em homologação).",
+      "Fila de publicação com horários, limites por rodada e retomada sem duplicar posts.",
+      "Checagem diária de preço e disponibilidade; ofertas que sobem muito de preço são escondidas.",
+      "Imagens sociais 4:5 e 9:16 geradas no servidor, incluindo Top 10 do dia.",
+      "Painel com cerca de 12 telas, estatísticas sem dados pessoais e sugestões diárias por comissão.",
+      "Monitor de saúde que avisa por e-mail quando algo para de funcionar."
+    ],
+    "highlights_en": [
+      "Integrations with Mercado Livre, Amazon, Shopee, Awin and Lomadee, plus Telegram, Instagram and Facebook (TikTok in review).",
+      "Publishing queue with schedules, per-run limits and resume without duplicate posts.",
+      "Daily price and availability checks; offers whose price jumps are hidden.",
+      "4:5 and 9:16 social images generated on the server, including the daily Top 10.",
+      "Panel with about 12 screens, privacy-friendly stats and daily commission-driven suggestions.",
+      "Health monitor that e-mails when something stops working."
+    ],
+    "decisions": [
+      {
+        "title_pt": "Contornar limites da plataforma",
+        "title_en": "Working around platform limits",
+        "body_pt": "Limites de tempo e de cron do plano gratuito viraram GitHub Actions a cada 15 minutos, com orçamento de tempo por execução e rodadas curtas que podem ser retomadas.",
+        "body_en": "Free-tier time and cron limits became GitHub Actions every 15 minutes, with a time budget per run and short resumable rounds."
+      },
+      {
+        "title_pt": "Rede social em caixa de saída",
+        "title_en": "Social posting as an outbox",
+        "body_pt": "Cada rede tem sua caixa de saída; falhas ou pedidos de espera da API pausam só aquela rede e a rodada seguinte continua sem duplicar.",
+        "body_en": "Each network has its own outbox; failures or API wait requests pause only that network and the next run continues without duplicates."
+      },
+      {
+        "title_pt": "Poucas dependências",
+        "title_en": "Few dependencies",
+        "body_pt": "Cinco dependências de runtime; todas as integrações usam fetch direto, o que reduz superfície e facilita depurar.",
+        "body_en": "Five runtime dependencies; every integration uses plain fetch, reducing surface area and easing debugging."
+      }
+    ],
+    "stack": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL",
+      "Telegram Bot API",
+      "Meta Graph API",
+      "GitHub Actions",
+      "Vercel"
+    ],
+    "metrics": [
+      {
+        "label_pt": "rotas de API",
+        "label_en": "API routes",
+        "value": "60+"
+      },
+      {
+        "label_pt": "telas de admin",
+        "label_en": "admin screens",
+        "value": "12"
+      },
+      {
+        "label_pt": "dias de desenvolvimento (87 commits)",
+        "label_en": "development days (87 commits)",
+        "value": "7"
+      }
+    ],
+    "links": [
+      {
+        "label_pt": "Ver o PromoGrupo",
+        "label_en": "Visit PromoGrupo",
+        "url": "https://promogrupo.vercel.app/"
+      }
+    ],
+    "cover": "/projects/promogrupo/cover.webp",
+    "cover_alt_pt": "Arte de divulgação do PromoGrupo",
+    "cover_alt_en": "PromoGrupo promotional artwork",
+    "gallery": [
+      {
+        "src": "/projects/promogrupo/shot-1.webp",
+        "width": 520,
+        "height": 1067,
+        "alt_pt": "Página inicial",
+        "alt_en": "Home page"
+      },
+      {
+        "src": "/projects/promogrupo/shot-2.webp",
+        "width": 520,
+        "height": 650,
+        "alt_pt": "Como funciona",
+        "alt_en": "How it works"
+      },
+      {
+        "src": "/projects/promogrupo/shot-3.webp",
+        "width": 520,
+        "height": 650,
+        "alt_pt": "Post para Instagram",
+        "alt_en": "Instagram post"
+      }
+    ]
+  },
+  {
+    "slug": "event-horizon",
+    "name": "Event Horizon",
+    "status": "production",
+    "period": "2018",
+    "tagline_pt": "Marca para projetos independentes e soluções digitais para pequenas empresas.",
+    "tagline_en": "Brand for independent projects and digital solutions for small businesses.",
+    "role_pt": "Fundador e desenvolvedor",
+    "role_en": "Founder and developer",
+    "summary_pt": "Desde 2018, sites, landing pages e sistemas personalizados: levantamento de requisitos, frontend, backend, integrações, deploy e suporte pós-entrega.",
+    "summary_en": "Since 2018, websites, landing pages and custom systems: requirements discovery, frontend, backend, integrations, deployment and post-delivery support.",
+    "highlights_pt": [
+      "Sites e landing pages sob medida.",
+      "Sistemas personalizados com frontend, backend e integrações.",
+      "Deploy e suporte pós-entrega."
+    ],
+    "highlights_en": [
+      "Tailor-made websites and landing pages.",
+      "Custom systems with frontend, backend and integrations.",
+      "Deployment and post-delivery support."
+    ],
+    "decisions": [],
+    "stack": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL"
+    ],
+    "metrics": [
+      {
+        "label_pt": "anos em atividade",
+        "label_en": "years active",
+        "value": "8"
+      }
+    ],
+    "links": [
+      {
+        "label_pt": "Conhecer a Event Horizon",
+        "label_en": "Visit Event Horizon",
+        "url": "https://event-horizon-by-juan-sued.vercel.app/"
+      }
+    ],
+    "cover": null,
+    "cover_alt_pt": "",
+    "cover_alt_en": "",
+    "gallery": []
+  }
+]

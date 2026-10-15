@@ -62,3 +62,17 @@ describe("github projects", () => {
     error.mockRestore();
   });
 });
+
+describe("projects", () => {
+  it("lists the product case studies with existing images and valid links", async () => {
+    const { getProjects } = await import("../lib/repositories/projects");
+    const projects = await getProjects();
+    expect(projects.map(item => item.slug)).toEqual(["bikerway", "conta-e-canta", "8pixie", "promogrupo", "event-horizon"]);
+    for (const project of projects) {
+      expect(project.links.length, project.slug).toBeGreaterThan(0);
+      for (const link of project.links) expect(link.url.startsWith("https://"), link.url).toBe(true);
+      if (project.cover) expect(existsSync(publicFile(project.cover.src)), project.cover.src).toBe(true);
+      for (const shot of project.gallery) expect(existsSync(publicFile(shot.src)), shot.src).toBe(true);
+    }
+  });
+});

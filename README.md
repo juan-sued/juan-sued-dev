@@ -20,6 +20,7 @@ Todo o conteúdo é local, versionado no repositório — sem banco nem serviço
 - `public/certifications/<emissor>/<ano>/*.pdf`: PDFs dos certificados (`storage_path` em `certifications.json` é relativo a esta pasta).
 - `public/resumes/ats.pdf` e `visual.pdf`: currículos.
 - `lib/repositories/*.ts`: leitura tipada e validada com Zod; mantêm a API usada pelas páginas.
+- `content/data/projects.json`: estudos de caso dos produtos (BikerWay, Conta e Canta, 8Pixie, PromoGrupo, Event Horizon) em `/projetos` e `/projetos/[slug]`; imagens em `public/projects/<slug>/`.
 - `content/data/github.json`: repositórios em destaque na página /projetos; metadados (linguagem, última atualização) vêm da API pública do GitHub com cache de 1h (`GITHUB_TOKEN` opcional).
 - `lib/analytics.ts`: camada sem tracker ativo; ponto de integração para PostHog consent-aware.
 - `public/images/juan-sued-profile.png`: foto local usada via `next/image`.
