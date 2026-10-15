@@ -12,10 +12,10 @@ export function CertificationsGrid({ certifications, locale, className = "" }: {
   );
 }
 
-export function CertificationsSection({ title, eyebrow, certifications, locale, className = "", viewAllHref }: { title: string; eyebrow?: string; certifications: CertificationView[]; locale: Locale; className?: string; viewAllHref?: string }) {
+export function CertificationsSection({ title, eyebrow, certifications, locale, className = "", viewAllHref, id }: { id?: string; title: string; eyebrow?: string; certifications: CertificationView[]; locale: Locale; className?: string; viewAllHref?: string }) {
   if (certifications.length === 0) return null;
   return (
-    <section className={`shell py-12 md:py-20 ${className}`}>
+    <section id={id} className={`shell py-12 md:py-20 ${className}`}>
       {eyebrow && <p className="eyebrow mb-2">{eyebrow}</p>}
       <h2 className="mb-8 max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
       <CertificationsGrid certifications={certifications} locale={locale} />
