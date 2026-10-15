@@ -103,8 +103,8 @@
       }
     ],
     "cover": "/projects/bikerway/cover.webp",
-    "cover_alt_pt": "Arte de divulgação do BikerWay",
-    "cover_alt_en": "BikerWay promotional artwork",
+    "cover_alt_pt": "Página inicial do BikerWay",
+    "cover_alt_en": "BikerWay home page",
     "gallery": [
       {
         "src": "/projects/bikerway/shot-1.webp",
@@ -233,11 +233,11 @@
       }
     ],
     "cover": "/projects/conta-e-canta/cover.webp",
-    "cover_alt_pt": "Página inicial da Conta e Canta no celular",
-    "cover_alt_en": "Conta e Canta home page on mobile",
+    "cover_alt_pt": "Página inicial da Conta e Canta",
+    "cover_alt_en": "Conta e Canta home page",
     "gallery": [
       {
-        "src": "/projects/conta-e-canta/cover.webp",
+        "src": "/projects/conta-e-canta/shot-1.webp",
         "width": 390,
         "height": 800,
         "alt_pt": "Página inicial",
@@ -336,11 +336,11 @@
       }
     ],
     "cover": "/projects/8pixie/cover.webp",
-    "cover_alt_pt": "Página inicial da 8Pixie no celular",
-    "cover_alt_en": "8Pixie home page on mobile",
+    "cover_alt_pt": "Página inicial da 8Pixie",
+    "cover_alt_en": "8Pixie home page",
     "gallery": [
       {
-        "src": "/projects/8pixie/cover.webp",
+        "src": "/projects/8pixie/shot-1.webp",
         "width": 780,
         "height": 1600,
         "alt_pt": "Página inicial",

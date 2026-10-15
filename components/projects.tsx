@@ -21,7 +21,7 @@ function StackChips({ stack, limit }: { stack: string[]; limit?: number }) {
 export function ProjectCard({ project, locale, priority = false }: { project: Project; locale: Locale; priority?: boolean }) {
   const metric = project.metrics[0];
   return <article className="card group flex flex-col overflow-hidden transition hover:-translate-y-1">
-    <Link href={`/projetos/${project.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-[var(--brand-soft)]" aria-label={label(locale, `Ver projeto ${project.name}`, `View ${project.name} project`)}>
+    <Link href={`/projetos/${project.slug}`} className="relative block aspect-[19/10] overflow-hidden bg-[var(--brand-soft)]" aria-label={label(locale, `Ver projeto ${project.name}`, `View ${project.name} project`)}>
       {project.cover
         ? <Image src={project.cover.src} alt={t(project.cover.alt, locale)} fill priority={priority} sizes="(max-width: 767px) 100vw, 50vw" className="object-cover object-top transition duration-500 group-hover:scale-[1.03]"/>
         : <span aria-hidden="true" className="grid size-full place-items-center text-6xl font-semibold tracking-tight text-[var(--brand)]">{project.name.slice(0, 2)}</span>}
@@ -53,7 +53,7 @@ export function ProjectPage({ project, locale }: { project: Project; locale: Loc
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--muted)]">{t(project.summary, locale)}</p>
           <div className="mt-7 flex flex-wrap gap-3">{project.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-[var(--brand)] px-4 py-3 font-bold text-white">{t(link.label, locale)}<ArrowUpRight aria-hidden="true" size={16}/></a>)}</div>
         </div>
-        {project.cover && <div className="card relative aspect-[16/10] overflow-hidden"><Image src={project.cover.src} alt={t(project.cover.alt, locale)} fill priority sizes="(max-width: 1023px) 100vw, 45vw" className="object-cover object-top"/></div>}
+        {project.cover && <div className="card relative aspect-[19/10] overflow-hidden"><Image src={project.cover.src} alt={t(project.cover.alt, locale)} fill priority sizes="(max-width: 1023px) 100vw, 45vw" className="object-cover object-top"/></div>}
       </div>
       {project.metrics.length > 0 && <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{project.metrics.map(metric => <div key={metric.value + metric.label.pt} className="card flex flex-col-reverse p-5"><dt className="mt-1 text-sm text-[var(--muted)]">{t(metric.label, locale)}</dt><dd className="text-3xl font-semibold tracking-tight text-[var(--brand)]">{metric.value}</dd></div>)}</dl>}
       {project.credit && <p className="card mt-6 p-5 text-[var(--muted)]"><strong className="text-[var(--ink)]">{label(locale, "Autoria: ", "Credits: ")}</strong>{t(project.credit, locale)}</p>}
