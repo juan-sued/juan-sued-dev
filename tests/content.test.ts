@@ -72,7 +72,7 @@ describe("projects", () => {
       expect(project.links.length, project.slug).toBeGreaterThan(0);
       for (const link of project.links) expect(link.url.startsWith("https://"), link.url).toBe(true);
       if (project.cover) expect(existsSync(publicFile(project.cover.src)), project.cover.src).toBe(true);
-      for (const shot of project.gallery) expect(existsSync(publicFile(shot.src)), shot.src).toBe(true);
+      for (const shot of [...project.gallery, ...project.panel]) expect(existsSync(publicFile(shot.src)), shot.src).toBe(true);
     }
   });
 });

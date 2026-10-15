@@ -25,6 +25,7 @@ const rowSchema = z.object({
   cover_alt_pt: z.string(),
   cover_alt_en: z.string(),
   gallery: z.array(z.object({ src: z.string(), width: z.number().int().positive(), height: z.number().int().positive(), alt_pt: z.string(), alt_en: z.string() })),
+  panel: z.array(z.object({ src: z.string(), width: z.number().int().positive(), height: z.number().int().positive(), title_pt: z.string(), title_en: z.string(), caption_pt: z.string(), caption_en: z.string() })),
 });
 
 export type ProjectStatus = z.infer<typeof rowSchema>["status"];
@@ -45,6 +46,7 @@ export type Project = {
   links: { label: Copy; url: string }[];
   cover: { src: string; alt: Copy } | null;
   gallery: { src: string; width: number; height: number; alt: Copy }[];
+  panel: { src: string; width: number; height: number; title: Copy; caption: Copy }[];
 };
 
 export async function getProjects(): Promise<Project[]> {
@@ -64,6 +66,7 @@ export async function getProjects(): Promise<Project[]> {
     links: row.links.map(item => ({ label: { pt: item.label_pt, en: item.label_en }, url: item.url })),
     cover: row.cover ? { src: row.cover, alt: { pt: row.cover_alt_pt, en: row.cover_alt_en } } : null,
     gallery: row.gallery.map(item => ({ src: item.src, width: item.width, height: item.height, alt: { pt: item.alt_pt, en: item.alt_en } })),
+    panel: row.panel.map(item => ({ src: item.src, width: item.width, height: item.height, title: { pt: item.title_pt, en: item.title_en }, caption: { pt: item.caption_pt, en: item.caption_en } })),
   }));
 }
 

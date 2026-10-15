@@ -64,6 +64,12 @@ export function ProjectPage({ project, locale }: { project: Project; locale: Loc
       <ul className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0">{project.gallery.map(item => <li key={item.src} className="shrink-0 snap-start"><Image src={item.src} alt={t(item.alt, locale)} width={item.width} height={item.height} sizes="320px" className="h-[420px] w-auto rounded-2xl border border-[var(--line)] bg-[var(--surface)]"/></li>)}</ul>
     </section>}
 
+    {project.panel.length > 0 && <section className="shell pb-12 md:pb-20" aria-label={label(locale, "Painel administrativo", "Admin panel")}>
+      <h2 className="text-3xl font-semibold tracking-tight">{label(locale, "Por dentro do painel", "Inside the admin panel")}</h2>
+      <p className="mt-3 max-w-2xl text-[var(--muted)]">{label(locale, "Telas reais do painel interno, para entender como o produto funciona no dia a dia.", "Real screens of the internal panel, to show how the product works day to day.")}</p>
+      <div className="mt-8 grid gap-6 md:grid-cols-2">{project.panel.map(item => <figure key={item.src} className="card overflow-hidden"><Image src={item.src} alt={`${t(item.title, locale)}: ${t(item.caption, locale)}`} width={item.width} height={item.height} sizes="(max-width: 767px) 100vw, 50vw" className="h-auto w-full border-b border-[var(--line)]"/><figcaption className="p-5"><strong className="block text-lg">{t(item.title, locale)}</strong><span className="mt-2 block text-sm leading-6 text-[var(--muted)]">{t(item.caption, locale)}</span></figcaption></figure>)}</div>
+    </section>}
+
     <section className="shell pb-12 md:pb-20">
       <h2 className="mb-6 text-3xl font-semibold tracking-tight">{label(locale, "O que foi construído", "What was built")}</h2>
       <ul className="grid gap-3 md:grid-cols-2">{project.highlights[locale].map(item => <li key={item} className="card p-5 leading-7">{item}</li>)}</ul>

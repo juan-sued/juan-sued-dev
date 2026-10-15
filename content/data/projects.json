@@ -134,7 +134,8 @@
         "alt_pt": "Visão geral do clube",
         "alt_en": "Club overview"
       }
-    ]
+    ],
+    "panel": []
   },
   {
     "slug": "conta-e-canta",
@@ -250,7 +251,8 @@
         "alt_pt": "Primeira etapa do quiz",
         "alt_en": "First quiz step"
       }
-    ]
+    ],
+    "panel": []
   },
   {
     "slug": "8pixie",
@@ -352,6 +354,44 @@
         "height": 1067,
         "alt_pt": "Catálogo da loja",
         "alt_en": "Shop catalog"
+      }
+    ],
+    "panel": [
+      {
+        "src": "/projects/8pixie/panel-dashboard.webp",
+        "width": 1324,
+        "height": 717,
+        "title_pt": "Dashboard",
+        "title_en": "Dashboard",
+        "caption_pt": "Visão geral da loja: produtos, destaques, pedidos, faturamento e distribuição por categoria.",
+        "caption_en": "Store overview: products, featured items, orders, revenue and distribution by category."
+      },
+      {
+        "src": "/projects/8pixie/panel-funil.webp",
+        "width": 1314,
+        "height": 729,
+        "title_pt": "Funil de visitas",
+        "title_en": "Visit funnel",
+        "caption_pt": "Métricas sem dados pessoais: visitantes, quem viu um produto, quem foi ao carrinho e ao pagamento, mais os produtos mais vistos e uma dica quando há muita vista e pouco carrinho.",
+        "caption_en": "Privacy-friendly metrics: visitors, who viewed a product, who reached the cart and checkout, plus top-viewed products and a hint when views are high but carts are low."
+      },
+      {
+        "src": "/projects/8pixie/panel-estoque.webp",
+        "width": 1209,
+        "height": 721,
+        "title_pt": "Estoque de cores",
+        "title_en": "Color stock",
+        "caption_pt": "Estoque de bolinhas de hama por cor: o pedido em produção debita sozinho e o painel avisa quando uma cor está abaixo do mínimo.",
+        "caption_en": "Hama bead stock per color: an order in production debits automatically and the panel warns when a color is below its minimum."
+      },
+      {
+        "src": "/projects/8pixie/panel-promocoes.webp",
+        "width": 1264,
+        "height": 733,
+        "title_pt": "Promoções",
+        "title_en": "Promotions",
+        "caption_pt": "Frete grátis a partir de um valor, retirada combinada, kits com desconto por quantidade e cupons com validade e limite de uso.",
+        "caption_en": "Free shipping from a threshold, arranged pickup, quantity-discount kits and coupons with expiry and usage limits."
       }
     ]
   },
@@ -462,6 +502,44 @@
         "alt_pt": "Post para Instagram",
         "alt_en": "Instagram post"
       }
+    ],
+    "panel": [
+      {
+        "src": "/projects/promogrupo/panel-ofertas.webp",
+        "width": 1400,
+        "height": 645,
+        "title_pt": "Ofertas",
+        "title_en": "Offers",
+        "caption_pt": "Central de ofertas com filtros por status (rascunho, agendada, publicada, atenção), busca, categoria e ações para rodar a fila e verificar preços.",
+        "caption_en": "Offers hub with status filters (draft, scheduled, published, attention), search, category and actions to run the queue and check prices."
+      },
+      {
+        "src": "/projects/promogrupo/panel-sugestoes.webp",
+        "width": 1400,
+        "height": 615,
+        "title_pt": "Sugestões diárias",
+        "title_en": "Daily suggestions",
+        "caption_pt": "Todo dia às 8h o sistema busca cupons e promoções na Lomadee e na Awin e sugere ofertas já com link e validade. Aprovar cria o rascunho ou agenda a publicação; conteúdo sensível é filtrado antes.",
+        "caption_en": "Every day at 8am the system fetches coupons and deals from Lomadee and Awin and suggests offers with link and expiry already filled in. Approving creates a draft or schedules it; sensitive content is filtered out first."
+      },
+      {
+        "src": "/projects/promogrupo/panel-awin.webp",
+        "width": 1400,
+        "height": 639,
+        "title_pt": "Programas de afiliados",
+        "title_en": "Affiliate programs",
+        "caption_pt": "Acompanhamento das candidaturas aos programas: aguardando resposta, aprovadas e recusadas, com atalho para cada loja na plataforma.",
+        "caption_en": "Tracking of affiliate program applications: waiting, approved and rejected, with a shortcut to each store on the platform."
+      },
+      {
+        "src": "/projects/promogrupo/panel-automacao.webp",
+        "width": 1400,
+        "height": 637,
+        "title_pt": "Automação das redes",
+        "title_en": "Social automation",
+        "caption_pt": "Controles do que vai para o feed e os Stories do Instagram e para a Página do Facebook, Top 10 diário às 9h, limite diário da API e renovação automática do token.",
+        "caption_en": "Controls for what goes to the Instagram feed and Stories and the Facebook Page, the daily 9am Top 10, the API daily limit and automatic token renewal."
+      }
     ]
   },
   {
@@ -510,6 +588,7 @@
     "cover": null,
     "cover_alt_pt": "",
     "cover_alt_en": "",
-    "gallery": []
+    "gallery": [],
+    "panel": []
   }
 ]
