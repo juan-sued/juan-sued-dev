@@ -4,26 +4,30 @@
     "name": "BikerWay",
     "status": "production",
     "period": "2026",
-    "tagline_pt": "O app do motociclista brasileiro: rotas, comboios, clubes, eventos e garagem.",
-    "tagline_en": "The Brazilian rider's app: routes, convoys, clubs, events and garage.",
+    "tagline_pt": "O app do motociclista brasileiro, com mapa curado por IA e por gente.",
+    "tagline_en": "The Brazilian rider's app, with a map curated by AI and by people.",
     "role_pt": "Full stack e mobile, em dupla",
     "role_en": "Full stack and mobile, in a two-person team",
-    "summary_pt": "Plataforma social e utilitária para motociclistas, com mapa de rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem com consumo e manutenção. Começou como PWA e virou app nativo, já publicado na Google Play, sobre um único backend Supabase compartilhado por app, site e painel admin.",
-    "summary_en": "Social and utility platform for motorcyclists, with a map of routes and trusted places, real-time convoys, clubs, events and a garage tracking fuel and maintenance. It started as a PWA and became a native app, now published on Google Play, on a single Supabase backend shared by the app, the website and the admin panel.",
+    "summary_pt": "Plataforma para motociclistas brasileiros, já na Google Play: mapa com rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem. Por trás, um time de agentes de IA abastece o mapa e uma curadoria humana decide o que entra; o app, o site e o painel admin compartilham um único backend Supabase.",
+    "summary_en": "Platform for Brazilian motorcyclists, already on Google Play: map with routes and trusted places, real-time convoys, clubs, events and a garage. Behind it, a team of AI agents feeds the map and human curation decides what goes in; the app, website and admin panel share a single Supabase backend.",
     "highlights_pt": [
       "App nativo em React Native/Expo com mapas, rastreio em segundo plano, push e cache offline.",
-      "Backend Supabase: schema, RLS, funções SQL e Edge Functions versionados como contrato entre os três projetos.",
+      "Time de agentes de IA que propõe lugares, eventos e rotas, com fila de curadoria humana no admin.",
+      "Intercomunicador offline para comboios: rede mesh entre Androids com áudio push-to-talk criptografado.",
+      "Backend Supabase: schema, RLS, funções SQL e Edge Functions versionados como contrato entre app, site e admin.",
       "Comboios com posição ao vivo (Realtime + Presence) e rotas com geometria PostGIS.",
-      "Garagem com abastecimento, leitura de nota por OCR e fila offline de sincronização.",
-      "Painel admin com cerca de 27 módulos e pipelines de conteúdo com IA.",
+      "Garagem com abastecimento por OCR no aparelho, consumo, manutenção e fila offline de sincronização.",
+      "Painel admin com cerca de 27 módulos, contas de serviço e acompanhamento de pipelines.",
       "CI com build automático e publicação na Google Play (app em produção na loja)."
     ],
     "highlights_en": [
       "React Native/Expo native app with maps, background tracking, push and offline cache.",
-      "Supabase backend: schema, RLS, SQL functions and Edge Functions versioned as the contract between the three projects.",
+      "Team of AI agents that proposes places, events and routes, with a human curation queue in the admin.",
+      "Offline convoy intercom: mesh network between Androids with encrypted push-to-talk audio.",
+      "Supabase backend: schema, RLS, SQL functions and Edge Functions versioned as the contract between app, website and admin.",
       "Convoys with live position (Realtime + Presence) and routes with PostGIS geometry.",
-      "Garage with fuel logs, receipt OCR and an offline sync queue.",
-      "Admin panel with about 27 modules and AI content pipelines.",
+      "Garage with on-device fuel-receipt OCR, fuel economy, maintenance and an offline sync queue.",
+      "Admin panel with about 27 modules, service accounts and pipeline tracking.",
       "CI that builds automatically and publishes to Google Play (app live on the store)."
     ],
     "decisions": [
@@ -135,7 +139,192 @@
         "alt_en": "Club overview"
       }
     ],
-    "panel": []
+    "panel": [],
+    "roadmap": {
+      "asof": "2026-10-15",
+      "stats": {
+        "total": 324,
+        "done": 101,
+        "testing": 140,
+        "building": 14,
+        "backlog": 69
+      },
+      "title_pt": "Escala do projeto e o que vem por aí",
+      "title_en": "Project scale and what's coming",
+      "intro_pt": "O planejamento é acompanhado em um quadro com 324 histórias abertas em dois meses, em quatro repositórios. Abaixo, o estado atual e o roadmap por ondas.",
+      "intro_en": "Planning is tracked on a board with 324 stories opened in two months across four repositories. Below, the current state and the roadmap by wave.",
+      "waves": [
+        {
+          "id": "beta",
+          "status": "now",
+          "title_pt": "Beta: app Android completo",
+          "title_en": "Beta: complete Android app",
+          "items_pt": [
+            "Mapa com rotas, lugares e radar de comboios",
+            "Clubes, eventos e recrutamento",
+            "Garagem com consumo, manutenção e abastecimento",
+            "Push, offline e login social"
+          ],
+          "items_en": [
+            "Map with routes, places and convoy radar",
+            "Clubs, events and recruiting",
+            "Garage with fuel economy, maintenance and fuel logs",
+            "Push, offline and social login"
+          ]
+        },
+        {
+          "id": "v1",
+          "status": "next",
+          "title_pt": "v1: intercomunicador e time de agentes de IA",
+          "title_en": "v1: intercom and AI agent team",
+          "items_pt": [
+            "Intercomunicador offline do comboio: rede mesh entre Androids, áudio push-to-talk, criptografia e testes em campo (em validação)",
+            "Time de agentes de IA que abastece o mapa com lugares, eventos e rotas, com fila de curadoria no admin",
+            "Conquistas, desafios mensais, indicação e lembrete de manutenção"
+          ],
+          "items_en": [
+            "Offline convoy intercom: mesh network between Androids, push-to-talk audio, encryption and field tests (being validated)",
+            "AI agent team that feeds the map with places, events and routes, with a curation queue in the admin",
+            "Achievements, monthly challenges, referrals and maintenance reminders"
+          ]
+        },
+        {
+          "id": "v2",
+          "status": "planned",
+          "title_pt": "v2: gestão profissional de clubes",
+          "title_en": "v2: professional club management",
+          "items_pt": [
+            "Tesouraria do clube e votações",
+            "Papéis de presidente, capitão e diretor de eventos",
+            "Divulgação cruzada de eventos entre clubes"
+          ],
+          "items_en": [
+            "Club treasury and polls",
+            "President, captain and events director roles",
+            "Cross-promotion of events between clubs"
+          ]
+        },
+        {
+          "id": "v3",
+          "status": "planned",
+          "title_pt": "v3: parceiros e Selo de Confiabilidade",
+          "title_en": "v3: partners and Reliability Seal",
+          "items_pt": [
+            "Perfil de parceiro e agenda de serviços",
+            "Selo de Confiabilidade BikerWay",
+            "Portal web do parceiro e aprovação no admin"
+          ],
+          "items_en": [
+            "Partner profile and service scheduling",
+            "BikerWay Reliability Seal",
+            "Partner web portal and admin approval"
+          ]
+        },
+        {
+          "id": "v4",
+          "status": "planned",
+          "title_pt": "v4: comunidade",
+          "title_en": "v4: community",
+          "items_pt": [
+            "Alertas comunitários de perigo na via",
+            "Ranking regional de pilotos e clubes",
+            "Ficha técnica de motos, vitrine da garagem e BikerWay Wrapped"
+          ],
+          "items_en": [
+            "Community road-hazard alerts",
+            "Regional rankings for riders and clubs",
+            "Motorcycle spec sheets, garage showcase and BikerWay Wrapped"
+          ]
+        },
+        {
+          "id": "v5",
+          "status": "planned",
+          "title_pt": "v5: copiloto de IA",
+          "title_en": "v5: AI copilot",
+          "items_pt": [
+            "Assistente de voz on-device e interface voz-primeiro para pilotar",
+            "Copilot de segurança e inteligência de comboio",
+            "Consultor de rotas com IA, descoberta assistida de lugares e histórias de viagem compartilháveis"
+          ],
+          "items_en": [
+            "On-device voice assistant and voice-first riding interface",
+            "Safety copilot and convoy intelligence",
+            "AI route advisor, assisted place discovery and shareable ride stories"
+          ]
+        }
+      ]
+    },
+    "ai": {
+      "title_pt": "IA e curadoria de conteúdo",
+      "title_en": "AI and content curation",
+      "intro_pt": "O mapa do BikerWay precisa de lugares, eventos e rotas confiáveis. Em vez de depender só de cadastro manual, o projeto tem um time de agentes de IA que propõe conteúdo e uma fila de curadoria em que uma pessoa decide o que vai ao ar.",
+      "intro_en": "BikerWay's map needs trustworthy places, events and routes. Instead of relying on manual entry alone, the project has a team of AI agents that propose content and a curation queue where a person decides what goes live.",
+      "pillars": [
+        {
+          "title_pt": "Agentes com identidade e limites",
+          "title_en": "Agents with identity and limits",
+          "tags": [
+            "JWT",
+            "RLS",
+            "Supabase"
+          ],
+          "body_pt": "Cada agente é uma conta de serviço com permissões por domínio (lugares, eventos, rotas), segredo guardado com hash e token de 1 hora que nunca ignora as políticas de segurança. Há cota diária de escrita por conta e o domínio vem da permissão, não do que o agente declara, o que reduz o risco de prompt injection.",
+          "body_en": "Each agent is a service account with per-domain permissions (places, events, routes), a hashed secret and a 1-hour token that never bypasses security policies. There is a daily write quota per account and the domain comes from the permission, not from what the agent claims, which reduces prompt-injection risk."
+        },
+        {
+          "title_pt": "Fila de curadoria no admin",
+          "title_en": "Curation queue in the admin",
+          "tags": [
+            "Next.js",
+            "Refine",
+            "SQL"
+          ],
+          "body_pt": "Lugares, eventos e rotas vindos de agentes entram como pendentes. O curador aprova, aprova editando, rejeita com motivo padronizado, marca duplicata ou reabre, com aprovação em lote, evidências com fonte, mapa e histórico imutável de decisões. Um painel mostra taxa de aprovação e motivos de rejeição por agente.",
+          "body_en": "Places, events and routes coming from agents enter as pending. The curator approves, approves with edits, rejects with a standard reason, flags a duplicate or reopens, with batch approval, sourced evidence, a map and an immutable decision history. A dashboard shows approval rate and rejection reasons per agent."
+        },
+        {
+          "title_pt": "Nota de confiança e procedência",
+          "title_en": "Confidence score and provenance",
+          "tags": [
+            "PostgreSQL",
+            "Triggers"
+          ],
+          "body_pt": "Todo item carrega nota de confiança de 0 a 1, fonte, identificador externo e data da última verificação. Abaixo do limiar da categoria, o banco rebaixa o item para revisão por trigger; itens sensíveis, como pontos de encontro, nunca são aprovados automaticamente. Coordenadas duplicadas são bloqueadas.",
+          "body_en": "Every item carries a 0-to-1 confidence score, source, external id and last-verified date. Below the category threshold, the database downgrades the item to review through a trigger; sensitive items, such as meeting points, are never auto-approved. Duplicate coordinates are blocked."
+        },
+        {
+          "title_pt": "IA dentro do app",
+          "title_en": "AI inside the app",
+          "tags": [
+            "Visão",
+            "ML Kit",
+            "Edge Functions"
+          ],
+          "body_pt": "Foto de um flyer vira rascunho de evento: um modelo de visão extrai título, datas e local e o usuário revisa antes de salvar, com cota diária e sem guardar a imagem. Na garagem, o OCR de abastecimento roda no aparelho e offline, e a foto não sai do celular.",
+          "body_en": "A photo of a flyer becomes an event draft: a vision model extracts title, dates and place and the user reviews before saving, with a daily quota and no image stored. In the garage, fuel-receipt OCR runs on-device and offline, and the photo never leaves the phone."
+        },
+        {
+          "title_pt": "Comunidade como sinal de qualidade",
+          "title_en": "Community as a quality signal",
+          "tags": [
+            "Realtime",
+            "Consenso"
+          ],
+          "body_pt": "Alertas de estrada ganham ou perdem confiança com os votos dos pilotos e expiram sozinhos; preço de combustível e avaliação de oficinas usam consenso entre relatos. É o complemento humano da curadoria dos agentes.",
+          "body_en": "Road alerts gain or lose confidence from riders' votes and expire on their own; fuel prices and workshop ratings use consensus across reports. It is the human complement to agent curation."
+        },
+        {
+          "title_pt": "Desenvolvimento assistido por IA",
+          "title_en": "AI-assisted development",
+          "tags": [
+            "Claude Code",
+            "Agentes"
+          ],
+          "body_pt": "O time usa 14 agentes especializados (produto, tech lead, backend, mobile, QA, segurança, jurídico e outros) e um comando que processa uma história do quadro de planejamento, com regras para mudanças que atravessam app, site, admin e banco.",
+          "body_en": "The team uses 14 specialized agents (product, tech lead, backend, mobile, QA, security, legal and others) and a command that processes a story from the planning board, with rules for changes that cut across app, website, admin and database."
+        }
+      ]
+    }
   },
   {
     "slug": "conta-e-canta",

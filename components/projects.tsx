@@ -41,6 +41,35 @@ export function ProjectsGrid({ projects, locale, embedded = false }: { projects:
   return <div className={embedded ? "grid gap-5 md:grid-cols-2" : "shell grid gap-5 py-14 md:grid-cols-2 md:py-20"}>{projects.map((project, index) => <ProjectCard key={project.slug} project={project} locale={locale} priority={index < 2}/>)}</div>;
 }
 
+function AiSection({ ai, locale }: { ai: NonNullable<Project["ai"]>; locale: Locale }) {
+  return <section className="shell pb-12 md:pb-20" aria-label={t(ai.title, locale)}>
+    <h2 className="text-3xl font-semibold tracking-tight">{t(ai.title, locale)}</h2>
+    <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">{t(ai.intro, locale)}</p>
+    <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{ai.pillars.map(item => <article key={item.title.pt} className="card flex flex-col p-6"><h3 className="text-xl font-semibold">{t(item.title, locale)}</h3><p className="mt-3 flex-1 text-sm leading-6 text-[var(--muted)]">{t(item.body, locale)}</p><ul className="mt-4 flex flex-wrap gap-2">{item.tags.map(tag => <li key={tag} className="rounded-full bg-[var(--brand-soft)] px-2.5 py-1 text-xs font-semibold text-[var(--brand)]">{tag}</li>)}</ul></article>)}</div>
+  </section>;
+}
+
+function Roadmap({ roadmap, locale }: { roadmap: NonNullable<Project["roadmap"]>; locale: Locale }) {
+  const { stats } = roadmap;
+  const parts = [
+    { key: "done", value: stats.done, color: "bg-emerald-500", name: label(locale, "Concluídas", "Done") },
+    { key: "testing", value: stats.testing, color: "bg-sky-500", name: label(locale, "Em teste", "In testing") },
+    { key: "building", value: stats.building, color: "bg-amber-500", name: label(locale, "Em desenvolvimento", "In development") },
+    { key: "backlog", value: stats.backlog, color: "bg-[var(--line)]", name: label(locale, "Planejadas", "Planned") },
+  ];
+  const waveStatus = (status: "now" | "next" | "planned") => status === "now" ? label(locale, "Em teste agora", "Testing now") : status === "next" ? label(locale, "Em construção", "Being built") : label(locale, "Planejado", "Planned");
+  return <section className="shell pb-12 md:pb-20" aria-label={t(roadmap.title, locale)}>
+    <h2 className="text-3xl font-semibold tracking-tight">{t(roadmap.title, locale)}</h2>
+    <p className="mt-3 max-w-2xl text-[var(--muted)]">{t(roadmap.intro, locale)}</p>
+    <div className="card mt-8 p-6">
+      <p className="text-sm text-[var(--muted)]"><strong className="text-3xl text-[var(--ink)]">{stats.total}</strong> {label(locale, "histórias de produto", "product stories")} · {label(locale, "posição em", "as of")} {new Date(roadmap.asof).toLocaleDateString(locale === "pt" ? "pt-BR" : "en-US", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}</p>
+      <div className="mt-4 flex h-3 overflow-hidden rounded-full bg-[var(--line)]" role="img" aria-label={parts.map(part => `${part.name}: ${part.value}`).join(", ")}>{parts.map(part => <span key={part.key} className={part.color} style={{ width: `${(part.value / stats.total) * 100}%` }}/>)}</div>
+      <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{parts.map(part => <li key={part.key} className="flex items-center gap-3"><span aria-hidden="true" className={`size-3 rounded-full ${part.color}`}/><span><strong className="text-xl">{part.value}</strong><span className="block text-sm text-[var(--muted)]">{part.name}</span></span></li>)}</ul>
+    </div>
+    <ol className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{roadmap.waves.map(wave => <li key={wave.id} className="card p-6"><div className="flex items-center justify-between gap-2"><span className="eyebrow">{wave.id === "beta" ? "Beta" : wave.id}</span><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${wave.status === "now" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" : wave.status === "next" ? "bg-sky-500/15 text-sky-700 dark:text-sky-300" : "bg-[var(--brand-soft)] text-[var(--muted)]"}`}>{waveStatus(wave.status)}</span></div><h3 className="mt-3 text-lg font-semibold">{t(wave.title, locale)}</h3><ul className="mt-3 grid gap-2 text-sm leading-6 text-[var(--muted)]">{wave.items[locale].map(item => <li key={item}>- {item}</li>)}</ul></li>)}</ol>
+  </section>;
+}
+
 export function ProjectPage({ project, locale }: { project: Project; locale: Locale }) {
   return <>
     <section className="shell py-14 md:py-20">
@@ -79,6 +108,10 @@ export function ProjectPage({ project, locale }: { project: Project; locale: Loc
       <h2 className="mb-6 text-3xl font-semibold tracking-tight">{label(locale, "Decisões técnicas", "Technical decisions")}</h2>
       <div className="grid gap-4 md:grid-cols-2">{project.decisions.map(item => <article key={item.title.pt} className="card p-6"><h3 className="text-xl font-semibold">{t(item.title, locale)}</h3><p className="mt-3 leading-7 text-[var(--muted)]">{t(item.body, locale)}</p></article>)}</div>
     </section>}
+
+    {project.ai && <AiSection ai={project.ai} locale={locale}/>}
+
+    {project.roadmap && <Roadmap roadmap={project.roadmap} locale={locale}/>}
 
     <section className="shell pb-16 md:pb-24">
       <h2 className="mb-6 text-3xl font-semibold tracking-tight">Stack</h2>

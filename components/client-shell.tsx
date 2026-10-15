@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { Command, Menu, Moon, Sun, X } from "lucide-react";
 import type { Locale } from "@/lib/locale";
 import { track } from "@/lib/analytics";
-import { ScrollReveal } from "@/components/scroll-reveal";
 import type { ResumeUrls } from "@/lib/repositories/resumes";
 
 type Props = { children: React.ReactNode; locale: Locale; theme: "light" | "dark"; recruiter: boolean; resumeUrls: ResumeUrls };
@@ -39,7 +38,7 @@ export function ClientShell({ children, locale, theme, recruiter: initialRecruit
 
   return <div data-recruiter={recruiter ? "true" : "false"}>
     <Header locale={locale} theme={theme} recruiter={recruiter} mobileOpen={mobileOpen} mobileTrigger={mobileTrigger} commandTrigger={commandTrigger} onLocale={changeLocale} onTheme={changeTheme} onRecruiter={changeRecruiter} onMobile={() => setMobileOpen(true)} onCommand={() => setCommandOpen(true)}/>
-    <div id="site-content"><ScrollReveal/>
+    <div id="site-content">
       {recruiter && <div className="recruiter-summary bg-[var(--brand-soft)] px-4 py-3 text-center text-sm font-bold">{label(locale, "Modo Recrutador - Visão em 60 segundos", "Recruiter Mode - 60-second view")}</div>}
       {children}
     </div>
