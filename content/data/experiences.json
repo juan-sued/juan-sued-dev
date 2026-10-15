@@ -1,0 +1,84 @@
+[
+  {
+    "company": "MARKTS",
+    "role_pt": "Desenvolvedor Full Stack Web & Mobile",
+    "role_en": "Full Stack Web & Mobile Developer",
+    "period_pt": "Junho de 2025 - Agosto de 2026",
+    "period_en": "June 2025 - August 2026",
+    "responsibilities_pt": [
+      "Web, Android e iOS com React, React Native, TypeScript, NestJS, gRPC e Socket.IO, integrados a múltiplos microserviços.",
+      "Fluxo de aprovação de divergência de preço com notificação em tempo real, timeout automático e auditoria.",
+      "Indexação geoespacial (H3) para mapas operacionais e classificação de risco por área.",
+      "Captura offline-first com fila local, scanner de código de barras e leitura de preço por OCR.",
+      "Chat em tempo real entre app e operação via gRPC, com moderação para o time de suporte."
+    ],
+    "responsibilities_en": [
+      "Web, Android and iOS with React, React Native, TypeScript, NestJS, gRPC and Socket.IO, integrated with multiple microservices.",
+      "Price-divergence approval flow with real-time notifications, automatic timeout and audit trail.",
+      "Geospatial indexing (H3) for operational heatmaps and area-based risk classification.",
+      "Offline-first capture with a local queue, barcode scanning and OCR price reading.",
+      "Real-time chat between app and operations via gRPC, with moderation for the support team."
+    ],
+    "start_date": "2025-06-01",
+    "end_date": "2026-08-12",
+    "current": false
+  },
+  {
+    "company": "SALB - Indústria Cerealista",
+    "role_pt": "Desenvolvedor Full Stack",
+    "role_en": "Full Stack Developer",
+    "period_pt": "Dezembro de 2024 - Maio de 2025",
+    "period_en": "December 2024 - May 2025",
+    "responsibilities_pt": [
+      "Site institucional e catálogo de produtos.",
+      "QR Codes em produtos, estoque, etiquetas e integrações de cadastro.",
+      "Integração com roteirização de entregas usando Next.js, TypeScript, Prisma e PostgreSQL."
+    ],
+    "responsibilities_en": [
+      "Institutional website and product catalog.",
+      "Product QR codes, inventory, labels and product-record integrations.",
+      "Delivery-routing integration using Next.js, TypeScript, Prisma and PostgreSQL."
+    ],
+    "start_date": "2024-12-01",
+    "end_date": "2025-05-31",
+    "current": false
+  },
+  {
+    "company": "Lumis",
+    "role_pt": "Desenvolvedor Web/Java",
+    "role_en": "Web/Java Developer",
+    "period_pt": "Junho de 2022 - Dezembro de 2023",
+    "period_en": "June 2022 - December 2023",
+    "responsibilities_pt": [
+      "Desenvolvimento e sustentação de portais corporativos.",
+      "Java, LumisXP, Hibernate, JavaScript, HTML, CSS e XSL.",
+      "Componentes, formulários, integrações e regras de negócio para equipes multidisciplinares."
+    ],
+    "responsibilities_en": [
+      "Development and maintenance of corporate portals.",
+      "Java, LumisXP, Hibernate, JavaScript, HTML, CSS and XSL.",
+      "Components, forms, integrations and business rules with multidisciplinary teams."
+    ],
+    "start_date": "2022-06-01",
+    "end_date": "2023-12-31",
+    "current": false
+  },
+  {
+    "company": "Event Horizon",
+    "role_pt": "Desenvolvedor Full Stack Freelancer e Fundador",
+    "role_en": "Freelance Full Stack Developer and Founder",
+    "period_pt": "Desde 2018, em paralelo",
+    "period_en": "Since 2018, alongside other work",
+    "responsibilities_pt": [
+      "Projetos independentes: sites, landing pages e sistemas personalizados.",
+      "Levantamento de requisitos, frontend, backend, integrações, deploy e suporte pós-entrega."
+    ],
+    "responsibilities_en": [
+      "Independent projects: websites, landing pages and custom systems.",
+      "Requirements discovery, frontend, backend, integrations, deployment and post-delivery support."
+    ],
+    "start_date": "2018-01-01",
+    "end_date": null,
+    "current": true
+  }
+]

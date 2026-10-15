@@ -1,14 +1,6 @@
-import { createClient as createPublicClient } from "@supabase/supabase-js";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Copy } from "@/lib/locale";
-
-function createAnonymousClient(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) throw new Error("Supabase public credentials are not configured");
-  return createPublicClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-}
+import data from "@/content/data/profile.json";
 
 const profileRowSchema = z.object({
   name: z.string(),
@@ -34,10 +26,6 @@ export type SiteProfile = {
 };
 
 export async function getProfile(): Promise<SiteProfile> {
-  const supabase = createAnonymousClient();
-  const { data, error } = await supabase.from("published_site_profile").select("*").maybeSingle();
-  if (error) throw new Error(`Unable to load profile: ${error.message}`);
-  if (!data) throw new Error("Site profile is not configured");
   const row = profileRowSchema.parse(data);
   return {
     name: row.name,

@@ -1,0 +1,14 @@
+{
+  "name": "Juan Sued",
+  "role_pt": "Desenvolvedor Full Stack Web & Mobile",
+  "role_en": "Full Stack Web & Mobile Developer",
+  "intro_pt": "Construo aplicações Web e Mobile com React, React Native, TypeScript e NestJS, atuando entre produto, frontend, backend, dados, geolocalização e sistemas em tempo real.",
+  "intro_en": "I build web and mobile applications with React, React Native, TypeScript and NestJS, working across product, frontend, backend, data, geolocation and real-time systems.",
+  "location_pt": "Rio de Janeiro, Brasil",
+  "location_en": "Rio de Janeiro, Brazil",
+  "link_bikerway": "https://bikerway.com.br/",
+  "link_event_horizon": "https://event-horizon-by-juan-sued.vercel.app/",
+  "link_linkedin": "https://www.linkedin.com/in/juan-sued/",
+  "link_github": "https://github.com/juan-sued",
+  "link_email": "mailto:juansued19@gmail.com"
+}

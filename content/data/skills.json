@@ -1,0 +1,22 @@
+[
+  {
+    "category": "frontend_mobile",
+    "items": "React, React Native, Next.js, TypeScript, Tailwind CSS"
+  },
+  {
+    "category": "backend",
+    "items": "Node.js, NestJS, REST, gRPC, Socket.IO, BullMQ"
+  },
+  {
+    "category": "data",
+    "items": "PostgreSQL, SQL Server, Prisma, Supabase, Redis"
+  },
+  {
+    "category": "geolocation",
+    "items": "PostGIS, H3, deck.gl, Google Maps, Google Places"
+  },
+  {
+    "category": "quality_delivery",
+    "items": "Git, Docker, GitHub Actions, Jest, Cypress, Vercel, Sentry"
+  }
+]

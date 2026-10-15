@@ -1,14 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { NextRequest } from "next/server";
 
-const mocks = vi.hoisted(() => ({ from: vi.fn(), insert: vi.fn() }));
-
-vi.mock("@/lib/supabase/admin", () => ({
-  createAdminClient: () => ({ from: mocks.from }),
-}));
-
 import { POST } from "../app/api/contact/route";
 
+const resendCalls = () => (globalThis.fetch as unknown as { mock: { calls: unknown[][] } }).mock.calls.filter(call => String(call[0]).includes("api.resend.com"));
 const validPayload = { name: "Ada Lovelace", email: "ada@example.com", message: "I would like to discuss a project.", turnstileToken: "test-token" };
 const request = (body: unknown = validPayload, forwardedFor = crypto.randomUUID()) => new Request("http://localhost/api/contact", { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": forwardedFor, referer: "https://example.com/contact" }, body: JSON.stringify(body) }) as NextRequest;
 const response = async (body?: unknown, forwardedFor?: string) => {
@@ -21,44 +16,46 @@ beforeEach(() => {
   vi.stubEnv("TURNSTILE_SECRET_KEY", "secret");
   vi.stubEnv("NEXT_PUBLIC_TURNSTILE_SITE_KEY", "site");
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: true }), { status: 200 })));
-  mocks.from.mockReturnValue({ insert: mocks.insert });
-  mocks.insert.mockResolvedValue({ error: null });
+  vi.stubEnv("RESEND_API_KEY", "re_test");
+  vi.stubEnv("CONTACT_TO_EMAIL", "me@example.com");
+  vi.stubEnv("CONTACT_FROM_EMAIL", "site@example.com");
 });
 
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
-  mocks.from.mockReset();
-  mocks.insert.mockReset();
 });
 
 describe("POST /api/contact", () => {
-  it("persists valid data and returns generic response without submission ID", async () => {
+  it("sends valid data by e-mail and returns generic response without submission ID", async () => {
     const { result, json } = await response({ ...validPayload, company: "  Analytical Engine  ", sourcePath: "/contact" });
 
     expect(result.status).toBe(200);
     expect(json).toEqual({ ok: true });
     expect(json).not.toHaveProperty("id");
-    expect(mocks.from).toHaveBeenCalledWith("contact_submissions");
-    expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ name: "Ada Lovelace", company: "Analytical Engine", source_path: "/contact", referrer: "https://example.com/contact" }));
+    expect(resendCalls()).toHaveLength(1);
+    const init = resendCalls()[0][1] as { body: string; headers: Record<string, string> };
+    expect(init.headers.authorization).toBe("Bearer re_test");
+    expect(JSON.parse(init.body)).toMatchObject({ to: ["me@example.com"], from: "site@example.com", reply_to: "ada@example.com" });
+    expect(JSON.parse(init.body).text).toContain("Analytical Engine");
   });
 
-  it("rejects invalid email and schema limits before persistence", async () => {
+  it("rejects invalid email and schema limits before sending", async () => {
     const invalidEmail = await response({ ...validPayload, email: "not-an-email" });
     const tooLongMessage = await response({ ...validPayload, message: "x".repeat(2001) });
 
     expect(invalidEmail.result.status).toBe(400);
     expect(tooLongMessage.result.status).toBe(400);
     expect(invalidEmail.json).toEqual({ error: "Unable to send message." });
-    expect(mocks.insert).not.toHaveBeenCalled();
+    expect(resendCalls()).toHaveLength(0);
   });
 
-  it("rejects honeypot submissions before persistence", async () => {
+  it("rejects honeypot submissions before sending", async () => {
     const { result } = await response({ ...validPayload, honeypot: "bot" });
 
     expect(result.status).toBe(400);
-    expect(mocks.insert).not.toHaveBeenCalled();
+    expect(resendCalls()).toHaveLength(0);
   });
 
   it("accepts valid configured Turnstile token", async () => {
@@ -83,7 +80,7 @@ describe("POST /api/contact", () => {
 
     expect(invalid.result.status).toBe(400);
     expect(missing.result.status).toBe(400);
-    expect(mocks.insert).not.toHaveBeenCalled();
+    expect(resendCalls()).toHaveLength(0);
   });
 
   it("rejects partial Turnstile config and production missing config", async () => {
@@ -98,7 +95,7 @@ describe("POST /api/contact", () => {
     expect(partial.result.status).toBe(400);
     expect(production.result.status).toBe(400);
     expect(error).toHaveBeenCalledWith("Contact protection is not configured");
-    expect(mocks.insert).not.toHaveBeenCalled();
+    expect(resendCalls()).toHaveLength(0);
   });
 
   it("rejects Turnstile fetch failures", async () => {
@@ -109,7 +106,7 @@ describe("POST /api/contact", () => {
     const { result } = await response({ ...validPayload, turnstileToken: "token" });
 
     expect(result.status).toBe(400);
-    expect(mocks.insert).not.toHaveBeenCalled();
+    expect(resendCalls()).toHaveLength(0);
   });
 
   it("rate limits long forwarded headers using bounded visitor key", async () => {
@@ -124,28 +121,39 @@ describe("POST /api/contact", () => {
     expect(statuses).toEqual([200, 200, 200, 200, 200]);
     expect(limited.result.status).toBe(429);
     expect(limited.json).toEqual({ error: "Unable to send message." });
-    expect(mocks.insert).toHaveBeenCalledTimes(5);
+    expect(resendCalls()).toHaveLength(5);
   });
 
-  it("returns generic server error when insert reports error", async () => {
-    mocks.insert.mockResolvedValue({ error: { code: "23505" } });
+  it("returns generic server error when e-mail delivery fails", async () => {
     const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url: string) => Promise.resolve(new Response(JSON.stringify({ success: true }), { status: String(url).includes("resend") ? 500 : 200 }))));
 
     const { result, json } = await response();
 
     expect(result.status).toBe(500);
     expect(json).toEqual({ error: "Unable to send message." });
-    expect(error).toHaveBeenCalledWith("Contact insert failed", "23505");
+    expect(error).toHaveBeenCalledWith("Contact e-mail failed", 500);
   });
 
-  it("returns generic server error when insert throws", async () => {
-    mocks.insert.mockRejectedValue(new Error("database unavailable"));
+  it("returns generic server error when delivery throws", async () => {
     const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url: string) => String(url).includes("resend") ? Promise.reject(new Error("network down")) : Promise.resolve(new Response(JSON.stringify({ success: true }), { status: 200 }))));
 
-    const { result, json } = await response();
+    const { result } = await response();
 
     expect(result.status).toBe(500);
-    expect(json).toEqual({ error: "Unable to send message." });
     expect(error).toHaveBeenCalledWith("Contact intake failed", "Error");
+  });
+
+  it("fails in production when e-mail delivery is not configured", async () => {
+    vi.stubEnv("RESEND_API_KEY", "");
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("TURNSTILE_SECRET_KEY", "secret");
+    vi.stubEnv("NEXT_PUBLIC_TURNSTILE_SITE_KEY", "site");
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const { result } = await response();
+
+    expect(result.status).toBe(500);
   });
 });

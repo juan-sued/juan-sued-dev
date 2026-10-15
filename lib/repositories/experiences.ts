@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { readContentRows } from "./content-database";
+import data from "@/content/data/experiences.json";
 import { experienceSchema, type Experience } from "./content-types";
 
 const experienceViewSchema = z.object({
@@ -24,8 +24,7 @@ function visualPeriod(value: z.infer<typeof experienceViewSchema>): Experience["
 }
 
 export async function getExperiences(): Promise<Experience[]> {
-  const rows = await readContentRows("published_experiences");
-  return experienceSchema.array().parse(rows.map((row) => {
+  return experienceSchema.array().parse(data.map((row) => {
     const value = experienceViewSchema.parse(row);
     return {
       company: value.company,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { readContentRows } from "./content-database";
+import data from "@/content/data/skills.json";
 import { skillCategorySchema, skillSchema, type Copy, type Skill, type SkillCategory } from "./content-types";
 
 const categories: Record<SkillCategory, Copy> = {
@@ -13,8 +13,7 @@ const categories: Record<SkillCategory, Copy> = {
 const skillViewSchema = z.object({ category: skillCategorySchema, items: z.string() });
 
 export async function getSkills(): Promise<Skill[]> {
-  const rows = await readContentRows("published_skills");
-  return skillSchema.array().parse(rows.map((row) => {
+  return skillSchema.array().parse(data.map((row) => {
     const value = skillViewSchema.parse(row);
     return { category: categories[value.category], items: value.items };
   }));

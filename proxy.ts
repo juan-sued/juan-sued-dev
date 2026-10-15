@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/proxy";
-export async function proxy(request: NextRequest) {
+
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname === "/cases/H3") return NextResponse.redirect(new URL("/cases/h3", request.url));
-  return updateSession(request);
+  return NextResponse.next();
 }
-export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"] };
+
+export const config = { matcher: ["/cases/:slug"] };

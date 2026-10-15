@@ -14,55 +14,35 @@ npm run build
 
 ## Conteúdo
 
-Todo o conteúdo (perfil, experiências, competências, formação, cases e certificações) vem do banco Supabase — não há mais arquivo local com dados hardcoded. Repositórios em `lib/repositories/` leem views públicas (`published_*`); `/admin/content` e `/admin/content/certifications` editam via Supabase Auth + RLS admin-only.
+Todo o conteúdo é local, versionado no repositório — sem banco nem serviço externo.
 
-- `lib/repositories/profile.ts` / `cases.ts` / `experiences.ts` / `skills.ts` / `education.ts` / `certifications.ts`: leitura pública tipada com Zod.
+- `content/data/*.json`: perfil, experiências, competências, formação, cases, certificações e currículos. Edite estes arquivos e faça deploy.
+- `public/certifications/<emissor>/<ano>/*.pdf`: PDFs dos certificados (`storage_path` em `certifications.json` é relativo a esta pasta).
+- `public/resumes/ats.pdf` e `visual.pdf`: currículos.
+- `lib/repositories/*.ts`: leitura tipada e validada com Zod; mantêm a API usada pelas páginas.
 - `lib/analytics.ts`: camada sem tracker ativo; ponto de integração para PostHog consent-aware.
 - `public/images/juan-sued-profile.png`: foto local usada via `next/image`.
-- Currículos (ATS e visual): PDFs no bucket `resumes` do Supabase Storage, gerenciados via `/admin/content/resumes`.
 
-## Admin CRM
+## Contato
 
-`/admin` usa Supabase Auth e `admin_users` para acesso. CRM permite administrar contatos, notas, oportunidades e logs de auditoria. Usuário autenticado sem membership é bloqueado.
+`POST /api/contact` valida o payload, rejeita honeypot, verifica Cloudflare Turnstile e envia o e-mail via [Resend](https://resend.com) (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`). Nada é armazenado. Em produção, Turnstile ou Resend ausente bloqueia o envio (fail closed); fora de produção a mensagem só é registrada no console.
 
-Contato público carrega script oficial Turnstile com renderização explícita e mantém token só em memória até enviar `POST /api/contact`. Handler valida payload, rejeita honeypot, verifica Turnstile antes de gravar e usa cliente server-side com service role para inserir submissão. Em produção, chave ou token ausente, erro de rede ou resposta inválida bloqueia envio (fail closed). Sem site key fora de produção, formulário envia sem token para desenvolvimento local.
-
-Rate limit fica em memória do processo: máximo de 5 tentativas por IP com hash, por janela de 60 segundos. Limite não é compartilhado entre instâncias Vercel e reinicia após cold start; use rate limiter compartilhado se proteção distribuída for necessária.
+Rate limit fica em memória do processo: máximo de 5 tentativas por IP com hash, por janela de 60 segundos; não é compartilhado entre instâncias serverless.
 
 ## Ambiente
 
-Copie nomes de `.env.example` para ambiente local ou Vercel e preencha valores fora do repositório. Nunca versione `.env.local`, service role, Turnstile secret, token CLI ou senha de banco.
-
-Variáveis usadas:
+Copie nomes de `.env.example` para `.env.local` (ou para o provedor de deploy). Nunca versione `.env.local`.
 
 - `NEXT_PUBLIC_SITE_URL`: URL pública sem barra final; metadata, canonical, Open Graph, sitemap, robots e JSON-LD.
-- `NEXT_PUBLIC_SUPABASE_URL`: URL do projeto Supabase.
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: chave pública Supabase para browser e sessão server-side.
-- `SUPABASE_SERVICE_ROLE_KEY`: somente servidor; intake de contatos. Nunca prefixe com `NEXT_PUBLIC_`.
-- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`: site key pública Cloudflare Turnstile.
-- `TURNSTILE_SECRET_KEY`: somente servidor; verificação Turnstile.
-- `ADMIN_USER_ID`: variável de legado presente no template; autorização atual usa tabela `admin_users` e não lê esta variável.
-- `NEXT_PUBLIC_ANALYTICS_DEBUG`: opcional; use `true` para logs locais de analytics.
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`: Cloudflare Turnstile.
+- `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`: entrega do formulário de contato (somente servidor).
+- `NEXT_PUBLIC_ANALYTICS_DEBUG`: opcional; `true` para logs locais de analytics.
 
-## Supabase Migrations
+## Deploy
 
-Migrations versionadas ficam em `supabase/migrations`.
-
-```bash
-npm run supabase:migration:new -- nome_da_migration
-npm run supabase:migration:list
-npm run supabase:db:push
-```
-
-Revise SQL, schema e RLS antes de `db:push`. Aplique migrations em ordem em ambiente alvo. Após deploy, siga [checklist manual de RLS](docs/rls-checklist.md).
-
-## Deploy Vercel
-
-1. Importe repositório; selecione preset Next.js.
-2. Configure variáveis para Production, Preview quando necessário, Development quando necessário: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`.
-3. `ADMIN_USER_ID` somente se outro deploy ainda depender dele; CRM atual não usa variável.
-4. Rode build padrão `npm run build`.
-5. Ajuste domínio final e `NEXT_PUBLIC_SITE_URL`; faça redeploy após mudar qualquer `NEXT_PUBLIC_`.
+1. Importe o repositório; preset Next.js.
+2. Configure as variáveis acima.
+3. Rode `npm run build`; redeploy após mudar qualquer `NEXT_PUBLIC_`.
 
 ## Decisões
 

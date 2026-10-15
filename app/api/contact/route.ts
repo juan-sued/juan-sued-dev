@@ -1,11 +1,60 @@
 import { createHash } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 const schema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().email().max(120), company: z.string().trim().max(120).optional().or(z.literal("")), subject: z.string().trim().max(180).optional().or(z.literal("")), message: z.string().trim().min(10).max(2000), sourcePath: z.string().startsWith("/").max(300).optional(), utmSource: z.string().max(120).optional(), utmMedium: z.string().max(120).optional(), utmCampaign: z.string().max(120).optional(), honeypot: z.string().max(0).optional(), turnstileToken: z.string().optional() });
+type Contact = z.infer<typeof schema>;
 const attempts = new Map<string, { count: number; reset: number }>();
 const failure = (status: number) => NextResponse.json({ error: "Unable to send message." }, { status });
 function visitorKey(request: NextRequest) { const forwarded = request.headers.get("x-forwarded-for")?.slice(0, 256); const ip = forwarded?.split(",", 1)[0]?.trim() || "unknown"; return createHash("sha256").update(ip).digest("hex"); }
 async function verifyTurnstile(token?: string) { const secret = process.env.TURNSTILE_SECRET_KEY; const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY; if (!secret || !siteKey) { if (process.env.NODE_ENV === "production") console.error("Contact protection is not configured"); return process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test"; } if (!token) return false; try { const body = new URLSearchParams({ secret, response: token }); const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body }); if (!response.ok) return false; const result = await response.json() as { success?: boolean }; return result.success === true; } catch { return false; } }
-export async function POST(request: NextRequest) { const key = visitorKey(request); const now = Date.now(); const entry = attempts.get(key); if (entry && entry.reset > now && entry.count >= 5) return failure(429); if (!entry || entry.reset <= now) attempts.set(key, { count: 1, reset: now + 60_000 }); else entry.count += 1; const parsed = schema.safeParse(await request.json().catch(() => null)); if (!parsed.success || parsed.data.honeypot || !(await verifyTurnstile(parsed.data.turnstileToken))) return failure(400); try { const { error } = await createAdminClient().from("contact_submissions").insert({ name: parsed.data.name, email: parsed.data.email, company: parsed.data.company || null, subject: parsed.data.subject || null, message: parsed.data.message, source_path: parsed.data.sourcePath ?? null, utm_source: parsed.data.utmSource ?? null, utm_medium: parsed.data.utmMedium ?? null, utm_campaign: parsed.data.utmCampaign ?? null, referrer: request.headers.get("referer")?.slice(0, 500) ?? null }); if (error) { console.error("Contact insert failed", error.code); return failure(500); } return NextResponse.json({ ok: true }); } catch (error) { console.error("Contact intake failed", error instanceof Error ? error.name : "unknown"); return failure(500); } }
+
+function emailText(data: Contact, referrer: string | null) {
+  return [
+    `Nome: ${data.name}`,
+    `E-mail: ${data.email}`,
+    data.company ? `Empresa: ${data.company}` : null,
+    data.sourcePath ? `Página: ${data.sourcePath}` : null,
+    referrer ? `Referrer: ${referrer}` : null,
+    [data.utmSource, data.utmMedium, data.utmCampaign].some(Boolean) ? `UTM: ${[data.utmSource, data.utmMedium, data.utmCampaign].filter(Boolean).join(" / ")}` : null,
+    "",
+    data.message,
+  ].filter((line) => line !== null).join("\n");
+}
+
+// Sends the message by e-mail through Resend. Without RESEND_API_KEY (local dev) it is only logged.
+async function deliver(data: Contact, referrer: string | null) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.CONTACT_TO_EMAIL;
+  const from = process.env.CONTACT_FROM_EMAIL;
+  if (!apiKey || !to || !from) {
+    if (process.env.NODE_ENV === "production") { console.error("Contact e-mail delivery is not configured"); return false; }
+    console.info("[contact] e-mail not configured; message logged only:\n" + emailText(data, referrer));
+    return true;
+  }
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+    body: JSON.stringify({ from, to: [to], reply_to: data.email, subject: data.subject || `Contato pelo portfólio - ${data.name}`, text: emailText(data, referrer) }),
+  });
+  if (!response.ok) console.error("Contact e-mail failed", response.status);
+  return response.ok;
+}
+
+export async function POST(request: NextRequest) {
+  const key = visitorKey(request);
+  const now = Date.now();
+  const entry = attempts.get(key);
+  if (entry && entry.reset > now && entry.count >= 5) return failure(429);
+  if (!entry || entry.reset <= now) attempts.set(key, { count: 1, reset: now + 60_000 });
+  else entry.count += 1;
+  const parsed = schema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success || parsed.data.honeypot || !(await verifyTurnstile(parsed.data.turnstileToken))) return failure(400);
+  try {
+    if (!(await deliver(parsed.data, request.headers.get("referer")?.slice(0, 500) ?? null))) return failure(500);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Contact intake failed", error instanceof Error ? error.name : "unknown");
+    return failure(500);
+  }
+}

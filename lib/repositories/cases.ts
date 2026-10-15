@@ -1,18 +1,9 @@
-import { createClient as createPublicClient } from "@supabase/supabase-js";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Copy, Locale } from "@/lib/locale";
-
-function createAnonymousClient(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) throw new Error("Supabase public credentials are not configured");
-  return createPublicClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-}
+import data from "@/content/data/cases.json";
 
 const sectionSchema = z.tuple([z.string(), z.string()]);
 const caseRowSchema = z.object({
-  id: z.string().uuid(),
   slug: z.string(),
   title_pt: z.string(),
   title_en: z.string(),
@@ -24,7 +15,6 @@ const caseRowSchema = z.object({
   stack: z.string(),
   sections_pt: z.array(sectionSchema),
   sections_en: z.array(sectionSchema),
-  display_order: z.number().int(),
 });
 
 export type CaseStudy = {
@@ -38,10 +28,7 @@ export type CaseStudy = {
 };
 
 export async function getCases(): Promise<CaseStudy[]> {
-  const supabase = createAnonymousClient();
-  const { data, error } = await supabase.from("published_cases").select("*").order("display_order");
-  if (error) throw new Error(`Unable to load cases: ${error.message}`);
-  return caseRowSchema.array().parse(data ?? []).map(row => ({
+  return caseRowSchema.array().parse(data).map(row => ({
     slug: row.slug,
     title: { pt: row.title_pt, en: row.title_en },
     tag: row.tag,

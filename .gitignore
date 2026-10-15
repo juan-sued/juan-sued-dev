@@ -13,7 +13,7 @@ out/
 coverage/
 *.tsbuildinfo
 
-# Local certificate copies (official files live in Supabase Storage)
+# Legacy local certificate copies
 public/certificados/
 
 # Logs and OS files
