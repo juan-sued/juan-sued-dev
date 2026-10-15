@@ -2,21 +2,21 @@
   {
     "slug": "bikerway",
     "name": "BikerWay",
-    "status": "beta",
+    "status": "production",
     "period": "2026",
     "tagline_pt": "O app do motociclista brasileiro: rotas, comboios, clubes, eventos e garagem.",
     "tagline_en": "The Brazilian rider's app: routes, convoys, clubs, events and garage.",
     "role_pt": "Full stack e mobile, em dupla",
     "role_en": "Full stack and mobile, in a two-person team",
-    "summary_pt": "Plataforma social e utilitária para motociclistas, com mapa de rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem com consumo e manutenção. Começou como PWA e virou app nativo (Android primeiro) sobre um único backend Supabase compartilhado por app, site e painel admin.",
-    "summary_en": "Social and utility platform for motorcyclists, with a map of routes and trusted places, real-time convoys, clubs, events and a garage tracking fuel and maintenance. It started as a PWA and became a native app (Android first) on a single Supabase backend shared by the app, the website and the admin panel.",
+    "summary_pt": "Plataforma social e utilitária para motociclistas, com mapa de rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem com consumo e manutenção. Começou como PWA e virou app nativo, já publicado na Google Play, sobre um único backend Supabase compartilhado por app, site e painel admin.",
+    "summary_en": "Social and utility platform for motorcyclists, with a map of routes and trusted places, real-time convoys, clubs, events and a garage tracking fuel and maintenance. It started as a PWA and became a native app, now published on Google Play, on a single Supabase backend shared by the app, the website and the admin panel.",
     "highlights_pt": [
       "App nativo em React Native/Expo com mapas, rastreio em segundo plano, push e cache offline.",
       "Backend Supabase: schema, RLS, funções SQL e Edge Functions versionados como contrato entre os três projetos.",
       "Comboios com posição ao vivo (Realtime + Presence) e rotas com geometria PostGIS.",
       "Garagem com abastecimento, leitura de nota por OCR e fila offline de sincronização.",
       "Painel admin com cerca de 27 módulos e pipelines de conteúdo com IA.",
-      "CI com build automático e envio para a faixa de testes internos da Play Store."
+      "CI com build automático e publicação na Google Play (app em produção na loja)."
     ],
     "highlights_en": [
       "React Native/Expo native app with maps, background tracking, push and offline cache.",
@@ -24,7 +24,7 @@
       "Convoys with live position (Realtime + Presence) and routes with PostGIS geometry.",
       "Garage with fuel logs, receipt OCR and an offline sync queue.",
       "Admin panel with about 27 modules and AI content pipelines.",
-      "CI that builds automatically and ships to the Play Store internal testing track."
+      "CI that builds automatically and publishes to Google Play (app live on the store)."
     ],
     "decisions": [
       {
@@ -91,6 +91,11 @@
     "credit_pt": "Projeto feito em dupla com o sócio Renan. Meu recorte: schema e Supabase, grande parte do site e do app mobile (cerca de 1.000 commits entre os dois repositórios), geolocalização, tempo real e CI/CD.",
     "credit_en": "Built as a pair with my partner Renan. My part: schema and Supabase, most of the website and the mobile app (about 1,000 commits across the two repositories), geolocation, real time and CI/CD.",
     "links": [
+      {
+        "label_pt": "Baixar na Google Play",
+        "label_en": "Get it on Google Play",
+        "url": "https://play.google.com/store/apps/details?id=br.com.bikerway"
+      },
       {
         "label_pt": "Conhecer o BikerWay",
         "label_en": "Visit BikerWay",
