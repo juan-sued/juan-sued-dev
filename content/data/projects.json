@@ -252,7 +252,48 @@
         "alt_en": "First quiz step"
       }
     ],
-    "panel": []
+    "panel": [
+      {
+        "src": "/projects/conta-e-canta/panel-como-funciona.webp",
+        "width": 1085,
+        "height": 733,
+        "title_pt": "Como funciona",
+        "title_en": "How it works",
+        "caption_pt": "Antes do quiz, a página orienta o que contar para a letra ficar pessoal, sugere estilos que combinam e explica que só se paga depois de ver a letra.",
+        "caption_en": "Before the quiz, the page guides what to tell so the lyrics feel personal, suggests matching styles and explains that you only pay after seeing the lyrics."
+      },
+      {
+        "src": "/projects/conta-e-canta/panel-exemplos.webp",
+        "width": 1190,
+        "height": 709,
+        "title_pt": "Exemplos de músicas",
+        "title_en": "Song examples",
+        "caption_pt": "Músicas completas criadas na plataforma, em vários estilos e ocasiões, com player e forma de onda para ouvir antes de pedir.",
+        "caption_en": "Complete songs made on the platform, in several styles and occasions, with a player and waveform to listen to before ordering."
+      },
+      {
+        "src": "/projects/conta-e-canta/panel-presente.webp",
+        "width": 1103,
+        "height": 713,
+        "title_pt": "Cartão-presente",
+        "title_en": "Gift card",
+        "caption_pt": "Compra do cartão por Pix, entrega por e-mail com a imagem para enviar ou imprimir e resgate por código, válido por 6 meses.",
+        "caption_en": "Gift card bought by Pix, delivered by e-mail with an image to send or print and redeemed with a code, valid for 6 months."
+      },
+      {
+        "src": "/projects/conta-e-canta/panel-jingle.webp",
+        "width": 1167,
+        "height": 696,
+        "title_pt": "Jingles para empresas",
+        "title_en": "Jingles for companies",
+        "caption_pt": "Pacotes de preço fixo para marcas (vinheta, jingle e versão alternativa), com pedido e pagamento online e produção acompanhada no admin.",
+        "caption_en": "Fixed-price packages for brands (sting, jingle and alternate version), with online ordering and payment and production tracked in the admin."
+      }
+    ],
+    "panel_title_pt": "Por dentro do site",
+    "panel_title_en": "Inside the site",
+    "panel_intro_pt": "Telas reais do site público, do primeiro contato ao pedido.",
+    "panel_intro_en": "Real screens of the public site, from first contact to the order."
   },
   {
     "slug": "8pixie",
