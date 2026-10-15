@@ -1,0 +1,11 @@
+{
+  "user": "juan-sued",
+  "repos": [
+    { "name": "zap-recall", "description_pt": "Aplicação para estudar usando o método ZAP (flashcards).", "description_en": "Study app built around the ZAP flashcard method." },
+    { "name": "zap-recall-api", "description_pt": "API de questões do Zap Recall.", "description_en": "Questions API for Zap Recall." },
+    { "name": "shv-react-native-poc", "description_pt": "Prova de conceito em React Native com Expo e NativeWind.", "description_en": "React Native proof of concept using Expo and NativeWind." },
+    { "name": "download-pdf-pcfl", "description_pt": "Aplicação para baixar PDFs de faturas no site da CPFL.", "description_en": "App that downloads PDF bills from the CPFL website." },
+    { "name": "download-pdf-pcfl-api", "description_pt": "API crawler que automatiza o download de PDFs no site da CPFL.", "description_en": "Crawler API that automates PDF downloads from the CPFL website." },
+    { "name": "home_cut_frontend_flutter", "description_pt": "Projeto em Flutter para o Home Cut.", "description_en": "Flutter project for Home Cut." }
+  ]
+}

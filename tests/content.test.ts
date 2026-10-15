@@ -47,3 +47,18 @@ describe("local portfolio content", () => {
     for (const url of Object.values(resumes)) expect(url && existsSync(publicFile(url)), String(url)).toBeTruthy();
   });
 });
+
+describe("github projects", () => {
+  it("falls back to curated entries when the GitHub API is unavailable", async () => {
+    const { vi } = await import("vitest");
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+    const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const { getGitHubSummary } = await import("../lib/repositories/github");
+    const summary = await getGitHubSummary();
+    expect(summary.repos.length).toBeGreaterThan(0);
+    expect(summary.repos[0]).toMatchObject({ language: null, pushedAt: null, stars: 0 });
+    expect(summary.repos[0].url).toContain("github.com/juan-sued/");
+    vi.unstubAllGlobals();
+    error.mockRestore();
+  });
+});
