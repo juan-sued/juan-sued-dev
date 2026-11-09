@@ -130,7 +130,7 @@
       ],
       [
         "Implementação",
-        "React Native, câmera, retry, Redis, BullMQ e Socket.IO."
+        "Cada captura entra numa fila local no dispositivo e é enviada quando a conexão volta; erros ficam visíveis e podem ser reenviados. Leitor de código de barras e OCR usam o mesmo caminho. React Native, câmera, Redis, BullMQ e Socket.IO."
       ],
       [
         "Trade-off",
@@ -152,7 +152,7 @@
       ],
       [
         "Implementation",
-        "React Native, camera, retry, Redis, BullMQ and Socket.IO."
+        "Each capture goes into a local queue on the device and is sent when the connection returns; errors stay visible and can be resent. Barcode scanning and OCR use the same path. React Native, camera, Redis, BullMQ and Socket.IO."
       ],
       [
         "Trade-off",
@@ -169,8 +169,8 @@
     "title_pt": "Localização mobile resiliente",
     "title_en": "Resilient mobile location",
     "tag": "Localização mobile",
-    "summary_pt": "Permissões, fallback e recuperação fazem parte do fluxo.",
-    "summary_en": "Permissions, fallback and recovery belong in flow.",
+    "summary_pt": "Localização que segue útil quando GPS, permissão ou rede falham.",
+    "summary_en": "Location that stays useful when GPS, permission or network fail.",
     "decision_pt": "Permissões, fallback e recuperação fazem parte do fluxo.",
     "decision_en": "Permissions, fallback and recovery belong in the flow.",
     "stack": "React Native · Google Maps · APIs de geolocalização · permissões Android e iOS · Socket.IO · tratamento de falhas",

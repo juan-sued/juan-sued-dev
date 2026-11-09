@@ -6,8 +6,8 @@
     "period": "2026",
     "tagline_pt": "O app do motociclista brasileiro, com mapa curado por IA e por gente.",
     "tagline_en": "The Brazilian rider's app, with a map curated by AI and by people.",
-    "role_pt": "Full stack e mobile, em dupla",
-    "role_en": "Full stack and mobile, in a two-person team",
+    "role_pt": "Cofundador, full stack e mobile",
+    "role_en": "Co-founder, full stack and mobile",
     "summary_pt": "Plataforma para motociclistas brasileiros, já na Google Play: mapa com rotas e lugares de confiança, comboios em tempo real, motoclubes, eventos e garagem. Por trás, um time de agentes de IA abastece o mapa e uma curadoria humana decide o que entra; o app, o site e o painel admin compartilham um único backend Supabase.",
     "summary_en": "Platform for Brazilian motorcyclists, already on Google Play: map with routes and trusted places, real-time convoys, clubs, events and a garage. Behind it, a team of AI agents feeds the map and human curation decides what goes in; the app, website and admin panel share a single Supabase backend.",
     "highlights_pt": [
@@ -71,6 +71,11 @@
       "PostHog"
     ],
     "metrics": [
+      {
+        "label_pt": "usuários cadastrados",
+        "label_en": "registered users",
+        "value": "2.500+"
+      },
       {
         "label_pt": "migrations SQL",
         "label_en": "SQL migrations",
@@ -395,6 +400,11 @@
     ],
     "metrics": [
       {
+        "label_pt": "usuários",
+        "label_en": "users",
+        "value": "400+"
+      },
+      {
         "label_pt": "páginas",
         "label_en": "pages",
         "value": "24"
@@ -545,6 +555,16 @@
     ],
     "metrics": [
       {
+        "label_pt": "chaveiros gerenciados por mês",
+        "label_en": "keychains managed per month",
+        "value": "200"
+      },
+      {
+        "label_pt": "peças em rotatividade por mês",
+        "label_en": "parts turnover per month",
+        "value": "80 mil+"
+      },
+      {
         "label_pt": "tabelas",
         "label_en": "tables",
         "value": "13"
@@ -684,6 +704,11 @@
       "Vercel"
     ],
     "metrics": [
+      {
+        "label_pt": "cliques por semana em ofertas",
+        "label_en": "weekly clicks on deals",
+        "value": "5.000+"
+      },
       {
         "label_pt": "rotas de API",
         "label_en": "API routes",
