@@ -77,6 +77,11 @@
         "value": "2.500+"
       },
       {
+        "label_pt": "usuários ativos",
+        "label_en": "active users",
+        "value": "1.500"
+      },
+      {
         "label_pt": "migrations SQL",
         "label_en": "SQL migrations",
         "value": "289"
@@ -162,19 +167,21 @@
         {
           "id": "beta",
           "status": "now",
-          "title_pt": "Beta: app Android completo",
-          "title_en": "Beta: complete Android app",
+          "title_pt": "Em produção: app Android completo",
+          "title_en": "In production: complete Android app",
           "items_pt": [
             "Mapa com rotas, lugares e radar de comboios",
             "Clubes, eventos e recrutamento",
             "Garagem com consumo, manutenção e abastecimento",
-            "Push, offline e login social"
+            "Push, offline e login social",
+            "App iOS a caminho"
           ],
           "items_en": [
             "Map with routes, places and convoy radar",
             "Clubs, events and recruiting",
             "Garage with fuel economy, maintenance and fuel logs",
-            "Push, offline and social login"
+            "Push, offline and social login",
+            "iOS app coming soon"
           ]
         },
         {
@@ -268,63 +275,42 @@
         {
           "title_pt": "Agentes com identidade e limites",
           "title_en": "Agents with identity and limits",
-          "tags": [
-            "JWT",
-            "RLS",
-            "Supabase"
-          ],
+          "tags": ["JWT", "RLS", "Supabase"],
           "body_pt": "Cada agente é uma conta de serviço com permissões por domínio (lugares, eventos, rotas), segredo guardado com hash e token de 1 hora que nunca ignora as políticas de segurança. Há cota diária de escrita por conta e o domínio vem da permissão, não do que o agente declara, o que reduz o risco de prompt injection.",
           "body_en": "Each agent is a service account with per-domain permissions (places, events, routes), a hashed secret and a 1-hour token that never bypasses security policies. There is a daily write quota per account and the domain comes from the permission, not from what the agent claims, which reduces prompt-injection risk."
         },
         {
           "title_pt": "Fila de curadoria no admin",
           "title_en": "Curation queue in the admin",
-          "tags": [
-            "Next.js",
-            "Refine",
-            "SQL"
-          ],
+          "tags": ["Next.js", "Refine", "SQL"],
           "body_pt": "Lugares, eventos e rotas vindos de agentes entram como pendentes. O curador aprova, aprova editando, rejeita com motivo padronizado, marca duplicata ou reabre, com aprovação em lote, evidências com fonte, mapa e histórico imutável de decisões. Um painel mostra taxa de aprovação e motivos de rejeição por agente.",
           "body_en": "Places, events and routes coming from agents enter as pending. The curator approves, approves with edits, rejects with a standard reason, flags a duplicate or reopens, with batch approval, sourced evidence, a map and an immutable decision history. A dashboard shows approval rate and rejection reasons per agent."
         },
         {
           "title_pt": "Nota de confiança e procedência",
           "title_en": "Confidence score and provenance",
-          "tags": [
-            "PostgreSQL",
-            "Triggers"
-          ],
+          "tags": ["PostgreSQL", "Triggers"],
           "body_pt": "Todo item carrega nota de confiança de 0 a 1, fonte, identificador externo e data da última verificação. Abaixo do limiar da categoria, o banco rebaixa o item para revisão por trigger; itens sensíveis, como pontos de encontro, nunca são aprovados automaticamente. Coordenadas duplicadas são bloqueadas.",
           "body_en": "Every item carries a 0-to-1 confidence score, source, external id and last-verified date. Below the category threshold, the database downgrades the item to review through a trigger; sensitive items, such as meeting points, are never auto-approved. Duplicate coordinates are blocked."
         },
         {
           "title_pt": "IA dentro do app",
           "title_en": "AI inside the app",
-          "tags": [
-            "Visão",
-            "ML Kit",
-            "Edge Functions"
-          ],
+          "tags": ["Visão", "ML Kit", "Edge Functions"],
           "body_pt": "Foto de um flyer vira rascunho de evento: um modelo de visão extrai título, datas e local e o usuário revisa antes de salvar, com cota diária e sem guardar a imagem. Na garagem, o OCR de abastecimento roda no aparelho e offline, e a foto não sai do celular.",
           "body_en": "A photo of a flyer becomes an event draft: a vision model extracts title, dates and place and the user reviews before saving, with a daily quota and no image stored. In the garage, fuel-receipt OCR runs on-device and offline, and the photo never leaves the phone."
         },
         {
           "title_pt": "Comunidade como sinal de qualidade",
           "title_en": "Community as a quality signal",
-          "tags": [
-            "Realtime",
-            "Consenso"
-          ],
+          "tags": ["Realtime", "Consenso"],
           "body_pt": "Alertas de estrada ganham ou perdem confiança com os votos dos pilotos e expiram sozinhos; preço de combustível e avaliação de oficinas usam consenso entre relatos. É o complemento humano da curadoria dos agentes.",
           "body_en": "Road alerts gain or lose confidence from riders' votes and expire on their own; fuel prices and workshop ratings use consensus across reports. It is the human complement to agent curation."
         },
         {
           "title_pt": "Desenvolvimento assistido por IA",
           "title_en": "AI-assisted development",
-          "tags": [
-            "Claude Code",
-            "Agentes"
-          ],
+          "tags": ["Claude Code", "Agentes"],
           "body_pt": "O time usa 14 agentes especializados (produto, tech lead, backend, mobile, QA, segurança, jurídico e outros) e um comando que processa uma história do quadro de planejamento, com regras para mudanças que atravessam app, site, admin e banco.",
           "body_en": "The team uses 14 specialized agents (product, tech lead, backend, mobile, QA, security, legal and others) and a command that processes a story from the planning board, with rules for changes that cut across app, website, admin and database."
         }
@@ -819,13 +805,7 @@
       "Deployment and post-delivery support."
     ],
     "decisions": [],
-    "stack": [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Node.js",
-      "PostgreSQL"
-    ],
+    "stack": ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL"],
     "metrics": [
       {
         "label_pt": "anos em atividade",
