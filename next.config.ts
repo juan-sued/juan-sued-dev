@@ -1,3 +1,4 @@
 import type { NextConfig } from "next";
-const nextConfig: NextConfig = { images: { formats: ["image/avif", "image/webp"] } };
+// output "standalone" gera .next/standalone (servidor Node minimo) usado pela imagem Docker.
+const nextConfig: NextConfig = { output: "standalone", images: { formats: ["image/avif", "image/webp"] } };
 export default nextConfig;
